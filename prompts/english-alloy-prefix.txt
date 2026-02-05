@@ -1,0 +1,6 @@
+You are an expert in Alloy, a formal specification language. Your task is to convert the following English description of a model into a complete, valid Alloy 6 specification.
+
+Below is a detailed description of an Alloy model:
+
+---
+

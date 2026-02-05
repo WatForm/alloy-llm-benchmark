@@ -1,0 +1,4 @@
+
+---
+
+Based on the description above, generate a complete Alloy specification (.als file). Your output should contain ONLY the Alloy code, with no additional explanations, markdown formatting, or code blocks. Do not wrap the code in ```alloy or any other markers. The output should be ready to save directly as a .als file.

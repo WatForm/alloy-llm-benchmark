@@ -11,6 +11,7 @@ Usage:
 
 import subprocess
 import sys
+import shutil
 from pathlib import Path
 
 # Configuration constants
@@ -18,6 +19,7 @@ SCOPE = 3
 SOLVER = "sat4j"
 TIMEOUT = 300  # 5 minutes
 JAR_PATH = Path(__file__).parent / "alloy-diff.jar"
+ALLOY_TOOLS_JAR = Path(__file__).parent / "org.alloytools.alloy.dist.jar"
 
 
 def compute_alloy_diff_score(original_file: str, generated_file: str) -> dict:
@@ -85,6 +87,73 @@ def compute_alloy_diff_score(original_file: str, generated_file: str) -> dict:
         }
 
 
+def check_alloy_syntax(file_path: str) -> dict:
+    """
+    Check if an Alloy file has valid syntax using Alloy 6.
+    
+    Args:
+        file_path: Path to the Alloy file to validate
+        
+    Returns:
+        dict: Contains 'score' and 'max_score'
+    """
+    alloy_path = Path(file_path)
+    
+    if not alloy_path.exists():
+        return {
+            'score': 0,
+            'max_score': 1
+        }
+    if not ALLOY_TOOLS_JAR.exists():
+        raise FileNotFoundError(f"Alloy tools JAR not found at: {ALLOY_TOOLS_JAR}")
+    
+    cmd = [
+        "java",
+        "-jar",
+        str(ALLOY_TOOLS_JAR),
+        "exec",
+        str(alloy_path)
+    ]
+    
+    try:
+        result = subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            timeout=TIMEOUT
+        )
+        
+        # Clean up temp folder if it exists
+        temp_dir = Path("tmp")
+        if temp_dir.exists():
+            shutil.rmtree(temp_dir)
+        
+        # If the command exits with code 0, syntax is valid
+        return {
+            'score': 1 if result.returncode == 0 else 0,
+            'max_score': 1
+        }
+        
+    except subprocess.TimeoutExpired:
+        # Clean up temp folder
+        temp_dir = Path("tmp")
+        if temp_dir.exists():
+            shutil.rmtree(temp_dir)
+        return {
+            'score': 0,
+            'max_score': 1
+        }
+    except Exception:
+        # Clean up temp folder
+        temp_dir = Path("tmp")
+        if temp_dir.exists():
+            shutil.rmtree(temp_dir)
+        return {
+            'score': 0,
+            'max_score': 1
+        }
+
+
 def main():
     if len(sys.argv) != 3:
         print("Usage: python score.py <original_file> <generated_file>", file=sys.stderr)
@@ -94,8 +163,15 @@ def main():
     generated_file = sys.argv[2]
     
     try:
-        result = compute_alloy_diff_score(original_file, generated_file)
-        print(f"{result['score']}/{result['max_score']}")
+        # Check syntax validity of generated file
+        syntax_result = check_alloy_syntax(generated_file)
+        
+        # Compute equivalence score
+        equivalence_result = compute_alloy_diff_score(original_file, generated_file)
+        
+        # Output results
+        print(f"Syntax Valid: {syntax_result['score']}/{syntax_result['max_score']}")
+        print(f"Equivalence Score: {equivalence_result['score']}/{equivalence_result['max_score']}")
         return 0
         
     except FileNotFoundError as e:
