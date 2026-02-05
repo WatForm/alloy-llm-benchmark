@@ -46,7 +46,7 @@ fact NoIncest {
   // No one may marry a parent or a sibling (someone who shares a parent)
   all p, q: Person |
     (q in p.spouse) implies (
-      q not in p.parents and no r: r in p.parents && r in q.parents
+      q not in p.parents and no r: Person | r in p.parents and r in q.parents
     )
 }
 

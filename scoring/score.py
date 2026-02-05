@@ -112,6 +112,7 @@ def check_alloy_syntax(file_path: str) -> dict:
         "-jar",
         str(ALLOY_TOOLS_JAR),
         "exec",
+        "-f",  # Force overwrite of output directory
         str(alloy_path)
     ]
     
@@ -123,10 +124,13 @@ def check_alloy_syntax(file_path: str) -> dict:
             timeout=TIMEOUT
         )
         
-        # Clean up temp folder if it exists
+        # Clean up temp and output folders if they exist
         temp_dir = Path("tmp")
         if temp_dir.exists():
             shutil.rmtree(temp_dir)
+        output_dir = Path("output")
+        if output_dir.exists():
+            shutil.rmtree(output_dir)
         
         # If the command exits with code 0, syntax is valid
         return {
@@ -135,19 +139,25 @@ def check_alloy_syntax(file_path: str) -> dict:
         }
         
     except subprocess.TimeoutExpired:
-        # Clean up temp folder
+        # Clean up temp and output folders
         temp_dir = Path("tmp")
         if temp_dir.exists():
             shutil.rmtree(temp_dir)
+        output_dir = Path("output")
+        if output_dir.exists():
+            shutil.rmtree(output_dir)
         return {
             'score': 0,
             'max_score': 1
         }
     except Exception:
-        # Clean up temp folder
+        # Clean up temp and output folders
         temp_dir = Path("tmp")
         if temp_dir.exists():
             shutil.rmtree(temp_dir)
+        output_dir = Path("output")
+        if output_dir.exists():
+            shutil.rmtree(output_dir)
         return {
             'score': 0,
             'max_score': 1
