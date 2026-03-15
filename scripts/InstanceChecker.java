@@ -14,6 +14,7 @@
     - atoms are stored in signatures at their most immediate level, thus to find all atoms in a sig, we have to traverse the sig hierarchy created by the parent ids
     - expect the XML to contain a command of the form `Run run$1 for 16`, where 16 is the scope; this script gets the scope from the command in the XML
     - ignores the upperbound tags in the XML
+    - this method largely ignores that scope in the run cmd b/c no matter what the scope given in the command, if there is a `one sig` it will be given a value.  All the XML atoms are created in with a one sig, which overrides the scope given in the command.
 */
 
 import java.io.File;
@@ -189,7 +190,7 @@ public class InstanceChecker {
                     
                     boolean isAbstract = 
                         sig.hasAttribute("abstract") ? 
-                            sig.getAttribute("builtin").equals("yes") : 
+                            sig.getAttribute("abstract").equals("yes") : 
                             false; 
         
                     List<String> atomList = new ArrayList<String>();
@@ -199,7 +200,7 @@ public class InstanceChecker {
                             String atomLabel = atom.getAttribute("label");
                             atomList.add(alloyName(atomLabel));
                     }
-                    
+
                     idToSigInfo.put(myId, 
                         new SigInfo(label, myId, parentId, isAbstract, atomList));
                 }
@@ -248,10 +249,6 @@ public class InstanceChecker {
             System.exit(1);
         }
 
-        // if the scopes are incompatible between the model and the xml
-        // that will come out in the facts because the xml facts
-        // set the scopes to a specific size
-
         // create a string that is one sigs 
         StringBuilder newSigs = new StringBuilder();
         // create a string that is facts that represent the instance in Alloy
@@ -259,8 +256,9 @@ public class InstanceChecker {
         
         for (String id:idToSigInfo.keySet()) {
             // no builtins will be in this map
+            // produce nothing if it is an abstract sig
             if (!idToSigInfo.get(id).isAbstract) {
-                // produce nothing if it is an abstract sig
+                
                 String sigLabel = idToSigInfo.get(id).label;
                 
                 List<String> atomsUniqueToSig = idToSigInfo.get(id).atoms;
@@ -272,12 +270,12 @@ public class InstanceChecker {
                 }
                 
                 List<String> allAtoms = collectAtoms(id); 
+                // sig = a$1 + a$2 + ... 
+                newFacts.append("\n    "+ sigLabel + " = "); 
                 if (allAtoms.size() == 0) 
                     // sigs are always of unary arity
                     newFacts.append("none");
-                else {
-                    // sig = a$1 + a$2 + ... 
-                    newFacts.append("\n    "+ sigLabel + " = ");  
+                else { 
                     newFacts.append(String.join("\n      + ", allAtoms) );
                 }
                 
@@ -346,8 +344,8 @@ public class InstanceChecker {
             System.out.println("FAIL: Instance should be for a run {} cmd\n");
             System.exit(1);
         }
-        cmd = cmd.replace("Run run$1", "run {}");
-        checkerModel.append("\n"+cmd+"\n");     
+        //cmd = cmd.replace("Run run$1", "run {}");
+        checkerModel.append("\nrun {} for 0\n");     
         Integer modelNumCmds = modelWorld.getAllCommands().size();  
         Integer satCmdNum = modelNumCmds;   // cmds are zero indexed
 
