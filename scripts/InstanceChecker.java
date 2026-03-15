@@ -6,14 +6,24 @@
 // javac -cp ../scoring/org.alloytools.alloy.dist-6.2.0.jar InstanceChecker.java
 // java -cp .:../scoring/org.alloytools.alloy.dist-6.2.0.jar InstanceChecker modelfileName xmlFileName 
 
-// expect the XML to contain a command of the form `Run run$ for 16`, where 16 is the scope
+// expect the XML to contain a command of the form `Run run$1 for 16`, where 16 is the scope
 // so this script gets the scope from the command in the XML
+
+
+/* Assumptions:
+    - don't do anything with the builtins; they are in the XML, but don't have atoms in the XML
+    - the top-level sigs have univ as their parent
+    - atoms are stored in signatures at their most immediate level, thus to find all atoms in a sig, we have to traverse the sig hierarchy created by the parent ids
+*/
 
 import java.io.File;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -48,10 +58,10 @@ import kodkod.ast.Relation;
 
 public class InstanceChecker {
 
-    private static boolean isBuiltIn(Element sig) {
-        return sig.hasAttribute("builtin");
-    }
+    private static Map<String,SigInfo> idToSigInfo;
 
+    // turn a name in the XML into one that Alloy will 
+    // accept in a model
     private static String alloyName(String name) {
         if (name.contains("$")) {
             return name.replace("$","ʃ") ;
@@ -61,13 +71,28 @@ public class InstanceChecker {
             return name;
     }
 
+    // determine the arity of a field
+    // based on the number of "type" in "types"
+    // e.g., <types> <type ID="8"/> <type ID="8"/> </types>
     private static int getFieldArity(Element field) {
-
         NodeList typesList = field.getElementsByTagName("types");
         if (typesList.getLength() == 0) return 0;
         Element types = (Element) typesList.item(0);
         NodeList typeNodes = types.getElementsByTagName("type");
         return typeNodes.getLength();
+    }
+
+    // each Sig XML node stores only the atoms unique to 
+    // that sig, so we have to populate the parent sigs
+    // with the atoms from their child sigs
+    // as well as their own atoms
+    private static List<String>collectAtoms(String id) {
+        List<String> atoms = new ArrayList<String>();
+        for (String child:idToSigInfo.get(id).children) {
+            atoms.addAll(collectAtoms(child));
+        }
+        atoms.addAll(idToSigInfo.get(id).atoms);
+        return atoms;
     }
 
     public static void main(String[] args) throws Exception {
@@ -120,55 +145,108 @@ public class InstanceChecker {
         Set<String> modelNames = new HashSet<String>();
         for (Sig s : modelWorld.getAllReachableSigs()) {
             if (!s.builtin)
-                modelNames.add(s.label);
+                modelNames.add(alloyName(s.label));
             for (Sig.Field f : s.getFields()) {
-                modelNames.add(f.label);
+                modelNames.add(alloyName(f.label));
             }   
         }
         
         // read the XML file
-        // let's not rely on Alloy at all
-        // and do the XML parsing ourselves
+        // do not rely on Alloy at all 
+        // (i.e., do not read the XML as an A4Solution)
+        // rather do the XML parsing ourselves
         Document doc = null;
+        
         Set<String> xmlNames = new HashSet<String>();
         NodeList sigs = null;
         NodeList fields = null;
-        String univID = null;
+        String univId = null;  // sigs that have this is parent are top-level sigs
+
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             doc = builder.parse(new File(xmlFullFileName));
+
             sigs = doc.getElementsByTagName("sig");
+
+            // get all info about the sigs out of the XML
+            // into a hashmap
+            idToSigInfo = new HashMap<>();
+            
             for (int i = 0; i < sigs.getLength(); i++) {
                 Element sig = (Element) sigs.item(i);
-                if (sig.getAttribute("label").equals("univ")) 
-                    // top-level sigs have univ as parent in XML
-                    // so we need to get the id of univ
-                    univID = sig.getAttribute("ID");
-                String label = sig.getAttribute("label");
-                xmlNames.add(label);
+                if (sig.getAttribute("label").equals("univ")) {
+                        // top-level sigs have univ as parent in XML
+                        // so we need to get the id of univ
+                        univId = sig.getAttribute("ID");
+                } else if (!sig.hasAttribute("builtin")) {
+                    String label = alloyName(sig.getAttribute("label"));
+                    // add to the list of all xml names
+                    xmlNames.add(label);
+
+                    String myId = sig.getAttribute("ID");
+                    
+                    // everything except univ has a parent id
+                    String parentId = sig.getAttribute("parentID");
+                    
+                    boolean isAbstract = 
+                        sig.hasAttribute("abstract") ? 
+                            sig.getAttribute("builtin").equals("yes") : 
+                            false; 
+        
+                    List<String> atomList = new ArrayList<String>();
+                    NodeList atoms = sig.getElementsByTagName("atom");
+                    for (int j = 0; j < atoms.getLength(); j++) {
+                            Element atom = (Element) atoms.item(j);
+                            String atomLabel = atom.getAttribute("label");
+                            atomList.add(alloyName(atomLabel));
+                    }
+                    
+                    idToSigInfo.put(myId, 
+                        new SigInfo(label, myId, parentId, isAbstract, atomList));
+                }
+
             }
+            
+           
+            // in the hash map turn parent pointers into child pointers
+            // so we can collect the descendants later
+            String idOfParent;
+            for (String id: idToSigInfo.keySet()) {
+                if (!idToSigInfo.get(id).parentId.equals(univId)) {
+                        idOfParent = 
+                            idToSigInfo.get(id).parentId;
+                        idToSigInfo.get(idOfParent).addChild(id);
+                }
+            }
+
+            // this just collects the field names
+            // from the XML
+            // right now, there does not seem to be a reason
+            // to keep field info separately from the XML
+            // data structures
             fields = doc.getElementsByTagName("field");
             for (int i = 0; i < fields.getLength(); i++) {
                 Element field = (Element) fields.item(i);
                 String label = field.getAttribute("label");
-                xmlNames.add(label);
+                xmlNames.add(alloyName(label));
             }
+
         } catch (Exception e) {
             System.out.println("FAIL: Reading "+xmlFullFileName +" failed with\n" + e.getMessage());
+            e.printStackTrace();
             System.exit(1);
         }
 
-
-        // the names of the model can contain things like `none`
         // check the modelNames subseteq of xmlNames
-        // because the problem of names used in the XML that are not used in the model
+        // the problem of names used in the XML that are not used in the model
         // will be caught in the Alloy solving below
         // but if the model contains names not used in the XML, the solver will 
         // provide values for them
         if (!xmlNames.containsAll(modelNames)) {
             System.out.println("FAIL: Model has sigs/fields not in XML:");
-            System.out.println(modelNames.removeAll(xmlNames));   
+            modelNames.removeAll(xmlNames);
+            System.out.println(modelNames);   
             System.exit(1);
         }
 
@@ -176,37 +254,40 @@ public class InstanceChecker {
         // that will come out in the facts because the xml facts
         // set the scopes to a specific size
 
-        // create a string that is one sigs and facts that represent the instance in Alloy
+        // create a string that is one sigs 
         StringBuilder newSigs = new StringBuilder();
+        // create a string that is facts that represent the instance in Alloy
         StringBuilder newFacts = new StringBuilder();
         
-        NodeList atoms;
-        List<String> atomList;
-        Element sig;
-        String sigLabel;
-        Element atom;
-        String atomLabel;
-        for (int i=0; i < sigs.getLength(); i++) {
-            sig = (Element) sigs.item(i);
-            sigLabel = sig.getAttribute("label");
-            if (!isBuiltIn(sig)) {
-                atoms = sig.getElementsByTagName("atom");
-                atomList = new ArrayList<String>();
-                for (int j = 0; j < atoms.getLength(); j++) {
-                    atom = (Element) atoms.item(j);
-                    atomLabel = atom.getAttribute("label");
-                    if (sig.getAttribute("parentID").equals(univID)); 
-                        // one sig atom_name extends sig name {}
-                        newSigs.append("\none sig "+ alloyName(atomLabel) + " extends "+ alloyName(sigLabel) + " {}");
-                    atomList.add(alloyName(atomLabel));
-                }           
-                // sig_name = a$1 + a$2 + ...
-                newFacts.append("\n"+alloyName(sigLabel) + " = ");
-                newFacts.append(String.join("\n   + ", atomList) );
+        for (String id:idToSigInfo.keySet()) {
+            // no builtins will be in this map
+            if (!idToSigInfo.get(id).isAbstract) {
+                // produce nothing if it is an abstract sig
+                String sigLabel = idToSigInfo.get(id).label;
+                
+                List<String> atomsUniqueToSig = idToSigInfo.get(id).atoms;
+                
+                // could be none                
+                for (String a: atomsUniqueToSig) {
+                    // one sig atom_name extends sig name {}
+                    newSigs.append("\none sig "+ a + " extends "+ sigLabel + " {}");
+                }
+                
+                List<String> allAtoms = collectAtoms(id); 
+                if (allAtoms.size() == 0) 
+                    // sigs are always of unary arity
+                    newFacts.append("none");
+                else {
+                    // sig = a$1 + a$2 + ... 
+                    newFacts.append("\n    "+ sigLabel + " = ");  
+                    newFacts.append(String.join("\n      + ", allAtoms) );
+                }
+                
             }
         }
 
         // add facts for the fields
+        // we get this info straight from the XML
         Element field;
         String fieldLabel;
         Integer arity;
@@ -215,36 +296,41 @@ public class InstanceChecker {
         List<String> arrow;
         Element tuple;
         for (int i = 0; i < fields.getLength(); i++) {
+
             field = (Element) fields.item(i);
             fieldLabel = field.getAttribute("label");
             arity = getFieldArity(field);
+            
             tuples = field.getElementsByTagName("tuple");
             arrows = new ArrayList<String>();
+            
             if (tuples.getLength() == 0) {
                 arrows.add(String.join(" -> ", java.util.Collections.nCopies(arity, "none")));
             } else {
                 arrows = new ArrayList<String>();
+
                 for (int k=0; k < tuples.getLength(); k++) {
                     tuple = (Element) tuples.item(k);
-                    atoms = tuple.getElementsByTagName("atom");     
+                    NodeList atoms = tuple.getElementsByTagName("atom");     
                     arrow = new ArrayList<String>();
+                    // create a$1 -> b$2
                     for (int j=0; j < atoms.getLength(); j++) {
-                        atom = (Element) atoms.item(j);
-                        atomLabel = atom.getAttribute("label");
+                        Element atom = (Element) atoms.item(j);
+                        String atomLabel = atom.getAttribute("label");
                         arrow.add(alloyName(atomLabel));
                     }
                     arrows.add(String.join(" -> ", arrow));
                 }
                 // f_name = a$1 -> b$2 + a$2 -> b$3 + ...
-                newFacts.append("\n"+alloyName(fieldLabel) +" = ");
-                newFacts.append(String.join("\n   + ", arrows));
+                newFacts.append("\n    "+alloyName(fieldLabel) +" = ");
+                newFacts.append(String.join("\n       + ", arrows));
             }        
         }
 
         // create a string that is the model plus the sigs and facts representing the instance
         StringBuilder checkerModel =  new StringBuilder(modelString); 
         checkerModel.append(newSigs);
-        checkerModel.append("\nfact {"+newFacts+"\n}\n");
+        checkerModel.append("\n\nfact {"+newFacts+"\n}\n");
 
         // tack on the end of the model, the cmd that this XML is supposed to
         // satisfy and remember the cmd's number in satCmdNum
@@ -258,15 +344,16 @@ public class InstanceChecker {
         // this is hacky but works for our purposes
         // and gets the scope from the XML file
         String cmd = x.getAttribute("command");
-        if (!cmd.startsWith("Run run$")) {
+        if (!cmd.startsWith("Run run$1")) {
             System.out.println("FAIL: Instance should be for a run {} cmd\n");
             System.exit(1);
         }
         cmd = cmd.replace("Run run$1", "run {}");
-        checkerModel.append("\n\n"+cmd);     
+        checkerModel.append("\n"+cmd+"\n");     
         Integer modelNumCmds = modelWorld.getAllCommands().size();  
         Integer satCmdNum = modelNumCmds;   // cmds are zero indexed
 
+        System.out.println(checkerModel.toString());
         A4Solution sol = null;
         try {
             // check if checkerModel is Sat
@@ -288,6 +375,36 @@ public class InstanceChecker {
             System.out.println("PASS: xml is instance of model");
             System.exit(0);
         }
+    }
+
+    static class SigInfo {
+
+        // whether it is top-level or not is determined by having a
+        // parent with the id of univId
+        String label;
+        String myId;
+        String parentId;
+        boolean isAbstract;
+        List<String> atoms;
+        List<String> children = new ArrayList<String>();
+
+        SigInfo(
+            String label, 
+            String myId, 
+            String parentId, 
+            boolean isAbstract, 
+            List<String> atoms) {
+            this.label = alloyName(label);
+            this.myId = myId;
+            this.parentId = parentId;
+            this.isAbstract = isAbstract;
+            this.atoms = atoms;
+        }
+
+        void addChild(String child) {
+            this.children.add(alloyName( child));
+        }
+
     }
 
 }
