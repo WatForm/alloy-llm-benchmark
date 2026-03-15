@@ -1,19 +1,19 @@
-// wget https://repo1.maven.org/maven2/org/alloytools/org.alloytools.alloy.dist/6.2.0/org.alloytools.alloy.dist-6.2.0.jar into sister directory libs
+/*
+    To use this script:
+    - (may already be done) wget https://repo1.maven.org/maven2/org/alloytools/org.alloytools.alloy.dist/6.2.0/org.alloytools.alloy.dist-6.2.0.jar into sister directory libs
+    - jenv local 17.0.16
+    - jenv shell 17.0.16
+    - javac -cp ../scoring/org.alloytools.alloy.dist-6.2.0.jar InstanceChecker.java
 
-// jenv local 17.0.16
-// jenv shell 17.0.16
-// run this with 
-// javac -cp ../scoring/org.alloytools.alloy.dist-6.2.0.jar InstanceChecker.java
-// java -cp .:../scoring/org.alloytools.alloy.dist-6.2.0.jar InstanceChecker modelfileName xmlFileName 
+    Run the script with:
+    java -cp .:../scoring/org.alloytools.alloy.dist-6.2.0.jar InstanceChecker modelfileName xmlFileName 
 
-// expect the XML to contain a command of the form `Run run$1 for 16`, where 16 is the scope
-// so this script gets the scope from the command in the XML
-
-
-/* Assumptions:
+    Assumptions:
     - don't do anything with the builtins; they are in the XML, but don't have atoms in the XML
     - the top-level sigs have univ as their parent
     - atoms are stored in signatures at their most immediate level, thus to find all atoms in a sig, we have to traverse the sig hierarchy created by the parent ids
+    - expect the XML to contain a command of the form `Run run$1 for 16`, where 16 is the scope; this script gets the scope from the command in the XML
+    - ignores the upperbound tags in the XML
 */
 
 import java.io.File;
@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
@@ -34,7 +33,6 @@ import org.w3c.dom.Element;
 import java.nio.file.Path;
 import java.nio.file.Files;
 import java.nio.charset.StandardCharsets;
-
 
 import edu.mit.csail.sdg.alloy4.A4Reporter;
 import edu.mit.csail.sdg.alloy4.XMLNode;
