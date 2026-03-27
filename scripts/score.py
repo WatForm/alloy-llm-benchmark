@@ -2,7 +2,7 @@
 """Score generated Alloy models against references and instances.
 
 Usage:
-    python score.py <outputs_dir> <models_dir> <instances_dir>
+    python score.py <outputs_dir> <models_dir> <instances_dir> <report_output>
 """
 
 import re
@@ -245,9 +245,9 @@ def build_report(results: list[dict]) -> str:
 
 
 def main() -> int:
-    if len(sys.argv) != 4:
+    if len(sys.argv) != 5:
         print(
-            "Usage: python score.py <outputs_dir> <models_dir> <instances_dir>",
+            "Usage: python score.py <outputs_dir> <models_dir> <instances_dir> <report_output>",
             file=sys.stderr,
         )
         return 1
@@ -255,6 +255,7 @@ def main() -> int:
     outputs_dir = Path(sys.argv[1]).resolve()
     models_dir = Path(sys.argv[2]).resolve()
     instances_dir = Path(sys.argv[3]).resolve()
+    report_output = Path(sys.argv[4]).resolve()
 
     repo_root = Path(__file__).resolve().parent.parent
     scripts_dir = Path(__file__).resolve().parent
@@ -294,7 +295,8 @@ def main() -> int:
         results.append(result)
 
     report_text = build_report(results)
-    report_file = outputs_dir / "scores.txt"
+    report_file = report_output / "scores.txt" if report_output.is_dir() else report_output
+    report_file.parent.mkdir(parents=True, exist_ok=True)
     report_file.write_text(report_text, encoding="utf-8")
 
     print(report_text)
