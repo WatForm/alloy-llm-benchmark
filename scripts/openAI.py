@@ -29,7 +29,7 @@ def main():
     print("Calling OpenAI API (this may take a while)...", flush=True)
     try:
         response = client.chat.completions.create(
-            model="gpt-5-mini",
+            model="gpt-5.4",
             messages=[{"role": "user", "content": prompt}]
         )
         output_text = response.choices[0].message.content
