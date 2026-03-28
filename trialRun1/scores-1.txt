@@ -1,0 +1,89 @@
+Alloy Benchmark Scoring Report
+================================================================================
+
+Model: addressBook1b
+  Generated: /Users/nsmartinx/Projects/alloy-llm-benchmark/trialRun1/outputs/addressBook1b.als
+  Reference: /Users/nsmartinx/Projects/alloy-llm-benchmark/trialRun1/models/addressBook1b.als
+  Syntax: 1/1
+  SemDiff (bidirectional, all scopes): 4/4
+    scope_1: 2/2
+    scope_2: 2/2
+  Instance Validity (all scopes): 6/6
+    scope_1: 5/5
+    scope_2: 1/1
+  TOTAL: 11/11
+
+Model: addressBook2d
+  Generated: /Users/nsmartinx/Projects/alloy-llm-benchmark/trialRun1/outputs/addressBook2d.als
+  Reference: /Users/nsmartinx/Projects/alloy-llm-benchmark/trialRun1/models/addressBook2d.als
+  Syntax: 0/1
+  Syntax detail: Exception in thread "main" java.lang.RuntimeException: Alloy failed to parse module.
+	at org.alloytools.alloy.diff.ModuleDiff.diff(ModuleDiff.java:177)
+	at org.alloytools.alloy.diff.ModuleDiff.main(ModuleDiff.java:71)
+Caused by: Syntax error in /Users/nsmartinx/Projects/alloy-llm-benchmark/trialRun1/outputs/addressBook2d.als at line 22 column 24:
+There are 8 possible tokens that can appear here:
+Int NAME String int none seq this univ 
+	at edu.mit.csail.sdg.parser.CompParser.syntax_error(CompParser.java:2219)
+	at edu.mit.csail.sdg.parser.CompParser.parse(CompParser.java:2080)
+	at edu.mit.csail.sdg.parser.CompParser.alloy_parseStream(CompParser.java:2261)
+	at edu.mit.csail.sdg.parser.CompUtil.parse(CompUtil.java:451)
+	at edu.mit.csail.sdg.parser.CompUtil.parseRecursively(CompUtil.java:214)
+	at edu.mit.csail.sdg.parser.CompUtil.parseEverything_fromFile(CompUtil.java:358)
+	at org.alloytools.alloy.diff.ModuleDiff.diff(ModuleDiff.java:174)
+	... 1 more
+  SemDiff (bidirectional, all scopes): 0/6
+    scope_1: 0/2
+    scope_2: 0/2
+    scope_3: 0/2
+  Instance Validity (all scopes): 0/8
+    scope_1: 0/4
+    scope_2: 0/2
+    scope_3: 0/2
+  TOTAL: 0/15
+
+Model: genealogy
+  Generated: /Users/nsmartinx/Projects/alloy-llm-benchmark/trialRun1/outputs/genealogy.als
+  Reference: /Users/nsmartinx/Projects/alloy-llm-benchmark/trialRun1/models/genealogy.als
+  Syntax: 1/1
+  SemDiff (bidirectional, all scopes): 6/10
+    scope_1: 2/2
+    scope_2: 1/2
+    scope_3: 1/2
+    scope_4: 1/2
+    scope_5: 1/2
+  Instance Validity (all scopes): 3/8
+    scope_1: 1/1
+    scope_2: 1/1
+    scope_3: 1/3
+    scope_4: 0/2
+    scope_5: 0/1
+  TOTAL: 10/19
+
+Model: grandpa3
+  Generated: /Users/nsmartinx/Projects/alloy-llm-benchmark/trialRun1/outputs/grandpa3.als
+  Reference: /Users/nsmartinx/Projects/alloy-llm-benchmark/trialRun1/models/grandpa3.als
+  Syntax: 1/1
+  SemDiff (bidirectional, all scopes): 1/8
+    scope_1: 1/2
+    scope_2: 0/2
+    scope_3: 0/2
+    scope_4: 0/2
+  Instance Validity (all scopes): 15/15
+    scope_1: 2/2
+    scope_2: 6/6
+    scope_3: 5/5
+    scope_4: 2/2
+  TOTAL: 17/24
+
+Model: lists
+  Generated: /Users/nsmartinx/Projects/alloy-llm-benchmark/trialRun1/outputs/lists.als
+  Reference: /Users/nsmartinx/Projects/alloy-llm-benchmark/trialRun1/models/lists.als
+  Syntax: 1/1
+  SemDiff (bidirectional, all scopes): 0/2
+    scope_1: 0/2
+  Instance Validity (all scopes): 1/2
+    scope_1: 1/2
+  TOTAL: 2/5
+
+================================================================================
+OVERALL TOTAL: 40/74
