@@ -67,6 +67,7 @@ benchmark/descriptions/   # input English descriptions (.md)
 benchmark/outputs/        # generated Alloy outputs (.als)
 benchmark/models/         # reference Alloy models (.als)
 benchmark/instances/      # XML instances grouped by model/scope
+benchmark/generalInstances/ # exact-scope XML instances grouped by model/scope
 ```
 
 Prompt scaffolding is read from:
@@ -95,31 +96,34 @@ What this does:
 Run:
 
 ```bash
-python3 scripts/score.py benchmark/outputs benchmark/models benchmark/instances
+python3 scripts/score.py benchmark/outputs benchmark/models benchmark/instances benchmark/generalInstances
 ```
 
 Optional explicit report path:
 
 ```bash
-python3 scripts/score.py benchmark/outputs benchmark/models benchmark/instances benchmark/outputs/scores.txt
+python3 scripts/score.py benchmark/outputs benchmark/models benchmark/instances benchmark/generalInstances benchmark/outputs/scores.txt
 ```
 
 What this does for each model:
 1. checks syntactic validity (`0/1`),
-2. runs Ringert/SemDiff implications in both directions for each scope up to the max reference scope,
-3. checks original model instances against the output model (`original => output` direction),
-4. runs CompoSAT on the output model for scopes `1..max_scope`, then checks those instances against the original model (`output => original` direction).
+2. runs Ringert/SemDiff implications in both directions for scopes `1..max(composat_max_scope, general_max_scope)`,
+3. checks CompoSAT instances from the original model against the output model (`original => output`),
+4. checks general instances from the original model against the output model (`original => output`),
+5. runs CompoSAT on the output model for scopes `1..composat_max_scope`, then checks those instances against the original model (`output => original`),
+6. runs `InstanceGenerator` on the output model for scopes `1..general_max_scope`, then checks those instances against the original model (`output => original`).
 
 Notes:
 1. CompoSAT runs in scoring have a `300s` timeout per scope.
-2. If a timeout occurs, `scores.txt` includes a clear `TIMEOUT` line listing the timed-out scope(s).
-3. Multiple models can be scored in parallel. Control it with `SCORE_MODEL_WORKERS` (default: up to `2`, capped by model count).
-4. CompoSAT scopes for a single model are processed sequentially.
+2. `InstanceGenerator` runs in scoring also have a `300s` timeout per scope.
+3. If a timeout occurs, `scores.txt` includes a clear `TIMEOUT` line listing the timed-out scope(s).
+4. Multiple models can be scored in parallel. Control it with `SCORE_MODEL_WORKERS` (default: up to `4`, capped by model count).
+5. CompoSAT scopes and general-instance scopes for a single model are each processed sequentially.
 
 Example:
 
 ```bash
-SCORE_MODEL_WORKERS=3 python3 scripts/score.py benchmark/outputs benchmark/models benchmark/instances
+SCORE_MODEL_WORKERS=3 python3 scripts/score.py benchmark/outputs benchmark/models benchmark/instances benchmark/generalInstances
 ```
 
 The scoring report is written to:

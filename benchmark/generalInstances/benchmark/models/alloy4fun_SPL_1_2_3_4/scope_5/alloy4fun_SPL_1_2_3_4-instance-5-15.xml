@@ -1,0 +1,111 @@
+<alloy builddate="2025-03-10T15:06:21.150Z">
+
+<instance bitwidth="4" maxseq="5" mintrace="-1" maxtrace="-1" command="Run run$8 for 5 but exactly 5 StoredModel, exactly 5 Link, exactly 5 Command, exactly 5 Instance" filename="" tracelength="1" looplength="1">
+
+<sig label="seq/Int" ID="0" parentID="1" builtin="yes">
+</sig>
+
+<sig label="Int" ID="1" parentID="2" builtin="yes">
+</sig>
+
+<sig label="String" ID="3" parentID="2" builtin="yes">
+</sig>
+
+<sig label="this/StoredModel" ID="4" parentID="2">
+   <atom label="StoredModel$0"/>
+   <atom label="StoredModel$1"/>
+   <atom label="StoredModel$2"/>
+   <atom label="StoredModel$3"/>
+   <atom label="StoredModel$4"/>
+</sig>
+
+<field label="derivationOf" ID="5" parentID="4">
+   <tuple> <atom label="StoredModel$1"/> <atom label="StoredModel$3"/> </tuple>
+   <tuple> <atom label="StoredModel$3"/> <atom label="StoredModel$4"/> </tuple>
+   <tuple> <atom label="StoredModel$4"/> <atom label="StoredModel$2"/> </tuple>
+   <types> <type ID="4"/> <type ID="4"/> </types>
+</field>
+
+<field label="public" ID="6" parentID="4">
+   <types> <type ID="4"/> <type ID="7"/> </types>
+</field>
+
+<field label="secret" ID="8" parentID="4">
+   <types> <type ID="4"/> <type ID="7"/> </types>
+</field>
+
+<field label="command" ID="9" parentID="4">
+   <tuple> <atom label="StoredModel$0"/> <atom label="Command$0"/> </tuple>
+   <tuple> <atom label="StoredModel$1"/> <atom label="Command$1"/> </tuple>
+   <tuple> <atom label="StoredModel$2"/> <atom label="Command$2"/> </tuple>
+   <tuple> <atom label="StoredModel$3"/> <atom label="Command$3"/> </tuple>
+   <tuple> <atom label="StoredModel$4"/> <atom label="Command$4"/> </tuple>
+   <types> <type ID="4"/> <type ID="10"/> </types>
+</field>
+
+<sig label="this/Link" ID="7" parentID="2">
+   <atom label="Link$0"/>
+   <atom label="Link$1"/>
+   <atom label="Link$2"/>
+   <atom label="Link$3"/>
+   <atom label="Link$4"/>
+</sig>
+
+<sig label="this/Command" ID="10" parentID="2">
+   <atom label="Command$0"/>
+   <atom label="Command$1"/>
+   <atom label="Command$2"/>
+   <atom label="Command$3"/>
+   <atom label="Command$4"/>
+</sig>
+
+<sig label="this/Instance" ID="11" parentID="2">
+   <atom label="Instance$0"/>
+   <atom label="Instance$1"/>
+   <atom label="Instance$2"/>
+   <atom label="Instance$3"/>
+   <atom label="Instance$4"/>
+</sig>
+
+<field label="instanceOf" ID="12" parentID="11">
+   <tuple> <atom label="Instance$0"/> <atom label="Command$4"/> </tuple>
+   <tuple> <atom label="Instance$1"/> <atom label="Command$3"/> </tuple>
+   <tuple> <atom label="Instance$2"/> <atom label="Command$2"/> </tuple>
+   <tuple> <atom label="Instance$3"/> <atom label="Command$1"/> </tuple>
+   <tuple> <atom label="Instance$4"/> <atom label="Command$0"/> </tuple>
+   <types> <type ID="11"/> <type ID="10"/> </types>
+</field>
+
+<field label="model" ID="13" parentID="11">
+   <tuple> <atom label="Instance$0"/> <atom label="StoredModel$4"/> </tuple>
+   <tuple> <atom label="Instance$1"/> <atom label="StoredModel$3"/> </tuple>
+   <tuple> <atom label="Instance$2"/> <atom label="StoredModel$2"/> </tuple>
+   <tuple> <atom label="Instance$3"/> <atom label="StoredModel$1"/> </tuple>
+   <tuple> <atom label="Instance$4"/> <atom label="StoredModel$0"/> </tuple>
+   <types> <type ID="11"/> <type ID="4"/> </types>
+</field>
+
+<field label="link" ID="14" parentID="11">
+   <tuple> <atom label="Instance$0"/> <atom label="Link$4"/> </tuple>
+   <tuple> <atom label="Instance$1"/> <atom label="Link$3"/> </tuple>
+   <tuple> <atom label="Instance$2"/> <atom label="Link$2"/> </tuple>
+   <tuple> <atom label="Instance$3"/> <atom label="Link$1"/> </tuple>
+   <tuple> <atom label="Instance$4"/> <atom label="Link$0"/> </tuple>
+   <types> <type ID="11"/> <type ID="7"/> </types>
+</field>
+
+<sig label="univ" ID="2" builtin="yes">
+</sig>
+
+<sig label="this/Secret" ID="15">
+   <atom label="StoredModel$0"/>
+   <atom label="StoredModel$1"/>
+   <atom label="StoredModel$2"/>
+   <atom label="StoredModel$3"/>
+   <atom label="StoredModel$4"/>
+   <type ID="4"/>
+</sig>
+
+</instance>
+
+</alloy>

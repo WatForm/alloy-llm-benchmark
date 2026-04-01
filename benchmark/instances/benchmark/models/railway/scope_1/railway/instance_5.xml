@@ -1,0 +1,90 @@
+<alloy builddate="unknown">
+
+
+<bounds> 
+<upperbound name="Int/next"  arity="2">
+</upperbound>
+<upperbound name="seq/Int"  arity="1">
+</upperbound>
+<upperbound name="String"  arity="1">
+</upperbound>
+<upperbound name="this/Seg"  arity="1">
+   <tuple> <atom label="Seg$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Seg.next"  arity="2">
+   <tuple> <atom label="Seg$0"/> <atom label="Seg$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Seg.overlaps"  arity="2">
+   <tuple> <atom label="Seg$0"/> <atom label="Seg$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Train"  arity="1">
+   <tuple> <atom label="unused2"/> </tuple>
+</upperbound>
+<upperbound name="this/GateState"  arity="1">
+   <tuple> <atom label="GateState$0"/> </tuple>
+</upperbound>
+<upperbound name="this/GateState.closed"  arity="2">
+   <tuple> <atom label="GateState$0"/> <atom label="Seg$0"/> </tuple>
+</upperbound>
+<upperbound name="this/TrainState"  arity="1">
+   <tuple> <atom label="unused3"/> </tuple>
+</upperbound>
+<upperbound name="this/TrainState.on"  arity="3">
+   <tuple> <atom label="unused3"/> <atom label="unused2"/> <atom label="Seg$0"/> </tuple>
+</upperbound>
+<upperbound name="this/TrainState.occupied"  arity="2">
+   <tuple> <atom label="unused3"/> <atom label="Seg$0"/> </tuple>
+</upperbound>
+</bounds><instance bitwidth="0" maxseq="0" command="Run run$1 for 1" filename="">
+
+<sig label="seq/Int" ID="0" parentID="1" builtin="yes">
+</sig>
+
+<sig label="Int" ID="1" parentID="2" builtin="yes">
+</sig>
+
+<sig label="String" ID="3" parentID="2" builtin="yes">
+</sig>
+
+<sig label="this/Seg" ID="4" parentID="2">
+   <atom label="Seg$0"/>
+</sig>
+
+<field label="next" ID="5" parentID="4">
+   <types> <type ID="4"/> <type ID="4"/> </types>
+</field>
+
+<field label="overlaps" ID="6" parentID="4">
+   <tuple> <atom label="Seg$0"/> <atom label="Seg$0"/> </tuple>
+   <types> <type ID="4"/> <type ID="4"/> </types>
+</field>
+
+<sig label="this/Train" ID="7" parentID="2">
+</sig>
+
+<sig label="this/GateState" ID="8" parentID="2">
+   <atom label="GateState$0"/>
+</sig>
+
+<field label="closed" ID="9" parentID="8">
+   <tuple> <atom label="GateState$0"/> <atom label="Seg$0"/> </tuple>
+   <types> <type ID="8"/> <type ID="4"/> </types>
+</field>
+
+<sig label="this/TrainState" ID="10" parentID="2">
+</sig>
+
+<field label="on" ID="11" parentID="10">
+   <types> <type ID="10"/> <type ID="7"/> <type ID="4"/> </types>
+</field>
+
+<field label="occupied" ID="12" parentID="10">
+   <types> <type ID="10"/> <type ID="4"/> </types>
+</field>
+
+<sig label="univ" ID="2" builtin="yes">
+</sig>
+
+</instance>
+
+</alloy>

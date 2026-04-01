@@ -2,7 +2,7 @@
 """Score generated Alloy models against references and instances.
 
 Usage:
-    python score.py <outputs_dir> <models_dir> <instances_dir> [report_output]
+    python score.py <outputs_dir> <models_dir> <instances_dir> <general_instances_dir> [report_output]
 """
 
 import os
@@ -19,6 +19,8 @@ from pathlib import Path
 
 TIMEOUT_SECONDS = 300
 COMPOSAT_TIMEOUT_SECONDS = 300
+GENERAL_INSTANCE_TIMEOUT_SECONDS = 300
+DEFAULT_GENERAL_OUTPUT_INSTANCE_COUNT = 10
 SOLVER = "sat4j"
 
 
@@ -199,6 +201,24 @@ def compile_instance_checker(scripts_dir: Path, alloy_jar_620: Path, javac17_bin
     return False, details if details else "javac failed"
 
 
+def compile_instance_generator(scripts_dir: Path, alloy_jar_620: Path, javac17_bin: Path) -> tuple[bool, str]:
+    java_file = scripts_dir / "InstanceGenerator.java"
+    cmd = [str(javac17_bin), "-cp", str(alloy_jar_620), str(java_file)]
+
+    try:
+        result = run_command(cmd, cwd=scripts_dir)
+    except subprocess.TimeoutExpired:
+        return False, "javac timed out"
+    except Exception as exc:
+        return False, str(exc)
+
+    if result.returncode == 0:
+        return True, "OK"
+
+    details = (result.stderr or result.stdout).strip()
+    return False, details if details else "javac failed"
+
+
 def check_instance_valid(
     model_file: Path,
     xml_file: Path,
@@ -235,6 +255,26 @@ def discover_instances_by_scope(instances_root: Path, model_name: str) -> dict[i
         match = re.fullmatch(r"scope_(\d+)", scope_folder)
         if not match:
             continue
+        scope = int(match.group(1))
+        grouped[scope].append(xml_path)
+
+    return dict(sorted(grouped.items(), key=lambda item: item[0]))
+
+
+def discover_general_instances_by_scope(general_instances_root: Path, model_name: str) -> dict[int, list[Path]]:
+    grouped: dict[int, list[Path]] = defaultdict(list)
+    pattern = f"**/{model_name}/scope_*/*.xml"
+
+    for xml_path in sorted(general_instances_root.glob(pattern)):
+        scope_folder = xml_path.parent.name
+        match = re.fullmatch(r"scope_(\d+)", scope_folder)
+        if not match:
+            continue
+
+        # InstanceGenerator output names are usually <model>-instance-<scope>-<idx>.xml.
+        if not xml_path.name.startswith(f"{model_name}-instance-"):
+            continue
+
         scope = int(match.group(1))
         grouped[scope].append(xml_path)
 
@@ -409,11 +449,168 @@ def score_output_instances_against_reference(
     }
 
 
+def score_output_general_instances_against_reference(
+    model_name: str,
+    generated_model: Path,
+    reference_model: Path,
+    max_scope: int,
+    reference_general_counts_by_scope: dict[int, int],
+    scripts_dir: Path,
+    alloy_jar_620: Path,
+    java17_bin: Path,
+) -> dict:
+    if max_scope <= 0:
+        progress(f"[{model_name}] output=>original (general): no reference scopes found; skipping generation.")
+        return {
+            "score": 0,
+            "max": 0,
+            "by_scope": [],
+            "timed_out": False,
+            "timeout_scope": None,
+            "timeout_scopes": [],
+            "notes": ["No reference general scopes found; skipped output-instance generation."],
+        }
+
+    if not generated_model.exists():
+        progress(f"[{model_name}] output=>original (general): generated model missing at {generated_model}")
+        return {
+            "score": 0,
+            "max": 0,
+            "by_scope": [{"scope": scope, "score": 0, "max": 0} for scope in range(1, max_scope + 1)],
+            "timed_out": False,
+            "timeout_scope": None,
+            "timeout_scopes": [],
+            "notes": [f"Generated model is missing: {generated_model}"],
+        }
+
+    total_score = 0
+    total_max = 0
+    by_scope: list[dict] = []
+    notes: list[str] = []
+    timed_out = False
+    timeout_scope = None
+    timeout_scopes: list[int] = []
+
+    with tempfile.TemporaryDirectory(prefix=f"general_score_{model_name}_") as temp_dir:
+        temp_path = Path(temp_dir)
+        temp_model = temp_path / f"{model_name}.als"
+
+        try:
+            temp_model.write_text(generated_model.read_text(encoding="utf-8"), encoding="utf-8")
+        except Exception as exc:
+            progress(f"[{model_name}] output=>original (general): failed preparing temp model: {exc}")
+            return {
+                "score": 0,
+                "max": 0,
+                "by_scope": [{"scope": scope, "score": 0, "max": 0} for scope in range(1, max_scope + 1)],
+                "timed_out": False,
+                "timeout_scope": None,
+                "timeout_scopes": [],
+                "notes": [f"Could not read generated model for general instance generation: {exc}"],
+            }
+
+        progress(
+            f"[{model_name}] output=>original (general): running InstanceGenerator sequentially across {max_scope} scope(s)"
+        )
+
+        for scope in range(1, max_scope + 1):
+            requested_instances = max(
+                1,
+                reference_general_counts_by_scope.get(scope, DEFAULT_GENERAL_OUTPUT_INSTANCE_COUNT),
+            )
+            progress(
+                f"[{model_name}] output=>original (general): scope_{scope}/{max_scope} starting "
+                f"(requesting up to {requested_instances})"
+            )
+
+            cmd = [
+                str(java17_bin),
+                "-cp",
+                f"{scripts_dir}{os.pathsep}{alloy_jar_620}",
+                "InstanceGenerator",
+                str(temp_model),
+                str(scope),
+                str(requested_instances),
+            ]
+
+            try:
+                result = run_command(cmd, cwd=scripts_dir, timeout=GENERAL_INSTANCE_TIMEOUT_SECONDS)
+            except subprocess.TimeoutExpired:
+                timed_out = True
+                timeout_scope = scope
+                timeout_scopes = [scope]
+                timeout_note = (
+                    f"scope_{scope}: InstanceGenerator timed out after {GENERAL_INSTANCE_TIMEOUT_SECONDS}s; "
+                    "remaining scopes skipped."
+                )
+                notes.append(timeout_note)
+                progress(f"[{model_name}] output=>original (general): {timeout_note}")
+                for stale in temp_path.glob(f"{model_name}-instance-{scope}-*.xml"):
+                    stale.unlink(missing_ok=True)
+                break
+            except Exception as exc:
+                err_note = f"scope_{scope}: InstanceGenerator invocation failed: {exc}"
+                notes.append(err_note)
+                progress(f"[{model_name}] output=>original (general): {err_note}")
+                by_scope.append({"scope": scope, "score": 0, "max": 0})
+                continue
+
+            output = ((result.stdout or "") + (result.stderr or "")).strip()
+            if result.returncode != 0:
+                detail = output.splitlines()[-1] if output else "No output"
+                exit_note = f"scope_{scope}: InstanceGenerator exited with code {result.returncode} ({detail})"
+                notes.append(exit_note)
+                progress(f"[{model_name}] output=>original (general): {exit_note}")
+
+            xml_files = sorted(temp_path.glob(f"{model_name}-instance-{scope}-*.xml"))
+            progress(
+                f"[{model_name}] output=>original (general): scope_{scope} generated {len(xml_files)} instance(s)"
+            )
+
+            scope_max = len(xml_files)
+            scope_valid = 0
+            for idx, xml_file in enumerate(xml_files, start=1):
+                valid, _ = check_instance_valid(
+                    reference_model,
+                    xml_file,
+                    scripts_dir,
+                    alloy_jar_620,
+                    java17_bin,
+                )
+                if valid:
+                    scope_valid += 1
+                if idx % 25 == 0 or idx == scope_max:
+                    progress(
+                        f"[{model_name}] output=>original (general): scope_{scope} validated {idx}/{scope_max}"
+                    )
+
+            total_score += scope_valid
+            total_max += scope_max
+            by_scope.append({"scope": scope, "score": scope_valid, "max": scope_max})
+            progress(
+                f"[{model_name}] output=>original (general): scope_{scope} complete with {scope_valid}/{scope_max} valid"
+            )
+
+            for stale in xml_files:
+                stale.unlink(missing_ok=True)
+
+    return {
+        "score": total_score,
+        "max": total_max,
+        "by_scope": by_scope,
+        "timed_out": timed_out,
+        "timeout_scope": timeout_scope,
+        "timeout_scopes": timeout_scopes,
+        "notes": notes,
+    }
+
+
 def score_one_model(
     model_name: str,
     generated_model: Path,
     reference_model: Path,
-    instances_root: Path,
+    composat_instances_root: Path,
+    general_instances_root: Path,
     scripts_dir: Path,
     diff_jar: Path,
     alloy_jar_620: Path,
@@ -426,25 +623,37 @@ def score_one_model(
     progress(f"[{model_name}] syntax check starting")
     syntax_score, syntax_msg = check_syntax(generated_model, diff_jar, java17_bin)
     progress(f"[{model_name}] syntax check result: {syntax_score}/1")
-    instances_by_scope = discover_instances_by_scope(instances_root, model_name)
-    max_scope = max(instances_by_scope.keys(), default=0)
-    ringert_scopes = list(range(1, max_scope + 1))
-    total_reference_instances = sum(len(v) for v in instances_by_scope.values())
+    composat_instances_by_scope = discover_instances_by_scope(composat_instances_root, model_name)
+    general_instances_by_scope = discover_general_instances_by_scope(general_instances_root, model_name)
+    composat_max_scope = max(composat_instances_by_scope.keys(), default=0)
+    general_max_scope = max(general_instances_by_scope.keys(), default=0)
+    ringert_max_scope = max(composat_max_scope, general_max_scope)
+    ringert_scopes = list(range(1, ringert_max_scope + 1))
+    total_reference_composat_instances = sum(len(v) for v in composat_instances_by_scope.values())
+    total_reference_general_instances = sum(len(v) for v in general_instances_by_scope.values())
     progress(
-        f"[{model_name}] discovered {total_reference_instances} reference instance(s) across "
-        f"{len(instances_by_scope)} scope(s); max scope {max_scope}"
+        f"[{model_name}] discovered CompoSAT reference instances: {total_reference_composat_instances} "
+        f"across {len(composat_instances_by_scope)} scope(s); max scope {composat_max_scope}"
+    )
+    progress(
+        f"[{model_name}] discovered general reference instances: {total_reference_general_instances} "
+        f"across {len(general_instances_by_scope)} scope(s); max scope {general_max_scope}"
+    )
+    progress(
+        f"[{model_name}] Ringert will run to max scope {ringert_max_scope} (max of CompoSAT/general)"
     )
 
     ringert_original_to_output_by_scope: list[dict] = []
     ringert_output_to_original_by_scope: list[dict] = []
-    original_instance_by_scope: list[dict] = []
+    original_composat_instance_by_scope: list[dict] = []
+    original_general_instance_by_scope: list[dict] = []
 
     ringert_original_to_output_score = 0
     ringert_output_to_original_score = 0
 
     if syntax_score == 1:
         for scope in ringert_scopes:
-            progress(f"[{model_name}] Ringert scope_{scope}/{max_scope}: checking implications")
+            progress(f"[{model_name}] Ringert scope_{scope}/{ringert_max_scope}: checking implications")
             output_implies_original_ok, _ = semdiff_implication_holds(
                 reference_model,
                 generated_model,
@@ -479,14 +688,14 @@ def score_one_model(
             ringert_output_to_original_by_scope.append({"scope": scope, "score": 0, "max": 1})
             ringert_original_to_output_by_scope.append({"scope": scope, "score": 0, "max": 1})
 
-    original_instance_score = 0
-    original_instance_max = 0
+    original_composat_instance_score = 0
+    original_composat_instance_max = 0
 
-    for scope, xml_files in instances_by_scope.items():
+    for scope, xml_files in composat_instances_by_scope.items():
         scope_valid = 0
         scope_max = len(xml_files)
         progress(
-            f"[{model_name}] original=>output: scope_{scope} validating {scope_max} reference instance(s)"
+            f"[{model_name}] original=>output (CompoSAT): scope_{scope} validating {scope_max} instance(s)"
         )
         for idx, xml in enumerate(xml_files, start=1):
             if syntax_score == 1:
@@ -495,21 +704,47 @@ def score_one_model(
                     scope_valid += 1
             if idx % 25 == 0 or idx == scope_max:
                 progress(
-                    f"[{model_name}] original=>output: scope_{scope} validated {idx}/{scope_max} instance(s)"
+                    f"[{model_name}] original=>output (CompoSAT): scope_{scope} validated {idx}/{scope_max} instance(s)"
                 )
             # Invalid syntax means all instances count as invalid (score remains 0).
-        original_instance_score += scope_valid
-        original_instance_max += scope_max
-        original_instance_by_scope.append({"scope": scope, "score": scope_valid, "max": scope_max})
+        original_composat_instance_score += scope_valid
+        original_composat_instance_max += scope_max
+        original_composat_instance_by_scope.append({"scope": scope, "score": scope_valid, "max": scope_max})
         progress(
-            f"[{model_name}] original=>output: scope_{scope} complete with {scope_valid}/{scope_max} valid"
+            f"[{model_name}] original=>output (CompoSAT): scope_{scope} complete with {scope_valid}/{scope_max} valid"
         )
 
-    output_instance_result = score_output_instances_against_reference(
+    original_general_instance_score = 0
+    original_general_instance_max = 0
+
+    for scope, xml_files in general_instances_by_scope.items():
+        scope_valid = 0
+        scope_max = len(xml_files)
+        progress(
+            f"[{model_name}] original=>output (general): scope_{scope} validating {scope_max} instance(s)"
+        )
+        for idx, xml in enumerate(xml_files, start=1):
+            if syntax_score == 1:
+                valid, _ = check_instance_valid(generated_model, xml, scripts_dir, alloy_jar_620, java17_bin)
+                if valid:
+                    scope_valid += 1
+            if idx % 25 == 0 or idx == scope_max:
+                progress(
+                    f"[{model_name}] original=>output (general): scope_{scope} validated {idx}/{scope_max} instance(s)"
+                )
+
+        original_general_instance_score += scope_valid
+        original_general_instance_max += scope_max
+        original_general_instance_by_scope.append({"scope": scope, "score": scope_valid, "max": scope_max})
+        progress(
+            f"[{model_name}] original=>output (general): scope_{scope} complete with {scope_valid}/{scope_max} valid"
+        )
+
+    output_composat_instance_result = score_output_instances_against_reference(
         model_name=model_name,
         generated_model=generated_model,
         reference_model=reference_model,
-        max_scope=max_scope,
+        max_scope=composat_max_scope,
         scripts_dir=scripts_dir,
         alloy_jar_620=alloy_jar_620,
         composat_jar=composat_jar,
@@ -518,8 +753,25 @@ def score_one_model(
         composat_tmpdir=composat_tmpdir,
     )
     progress(
-        f"[{model_name}] output=>original summary: "
-        f"{output_instance_result['score']}/{output_instance_result['max']}"
+        f"[{model_name}] output=>original (CompoSAT) summary: "
+        f"{output_composat_instance_result['score']}/{output_composat_instance_result['max']}"
+    )
+
+    output_general_instance_result = score_output_general_instances_against_reference(
+        model_name=model_name,
+        generated_model=generated_model,
+        reference_model=reference_model,
+        max_scope=general_max_scope,
+        reference_general_counts_by_scope={
+            scope: len(xml_files) for scope, xml_files in general_instances_by_scope.items()
+        },
+        scripts_dir=scripts_dir,
+        alloy_jar_620=alloy_jar_620,
+        java17_bin=java17_bin,
+    )
+    progress(
+        f"[{model_name}] output=>original (general) summary: "
+        f"{output_general_instance_result['score']}/{output_general_instance_result['max']}"
     )
 
     ringert_original_to_output_max = len(ringert_scopes)
@@ -529,15 +781,19 @@ def score_one_model(
         syntax_score
         + ringert_original_to_output_score
         + ringert_output_to_original_score
-        + original_instance_score
-        + output_instance_result["score"]
+        + original_composat_instance_score
+        + original_general_instance_score
+        + output_composat_instance_result["score"]
+        + output_general_instance_result["score"]
     )
     total_max = (
         1
         + ringert_original_to_output_max
         + ringert_output_to_original_max
-        + original_instance_max
-        + output_instance_result["max"]
+        + original_composat_instance_max
+        + original_general_instance_max
+        + output_composat_instance_result["max"]
+        + output_general_instance_result["max"]
     )
 
     progress(f"[{model_name}] finished with total {total_score}/{total_max}")
@@ -554,10 +810,15 @@ def score_one_model(
                     "max": ringert_original_to_output_max,
                     "by_scope": ringert_original_to_output_by_scope,
                 },
-                "instances": {
-                    "score": original_instance_score,
-                    "max": original_instance_max,
-                    "by_scope": original_instance_by_scope,
+                "composat_instances": {
+                    "score": original_composat_instance_score,
+                    "max": original_composat_instance_max,
+                    "by_scope": original_composat_instance_by_scope,
+                },
+                "general_instances": {
+                    "score": original_general_instance_score,
+                    "max": original_general_instance_max,
+                    "by_scope": original_general_instance_by_scope,
                 },
             },
             "output_to_original": {
@@ -566,7 +827,8 @@ def score_one_model(
                     "max": ringert_output_to_original_max,
                     "by_scope": ringert_output_to_original_by_scope,
                 },
-                "instances": output_instance_result,
+                "composat_instances": output_composat_instance_result,
+                "general_instances": output_general_instance_result,
             },
         },
         "total": {"score": total_score, "max": total_max},
@@ -579,6 +841,7 @@ def build_report(results: list[dict]) -> str:
     lines.append("=" * 80)
     lines.append("SemDiff direction note: ModuleDiff <left> <right> SemDiff reports equivalent when right => left.")
     lines.append(f"CompoSAT timeout per scope: {COMPOSAT_TIMEOUT_SECONDS}s")
+    lines.append(f"General instance generation timeout per scope: {GENERAL_INSTANCE_TIMEOUT_SECONDS}s")
     lines.append(f"Model scoring parallelism: {MODEL_WORKERS} worker(s)")
     lines.append("")
 
@@ -607,9 +870,17 @@ def build_report(results: list[dict]) -> str:
             )
         lines.append(
             "    CompoSAT instances from original model checked on output model: "
-            f"{original_to_output['instances']['score']}/{original_to_output['instances']['max']}"
+            f"{original_to_output['composat_instances']['score']}/{original_to_output['composat_instances']['max']}"
         )
-        for scope_row in original_to_output["instances"]["by_scope"]:
+        for scope_row in original_to_output["composat_instances"]["by_scope"]:
+            lines.append(
+                f"      scope_{scope_row['scope']}: {scope_row['score']}/{scope_row['max']}"
+            )
+        lines.append(
+            "    General instances from original model checked on output model: "
+            f"{original_to_output['general_instances']['score']}/{original_to_output['general_instances']['max']}"
+        )
+        for scope_row in original_to_output["general_instances"]["by_scope"]:
             lines.append(
                 f"      scope_{scope_row['scope']}: {scope_row['score']}/{scope_row['max']}"
             )
@@ -626,25 +897,48 @@ def build_report(results: list[dict]) -> str:
 
         lines.append(
             "    CompoSAT instances from output model checked on original model: "
-            f"{output_to_original['instances']['score']}/{output_to_original['instances']['max']}"
+            f"{output_to_original['composat_instances']['score']}/{output_to_original['composat_instances']['max']}"
         )
-        for scope_row in output_to_original["instances"]["by_scope"]:
+        for scope_row in output_to_original["composat_instances"]["by_scope"]:
             lines.append(
                 f"      scope_{scope_row['scope']}: {scope_row['score']}/{scope_row['max']}"
             )
-        if output_to_original["instances"].get("timed_out"):
-            timeout_scopes = output_to_original["instances"].get("timeout_scopes") or []
+        if output_to_original["composat_instances"].get("timed_out"):
+            timeout_scopes = output_to_original["composat_instances"].get("timeout_scopes") or []
             if timeout_scopes:
                 formatted_scopes = ", ".join(f"scope_{scope}" for scope in timeout_scopes)
                 lines.append(
                     f"    TIMEOUT: CompoSAT hit the {COMPOSAT_TIMEOUT_SECONDS}s limit at {formatted_scopes}."
                 )
             else:
-                timeout_scope = output_to_original["instances"].get("timeout_scope")
+                timeout_scope = output_to_original["composat_instances"].get("timeout_scope")
                 lines.append(
                     f"    TIMEOUT: CompoSAT hit the {COMPOSAT_TIMEOUT_SECONDS}s limit at scope_{timeout_scope}."
                 )
-        for note in output_to_original["instances"].get("notes", []):
+        for note in output_to_original["composat_instances"].get("notes", []):
+            lines.append(f"    Note: {note}")
+
+        lines.append(
+            "    General instances from output model checked on original model: "
+            f"{output_to_original['general_instances']['score']}/{output_to_original['general_instances']['max']}"
+        )
+        for scope_row in output_to_original["general_instances"]["by_scope"]:
+            lines.append(
+                f"      scope_{scope_row['scope']}: {scope_row['score']}/{scope_row['max']}"
+            )
+        if output_to_original["general_instances"].get("timed_out"):
+            timeout_scopes = output_to_original["general_instances"].get("timeout_scopes") or []
+            if timeout_scopes:
+                formatted_scopes = ", ".join(f"scope_{scope}" for scope in timeout_scopes)
+                lines.append(
+                    f"    TIMEOUT: InstanceGenerator hit the {GENERAL_INSTANCE_TIMEOUT_SECONDS}s limit at {formatted_scopes}."
+                )
+            else:
+                timeout_scope = output_to_original["general_instances"].get("timeout_scope")
+                lines.append(
+                    f"    TIMEOUT: InstanceGenerator hit the {GENERAL_INSTANCE_TIMEOUT_SECONDS}s limit at scope_{timeout_scope}."
+                )
+        for note in output_to_original["general_instances"].get("notes", []):
             lines.append(f"    Note: {note}")
 
         lines.append(f"  TOTAL: {result['total']['score']}/{result['total']['max']}")
@@ -659,9 +953,9 @@ def build_report(results: list[dict]) -> str:
 
 
 def main() -> int:
-    if len(sys.argv) not in (4, 5):
+    if len(sys.argv) not in (5, 6):
         print(
-            "Usage: python score.py <outputs_dir> <models_dir> <instances_dir> [report_output]",
+            "Usage: python score.py <outputs_dir> <models_dir> <instances_dir> <general_instances_dir> [report_output]",
             file=sys.stderr,
         )
         return 1
@@ -669,12 +963,14 @@ def main() -> int:
     outputs_dir = Path(sys.argv[1]).resolve()
     models_dir = Path(sys.argv[2]).resolve()
     instances_dir = Path(sys.argv[3]).resolve()
-    report_output = Path(sys.argv[4]).resolve() if len(sys.argv) == 5 else outputs_dir / "scores.txt"
+    general_instances_dir = Path(sys.argv[4]).resolve()
+    report_output = Path(sys.argv[5]).resolve() if len(sys.argv) == 6 else outputs_dir / "scores.txt"
 
     progress("Starting benchmark scoring run")
     progress(f"outputs_dir={outputs_dir}")
     progress(f"models_dir={models_dir}")
     progress(f"instances_dir={instances_dir}")
+    progress(f"general_instances_dir={general_instances_dir}")
     progress(f"report_output={report_output}")
     progress(f"Model-level parallel workers={MODEL_WORKERS}")
 
@@ -687,7 +983,7 @@ def main() -> int:
     composat_jar = scoring_dir / "CompoSAT.jar"
 
     progress("Checking required input paths and jar files")
-    for path in [outputs_dir, models_dir, instances_dir, diff_jar, alloy_jar_620, composat_jar]:
+    for path in [outputs_dir, models_dir, instances_dir, general_instances_dir, diff_jar, alloy_jar_620, composat_jar]:
         if not path.exists():
             print(f"Error: missing required path: {path}", file=sys.stderr)
             return 1
@@ -696,7 +992,7 @@ def main() -> int:
         progress("Resolving Java toolchains")
         java17_bin, javac17_bin = require_java_for_version(
             17,
-            "alloy-diff and InstanceChecker",
+            "alloy-diff, InstanceChecker, and InstanceGenerator",
             require_javac=True,
         )
         java8_bin, _ = require_java_for_version(8, "CompoSAT")
@@ -722,6 +1018,13 @@ def main() -> int:
         return 1
     progress("InstanceChecker compilation complete")
 
+    progress("Compiling InstanceGenerator.java")
+    compiled, compile_msg = compile_instance_generator(scripts_dir, alloy_jar_620, javac17_bin)
+    if not compiled:
+        print(f"Error compiling InstanceGenerator.java: {compile_msg}", file=sys.stderr)
+        return 1
+    progress("InstanceGenerator compilation complete")
+
     reference_models = sorted(models_dir.glob("*.als"))
     if not reference_models:
         print(f"Error: no .als files found in models dir: {models_dir}", file=sys.stderr)
@@ -739,7 +1042,8 @@ def main() -> int:
             model_name=model_name,
             generated_model=generated_model,
             reference_model=reference_model,
-            instances_root=instances_dir,
+            composat_instances_root=instances_dir,
+            general_instances_root=general_instances_dir,
             scripts_dir=scripts_dir,
             diff_jar=diff_jar,
             alloy_jar_620=alloy_jar_620,

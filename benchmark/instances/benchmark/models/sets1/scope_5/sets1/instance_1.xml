@@ -1,0 +1,81 @@
+<alloy builddate="unknown">
+
+
+<bounds> 
+<upperbound name="Int/next"  arity="2">
+</upperbound>
+<upperbound name="seq/Int"  arity="1">
+</upperbound>
+<upperbound name="String"  arity="1">
+</upperbound>
+<upperbound name="this/Set"  arity="1">
+   <tuple> <atom label="Set$0"/> </tuple>
+   <tuple> <atom label="unused2"/> </tuple>
+   <tuple> <atom label="unused3"/> </tuple>
+   <tuple> <atom label="unused4"/> </tuple>
+   <tuple> <atom label="unused5"/> </tuple>
+</upperbound>
+<upperbound name="this/Set.elements"  arity="2">
+   <tuple> <atom label="Set$0"/> <atom label="Element$0"/> </tuple>
+   <tuple> <atom label="Set$0"/> <atom label="unused6"/> </tuple>
+   <tuple> <atom label="Set$0"/> <atom label="unused7"/> </tuple>
+   <tuple> <atom label="Set$0"/> <atom label="unused8"/> </tuple>
+   <tuple> <atom label="Set$0"/> <atom label="unused9"/> </tuple>
+   <tuple> <atom label="unused2"/> <atom label="Element$0"/> </tuple>
+   <tuple> <atom label="unused2"/> <atom label="unused6"/> </tuple>
+   <tuple> <atom label="unused2"/> <atom label="unused7"/> </tuple>
+   <tuple> <atom label="unused2"/> <atom label="unused8"/> </tuple>
+   <tuple> <atom label="unused2"/> <atom label="unused9"/> </tuple>
+   <tuple> <atom label="unused3"/> <atom label="Element$0"/> </tuple>
+   <tuple> <atom label="unused3"/> <atom label="unused6"/> </tuple>
+   <tuple> <atom label="unused3"/> <atom label="unused7"/> </tuple>
+   <tuple> <atom label="unused3"/> <atom label="unused8"/> </tuple>
+   <tuple> <atom label="unused3"/> <atom label="unused9"/> </tuple>
+   <tuple> <atom label="unused4"/> <atom label="Element$0"/> </tuple>
+   <tuple> <atom label="unused4"/> <atom label="unused6"/> </tuple>
+   <tuple> <atom label="unused4"/> <atom label="unused7"/> </tuple>
+   <tuple> <atom label="unused4"/> <atom label="unused8"/> </tuple>
+   <tuple> <atom label="unused4"/> <atom label="unused9"/> </tuple>
+   <tuple> <atom label="unused5"/> <atom label="Element$0"/> </tuple>
+   <tuple> <atom label="unused5"/> <atom label="unused6"/> </tuple>
+   <tuple> <atom label="unused5"/> <atom label="unused7"/> </tuple>
+   <tuple> <atom label="unused5"/> <atom label="unused8"/> </tuple>
+   <tuple> <atom label="unused5"/> <atom label="unused9"/> </tuple>
+</upperbound>
+<upperbound name="this/Element"  arity="1">
+   <tuple> <atom label="Element$0"/> </tuple>
+   <tuple> <atom label="unused6"/> </tuple>
+   <tuple> <atom label="unused7"/> </tuple>
+   <tuple> <atom label="unused8"/> </tuple>
+   <tuple> <atom label="unused9"/> </tuple>
+</upperbound>
+</bounds><instance bitwidth="0" maxseq="0" command="Run run$1 for 5" filename="">
+
+<sig label="seq/Int" ID="0" parentID="1" builtin="yes">
+</sig>
+
+<sig label="Int" ID="1" parentID="2" builtin="yes">
+</sig>
+
+<sig label="String" ID="3" parentID="2" builtin="yes">
+</sig>
+
+<sig label="this/Set" ID="4" parentID="2">
+   <atom label="Set$0"/>
+</sig>
+
+<field label="elements" ID="5" parentID="4">
+   <tuple> <atom label="Set$0"/> <atom label="Element$0"/> </tuple>
+   <types> <type ID="4"/> <type ID="6"/> </types>
+</field>
+
+<sig label="this/Element" ID="6" parentID="2">
+   <atom label="Element$0"/>
+</sig>
+
+<sig label="univ" ID="2" builtin="yes">
+</sig>
+
+</instance>
+
+</alloy>

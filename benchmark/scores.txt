@@ -1,0 +1,711 @@
+Alloy Benchmark Scoring Report
+================================================================================
+SemDiff direction note: ModuleDiff <left> <right> SemDiff reports equivalent when right => left.
+CompoSAT timeout per scope: 300s
+General instance generation timeout per scope: 300s
+Model scoring parallelism: 4 worker(s)
+
+Model: INSLabel
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/INSLabel.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/INSLabel.als
+  Syntax: 0/1
+  Syntax detail: Exception in thread "main" java.lang.RuntimeException: Alloy failed to parse module.
+	at org.alloytools.alloy.diff.ModuleDiff.diff(ModuleDiff.java:177)
+	at org.alloytools.alloy.diff.ModuleDiff.main(ModuleDiff.java:71)
+Caused by: Type error in /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/INSLabel.als at line 98 column 47:
+in can be used only between 2 expressions of the same arity.
+Left type = {this/Record}
+Right type = {this/Node->this/Record}
+	at edu.mit.csail.sdg.ast.ExprBinary.error(ExprBinary.java:103)
+	at edu.mit.csail.sdg.ast.ExprBinary$Op.make(ExprBinary.java:416)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:499)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:244)
+	at edu.mit.csail.sdg.ast.ExprBinary.accept(ExprBinary.java:734)
+	at edu.mit.csail.sdg.ast.VisitReturn.visitThis(VisitReturn.java:34)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:485)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:244)
+	at edu.mit.csail.sdg.ast.ExprBinary.accept(ExprBinary.java:734)
+	at edu.mit.csail.sdg.ast.VisitReturn.visitThis(VisitReturn.java:34)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:596)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:244)
+	at edu.mit.csail.sdg.ast.ExprQt.accept(ExprQt.java:355)
+	at edu.mit.csail.sdg.ast.VisitReturn.visitThis(VisitReturn.java:34)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:635)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:244)
+	at edu.mit.csail.sdg.ast.ExprUnary.accept(ExprUnary.java:486)
+	at edu.mit.csail.sdg.ast.VisitReturn.visitThis(VisitReturn.java:34)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:635)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:244)
+	at edu.mit.csail.sdg.ast.ExprUnary.accept(ExprUnary.java:486)
+	at edu.mit.csail.sdg.ast.VisitReturn.visitThis(VisitReturn.java:34)
+	at edu.mit.csail.sdg.parser.CompModule$Context.check(CompModule.java:385)
+	at edu.mit.csail.sdg.parser.CompModule.resolveAssertions(CompModule.java:1719)
+	at edu.mit.csail.sdg.parser.CompModule.resolveAll(CompModule.java:2147)
+	at edu.mit.csail.sdg.parser.CompUtil.parseEverything_fromFile(CompUtil.java:360)
+	at org.alloytools.alloy.diff.ModuleDiff.diff(ModuleDiff.java:174)
+	... 1 more
+  Direction: original => output
+    Ringert (SemDiff implication): 0/0
+    CompoSAT instances from original model checked on output model: 0/0
+    General instances from original model checked on output model: 0/0
+  Direction: output => original
+    Ringert (SemDiff implication): 0/0
+    CompoSAT instances from output model checked on original model: 0/0
+    Note: No reference scopes found; skipped output-instance generation.
+    General instances from output model checked on original model: 0/0
+    Note: No reference general scopes found; skipped output-instance generation.
+  TOTAL: 0/1
+
+Model: addressBook2d
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/addressBook2d.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/addressBook2d.als
+  Syntax: 1/1
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 8/8
+      scope_1: 4/4
+      scope_2: 2/2
+      scope_3: 2/2
+    General instances from original model checked on output model: 0/43
+      scope_1: 0/3
+      scope_2: 0/10
+      scope_3: 0/10
+      scope_4: 0/10
+      scope_5: 0/10
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 8/8
+      scope_1: 4/4
+      scope_2: 2/2
+      scope_3: 2/2
+    General instances from output model checked on original model: 0/43
+      scope_1: 0/3
+      scope_2: 0/10
+      scope_3: 0/10
+      scope_4: 0/10
+      scope_5: 0/10
+  TOTAL: 27/113
+
+Model: alloy4fun_SPL_1_2_3_4
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/alloy4fun_SPL_1_2_3_4.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/alloy4fun_SPL_1_2_3_4.als
+  Syntax: 1/1
+  Direction: original => output
+    Ringert (SemDiff implication): 0/5
+      scope_1: 0/1
+      scope_2: 0/1
+      scope_3: 0/1
+      scope_4: 0/1
+      scope_5: 0/1
+    CompoSAT instances from original model checked on output model: 0/19
+      scope_1: 0/5
+      scope_2: 0/6
+      scope_3: 0/8
+    General instances from original model checked on output model: 0/42
+      scope_1: 0/2
+      scope_2: 0/10
+      scope_3: 0/10
+      scope_4: 0/10
+      scope_5: 0/10
+  Direction: output => original
+    Ringert (SemDiff implication): 0/5
+      scope_1: 0/1
+      scope_2: 0/1
+      scope_3: 0/1
+      scope_4: 0/1
+      scope_5: 0/1
+    CompoSAT instances from output model checked on original model: 3/22
+      scope_1: 2/5
+      scope_2: 1/17
+    TIMEOUT: CompoSAT hit the 300s limit at scope_3.
+    Note: scope_3: CompoSAT timed out after 300s; remaining scopes skipped.
+    General instances from output model checked on original model: 0/42
+      scope_1: 0/2
+      scope_2: 0/10
+      scope_3: 0/10
+      scope_4: 0/10
+      scope_5: 0/10
+  TOTAL: 4/136
+
+Model: chord
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/chord.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/chord.als
+  Syntax: 1/1
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 4/4
+      scope_1: 4/4
+    General instances from original model checked on output model: 43/43
+      scope_1: 3/3
+      scope_2: 10/10
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  Direction: output => original
+    Ringert (SemDiff implication): 0/5
+      scope_1: 0/1
+      scope_2: 0/1
+      scope_3: 0/1
+      scope_4: 0/1
+      scope_5: 0/1
+    CompoSAT instances from output model checked on original model: 1/5
+      scope_1: 1/5
+    General instances from output model checked on original model: 0/43
+      scope_1: 0/3
+      scope_2: 0/10
+      scope_3: 0/10
+      scope_4: 0/10
+      scope_5: 0/10
+  TOTAL: 54/106
+
+Model: distribution
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/distribution.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/distribution.als
+  Syntax: 1/1
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 0/0
+    General instances from original model checked on output model: 0/5
+      scope_1: 0/1
+      scope_2: 0/1
+      scope_3: 0/1
+      scope_4: 0/1
+      scope_5: 0/1
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 0/0
+    Note: No reference scopes found; skipped output-instance generation.
+    General instances from output model checked on original model: 0/5
+      scope_1: 0/1
+      scope_2: 0/1
+      scope_3: 0/1
+      scope_4: 0/1
+      scope_5: 0/1
+  TOTAL: 11/21
+
+Model: file_system
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/file_system.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/file_system.als
+  Syntax: 0/1
+  Syntax detail: Exception in thread "main" java.lang.RuntimeException: Alloy failed to parse module.
+	at org.alloytools.alloy.diff.ModuleDiff.diff(ModuleDiff.java:177)
+	at org.alloytools.alloy.diff.ModuleDiff.main(ModuleDiff.java:71)
+Caused by: Type error in /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/file_system.als at line 16 column 22:
+~ can be used only with a binary relation.
+Instead, its possible type(s) are:
+{this/DirEntry}
+	at edu.mit.csail.sdg.ast.ExprUnary$Op.make(ExprUnary.java:307)
+	at edu.mit.csail.sdg.ast.ExprUnary$Op.make(ExprUnary.java:212)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:635)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:244)
+	at edu.mit.csail.sdg.ast.ExprUnary.accept(ExprUnary.java:486)
+	at edu.mit.csail.sdg.ast.VisitReturn.visitThis(VisitReturn.java:34)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:467)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:244)
+	at edu.mit.csail.sdg.ast.ExprBadJoin.accept(ExprBadJoin.java:113)
+	at edu.mit.csail.sdg.ast.VisitReturn.visitThis(VisitReturn.java:34)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:485)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:244)
+	at edu.mit.csail.sdg.ast.ExprBinary.accept(ExprBinary.java:734)
+	at edu.mit.csail.sdg.ast.VisitReturn.visitThis(VisitReturn.java:34)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:450)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:244)
+	at edu.mit.csail.sdg.ast.ExprList.accept(ExprList.java:307)
+	at edu.mit.csail.sdg.ast.VisitReturn.visitThis(VisitReturn.java:34)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:635)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:244)
+	at edu.mit.csail.sdg.ast.ExprUnary.accept(ExprUnary.java:486)
+	at edu.mit.csail.sdg.ast.VisitReturn.visitThis(VisitReturn.java:34)
+	at edu.mit.csail.sdg.parser.CompModule$Context.check(CompModule.java:385)
+	at edu.mit.csail.sdg.parser.CompModule.resolveFacts(CompModule.java:1778)
+	at edu.mit.csail.sdg.parser.CompModule.resolveAll(CompModule.java:2148)
+	at edu.mit.csail.sdg.parser.CompUtil.parseEverything_fromFile(CompUtil.java:360)
+	at org.alloytools.alloy.diff.ModuleDiff.diff(ModuleDiff.java:174)
+	... 1 more
+  Direction: original => output
+    Ringert (SemDiff implication): 0/5
+      scope_1: 0/1
+      scope_2: 0/1
+      scope_3: 0/1
+      scope_4: 0/1
+      scope_5: 0/1
+    CompoSAT instances from original model checked on output model: 0/11
+      scope_1: 0/1
+      scope_2: 0/4
+      scope_3: 0/4
+      scope_4: 0/2
+    General instances from original model checked on output model: 0/38
+      scope_2: 0/8
+      scope_3: 0/10
+      scope_4: 0/10
+      scope_5: 0/10
+  Direction: output => original
+    Ringert (SemDiff implication): 0/5
+      scope_1: 0/1
+      scope_2: 0/1
+      scope_3: 0/1
+      scope_4: 0/1
+      scope_5: 0/1
+    CompoSAT instances from output model checked on original model: 0/0
+      scope_1: 0/0
+      scope_2: 0/0
+      scope_3: 0/0
+      scope_4: 0/0
+    General instances from output model checked on original model: 0/0
+      scope_1: 0/0
+      scope_2: 0/0
+      scope_3: 0/0
+      scope_4: 0/0
+      scope_5: 0/0
+    Note: scope_1: InstanceGenerator exited with code 1 ({this/DirEntry})
+    Note: scope_2: InstanceGenerator exited with code 1 ({this/DirEntry})
+    Note: scope_3: InstanceGenerator exited with code 1 ({this/DirEntry})
+    Note: scope_4: InstanceGenerator exited with code 1 ({this/DirEntry})
+    Note: scope_5: InstanceGenerator exited with code 1 ({this/DirEntry})
+  TOTAL: 0/60
+
+Model: filesystem
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/filesystem.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/filesystem.als
+  Syntax: 1/1
+  Direction: original => output
+    Ringert (SemDiff implication): 0/5
+      scope_1: 0/1
+      scope_2: 0/1
+      scope_3: 0/1
+      scope_4: 0/1
+      scope_5: 0/1
+    CompoSAT instances from original model checked on output model: 3/10
+      scope_1: 1/1
+      scope_2: 1/3
+      scope_3: 1/4
+      scope_4: 0/2
+    General instances from original model checked on output model: 0/42
+      scope_1: 0/2
+      scope_2: 0/10
+      scope_3: 0/10
+      scope_4: 0/10
+      scope_5: 0/10
+  Direction: output => original
+    Ringert (SemDiff implication): 0/5
+      scope_1: 0/1
+      scope_2: 0/1
+      scope_3: 0/1
+      scope_4: 0/1
+      scope_5: 0/1
+    CompoSAT instances from output model checked on original model: 6/16
+      scope_1: 1/1
+      scope_2: 2/4
+      scope_3: 2/7
+      scope_4: 1/4
+    General instances from output model checked on original model: 0/34
+      scope_1: 0/1
+      scope_2: 0/3
+      scope_3: 0/10
+      scope_4: 0/10
+      scope_5: 0/10
+  TOTAL: 10/113
+
+Model: grandpa3
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/grandpa3.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/grandpa3.als
+  Syntax: 1/1
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 15/15
+      scope_1: 2/2
+      scope_2: 6/6
+      scope_3: 5/5
+      scope_4: 2/2
+    General instances from original model checked on output model: 0/42
+      scope_1: 0/2
+      scope_2: 0/10
+      scope_3: 0/10
+      scope_4: 0/10
+      scope_5: 0/10
+  Direction: output => original
+    Ringert (SemDiff implication): 0/5
+      scope_1: 0/1
+      scope_2: 0/1
+      scope_3: 0/1
+      scope_4: 0/1
+      scope_5: 0/1
+    CompoSAT instances from output model checked on original model: 18/18
+      scope_1: 3/3
+      scope_2: 8/8
+      scope_3: 5/5
+      scope_4: 2/2
+    General instances from output model checked on original model: 0/42
+      scope_1: 0/2
+      scope_2: 0/10
+      scope_3: 0/10
+      scope_4: 0/10
+      scope_5: 0/10
+  TOTAL: 39/128
+
+Model: hc4
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/hc4.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/hc4.als
+  Syntax: 1/1
+  Direction: original => output
+    Ringert (SemDiff implication): 1/7
+      scope_1: 1/1
+      scope_2: 0/1
+      scope_3: 0/1
+      scope_4: 0/1
+      scope_5: 0/1
+      scope_6: 0/1
+      scope_7: 0/1
+    CompoSAT instances from original model checked on output model: 2/11
+      scope_1: 1/1
+      scope_2: 1/2
+      scope_3: 0/2
+      scope_4: 0/2
+      scope_5: 0/2
+      scope_6: 0/1
+      scope_7: 0/1
+    General instances from original model checked on output model: 0/28
+      scope_2: 0/2
+      scope_3: 0/6
+      scope_4: 0/10
+      scope_5: 0/10
+  Direction: output => original
+    Ringert (SemDiff implication): 7/7
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+      scope_6: 1/1
+      scope_7: 1/1
+    CompoSAT instances from output model checked on original model: 7/7
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+      scope_6: 1/1
+      scope_7: 1/1
+    General instances from output model checked on original model: 0/0
+      scope_1: 0/0
+      scope_2: 0/0
+      scope_3: 0/0
+      scope_4: 0/0
+      scope_5: 0/0
+  TOTAL: 18/61
+
+Model: lists
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/lists.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/lists.als
+  Syntax: 1/1
+  Direction: original => output
+    Ringert (SemDiff implication): 0/1
+      scope_1: 0/1
+    CompoSAT instances from original model checked on output model: 2/2
+      scope_1: 2/2
+    General instances from original model checked on output model: 0/0
+  Direction: output => original
+    Ringert (SemDiff implication): 1/1
+      scope_1: 1/1
+    CompoSAT instances from output model checked on original model: 0/0
+      scope_1: 0/0
+    General instances from output model checked on original model: 0/0
+    Note: No reference general scopes found; skipped output-instance generation.
+  TOTAL: 4/5
+
+Model: marksweepgc
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/marksweepgc.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/marksweepgc.als
+  Syntax: 1/1
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 0/3
+      scope_1: 0/3
+    General instances from original model checked on output model: 0/50
+      scope_1: 0/10
+      scope_2: 0/10
+      scope_3: 0/10
+      scope_4: 0/10
+      scope_5: 0/10
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 3/3
+      scope_1: 3/3
+    General instances from output model checked on original model: 0/0
+      scope_1: 0/0
+      scope_2: 0/0
+      scope_3: 0/0
+      scope_4: 0/0
+      scope_5: 0/0
+    Note: scope_1: InstanceGenerator exited with code 1 (,  : =)
+    Note: scope_2: InstanceGenerator exited with code 1 (,  : =)
+    Note: scope_3: InstanceGenerator exited with code 1 (,  : =)
+    Note: scope_4: InstanceGenerator exited with code 1 (,  : =)
+    Note: scope_5: InstanceGenerator exited with code 1 (,  : =)
+  TOTAL: 14/67
+
+Model: money
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/money.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/money.als
+  Syntax: 0/1
+  Syntax detail: Exception in thread "main" java.lang.RuntimeException: Alloy failed to parse module.
+	at org.alloytools.alloy.diff.ModuleDiff.diff(ModuleDiff.java:177)
+	at org.alloytools.alloy.diff.ModuleDiff.main(ModuleDiff.java:71)
+Caused by: Syntax error in /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/money.als at line 15 column 8:
+Syntax error at the % character. HEX: \u25)
+	at edu.mit.csail.sdg.parser.CompLexer.next_token(CompLexer.java:948)
+	at edu.mit.csail.sdg.parser.CompFilter$1.next_token(CompFilter.java:259)
+	at edu.mit.csail.sdg.parser.CompFilter$2.next_token(CompFilter.java:288)
+	at edu.mit.csail.sdg.parser.CompFilter$3.next_token(CompFilter.java:442)
+	at edu.mit.csail.sdg.parser.CompFilter.myread(CompFilter.java:158)
+	at edu.mit.csail.sdg.parser.CompFilter.next_token(CompFilter.java:173)
+	at java_cup.runtime.lr_parser.scan(lr_parser.java:405)
+	at edu.mit.csail.sdg.parser.CompParser.parse(CompParser.java:2067)
+	at edu.mit.csail.sdg.parser.CompParser.alloy_parseStream(CompParser.java:2261)
+	at edu.mit.csail.sdg.parser.CompUtil.parse(CompUtil.java:451)
+	at edu.mit.csail.sdg.parser.CompUtil.parseRecursively(CompUtil.java:214)
+	at edu.mit.csail.sdg.parser.CompUtil.parseEverything_fromFile(CompUtil.java:358)
+	at org.alloytools.alloy.diff.ModuleDiff.diff(ModuleDiff.java:174)
+	... 1 more
+  Direction: original => output
+    Ringert (SemDiff implication): 0/0
+    CompoSAT instances from original model checked on output model: 0/0
+    General instances from original model checked on output model: 0/0
+  Direction: output => original
+    Ringert (SemDiff implication): 0/0
+    CompoSAT instances from output model checked on original model: 0/0
+    Note: No reference scopes found; skipped output-instance generation.
+    General instances from output model checked on original model: 0/0
+    Note: No reference general scopes found; skipped output-instance generation.
+  TOTAL: 0/1
+
+Model: properties
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/properties.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/properties.als
+  Syntax: 1/1
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 0/0
+    General instances from original model checked on output model: 0/5
+      scope_1: 0/1
+      scope_2: 0/1
+      scope_3: 0/1
+      scope_4: 0/1
+      scope_5: 0/1
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 0/0
+    Note: No reference scopes found; skipped output-instance generation.
+    General instances from output model checked on original model: 0/5
+      scope_1: 0/1
+      scope_2: 0/1
+      scope_3: 0/1
+      scope_4: 0/1
+      scope_5: 0/1
+  TOTAL: 11/21
+
+Model: railway
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/railway.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/railway.als
+  Syntax: 0/1
+  Syntax detail: Exception in thread "main" java.lang.RuntimeException: Alloy failed to parse module.
+	at org.alloytools.alloy.diff.ModuleDiff.diff(ModuleDiff.java:177)
+	at org.alloytools.alloy.diff.ModuleDiff.main(ModuleDiff.java:71)
+Caused by: Type error in /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/railway.als at line 6 column 14:
+~ can be used only with a binary relation.
+Instead, its possible type(s) are:
+{this/Seg}
+	at edu.mit.csail.sdg.ast.ExprUnary$Op.make(ExprUnary.java:307)
+	at edu.mit.csail.sdg.ast.ExprUnary$Op.make(ExprUnary.java:212)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:635)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:244)
+	at edu.mit.csail.sdg.ast.ExprUnary.accept(ExprUnary.java:486)
+	at edu.mit.csail.sdg.ast.VisitReturn.visitThis(VisitReturn.java:34)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:485)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:244)
+	at edu.mit.csail.sdg.ast.ExprBinary.accept(ExprBinary.java:734)
+	at edu.mit.csail.sdg.ast.VisitReturn.visitThis(VisitReturn.java:34)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:450)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:244)
+	at edu.mit.csail.sdg.ast.ExprList.accept(ExprList.java:307)
+	at edu.mit.csail.sdg.ast.VisitReturn.visitThis(VisitReturn.java:34)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:635)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:244)
+	at edu.mit.csail.sdg.ast.ExprUnary.accept(ExprUnary.java:486)
+	at edu.mit.csail.sdg.ast.VisitReturn.visitThis(VisitReturn.java:34)
+	at edu.mit.csail.sdg.parser.CompModule$Context.check(CompModule.java:385)
+	at edu.mit.csail.sdg.parser.CompModule.resolveFacts(CompModule.java:1778)
+	at edu.mit.csail.sdg.parser.CompModule.resolveAll(CompModule.java:2148)
+	at edu.mit.csail.sdg.parser.CompUtil.parseEverything_fromFile(CompUtil.java:360)
+	at org.alloytools.alloy.diff.ModuleDiff.diff(ModuleDiff.java:174)
+	... 1 more
+  Direction: original => output
+    Ringert (SemDiff implication): 0/5
+      scope_1: 0/1
+      scope_2: 0/1
+      scope_3: 0/1
+      scope_4: 0/1
+      scope_5: 0/1
+    CompoSAT instances from original model checked on output model: 0/9
+      scope_1: 0/6
+      scope_2: 0/3
+    General instances from original model checked on output model: 0/48
+      scope_1: 0/8
+      scope_2: 0/10
+      scope_3: 0/10
+      scope_4: 0/10
+      scope_5: 0/10
+  Direction: output => original
+    Ringert (SemDiff implication): 0/5
+      scope_1: 0/1
+      scope_2: 0/1
+      scope_3: 0/1
+      scope_4: 0/1
+      scope_5: 0/1
+    CompoSAT instances from output model checked on original model: 0/0
+      scope_1: 0/0
+      scope_2: 0/0
+    General instances from output model checked on original model: 0/0
+      scope_1: 0/0
+      scope_2: 0/0
+      scope_3: 0/0
+      scope_4: 0/0
+      scope_5: 0/0
+    Note: scope_1: InstanceGenerator exited with code 1 (,  : =)
+    Note: scope_2: InstanceGenerator exited with code 1 (,  : =)
+    Note: scope_3: InstanceGenerator exited with code 1 (,  : =)
+    Note: scope_4: InstanceGenerator exited with code 1 (,  : =)
+    Note: scope_5: InstanceGenerator exited with code 1 (,  : =)
+  TOTAL: 0/68
+
+Model: sets1
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/sets1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/sets1.als
+  Syntax: 1/1
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 7/7
+      scope_1: 3/3
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    General instances from original model checked on output model: 0/39
+      scope_1: 0/2
+      scope_2: 0/7
+      scope_3: 0/10
+      scope_4: 0/10
+      scope_5: 0/10
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 7/7
+      scope_1: 3/3
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    General instances from output model checked on original model: 0/39
+      scope_1: 0/2
+      scope_2: 0/7
+      scope_3: 0/10
+      scope_4: 0/10
+      scope_5: 0/10
+  TOTAL: 25/103
+
+Model: spanning
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/spanning.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/spanning.als
+  Syntax: 1/1
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 0/0
+    General instances from original model checked on output model: 0/5
+      scope_1: 0/1
+      scope_2: 0/1
+      scope_3: 0/1
+      scope_4: 0/1
+      scope_5: 0/1
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 0/0
+    Note: No reference scopes found; skipped output-instance generation.
+    General instances from output model checked on original model: 0/5
+      scope_1: 0/1
+      scope_2: 0/1
+      scope_3: 0/1
+      scope_4: 0/1
+      scope_5: 0/1
+  TOTAL: 11/21
+
+================================================================================
+OVERALL TOTAL: 228/1025

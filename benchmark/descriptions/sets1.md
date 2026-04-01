@@ -1,0 +1,3 @@
+The model consists of two signatures: "Set" and "Element". Each "Set" contains elements, which are of signature "Element". The links between "Set" and "Element" are modeled as a relation named "elements", which qualifies as a set of "Element" for each "Set".
+
+There is an assertion named "Closed". This assertion states that for all instances of "Set", represented as s0 and s1, there exists another instance of "Set", represented as s2, such that the elements of s2 are equal to the union of elements of s0 and s1. This assertion is supposed to violate the model, and hence, a check command is used to search for a counterexample where this assertion does not hold. The name of this check command is the same as the assertion, "Closed".
