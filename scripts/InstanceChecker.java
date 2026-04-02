@@ -340,7 +340,8 @@ public class InstanceChecker {
         // this is hacky but works for our purposes
         // and gets the scope from the XML file
         String cmd = x.getAttribute("command");
-        if (!cmd.startsWith("Run run$1")) {
+        // sometimes it is run$1; sometimes run$2
+        if (!cmd.startsWith("Run run")) {
             System.out.println("FAIL: Instance should be for a run {} cmd\n");
             System.exit(1);
         }
