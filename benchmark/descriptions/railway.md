@@ -1,31 +1,27 @@
-This Alloy model represents a railway system. 
+This Alloy model represents a simplistic form of a railway system where trains sit on different segments of tracks and these segments can overlap themselves. The model has been authored by Daniel Jackson. 
 
-There are four main components in the system: Seg, Train, GateState, and TrainState. 
+The model is composed of four signatures: Seg, Train, GateState, and TrainState. 
 
-Seg represents a section of the railway tracks. Each Seg has a 'next' Seg and can 'overlap' with a set of other Segs. Two constraints apply to Seg: 
-- Each Seg is part of the set of Segs it overlaps with.
-- If a Seg s1 overlaps with another Seg s2, then s2 also overlaps with s1. 
+The 'Seg' signature represents a segment of the railway track and contains two sets 'next' and 'overlaps' for defining the adjacent segment and any overlapping segments to the particular segment respectively. There are two facts attached to the 'Seg'. The first fact states that each segment is within its set of overlapping segments, and the second declares mutual overlap between any two segments i.e. if segment1 is in segment2's overlaps set, then segment2 should also be in segment1's overlaps set.
 
-Train is a simple signature with no fields indicating a train in the railway system.
+The 'Train' signature does not hold any internal fields.
 
-GateState represents the state of a gate at any given time. A GateState is known to be 'closed' on a set of Segs.
+'GateState' signature represents the state of a gate and contain a set 'closed' of segments that are closed.
 
-TrainState is another state signature illustrating the status of a Train on the railway system. It has two fields:
-- 'on' is a relation between a 'Train' and 'Seg'. It indicates the current location (Seg) of a Train on the railway system. This association can be one-to-one or many-to-one relationship from 'Train' to 'Seg'; a train can be on at most one segment.
-- 'occupied' represents the set of Segs currently occupied by a train. This set is constrained such that it includes all Segs where there exists at least one train on that segment.
+'TrainState' signature, holding the state of the trains, incorporates a relation 'on' mapping a train to a segment where the train is currently located (one train can only be on one segment). It also contains a set 'occupied', representing the segments that are currently occupied by trains. The 'occupied' set identically equals to the set of those segments where some trains are located on – as per the fact attached to 'TrainState'.
 
-The model features several key predicates (Safe, MayMove, TrainsMove, GatePolicy) and an assertion (PolicyWorks).
+The model subjects to five predications.
 
-The 'Safe' predicate checks whether for every Seg, any segment it overlaps with has at most one train. 
+'Safe' predicate takes a TrainState and states that for each segment, there should be at most one train ('lone') located on the segments that overlap with it.
 
-The 'MayMove' predicate checks if no trains are on any of the segments that are closed by the gate.
+'MayMove' predicate checks for a given GateState, TrainState and a set of trains, if there exists any train that is located on a closed segment. If such a condition is found, the predicate returns false.
 
-The 'TrainsMove' predicate checks that for all trains in a given set, the train's new location is included in the 'next' segment of the train's current location. For trains not in the given set, their location remains unchanged.
+'TrainsMove' predicate validates if all trains in a provided set transition their location to the next segment of their current location and rest of the trains maintain their position.
 
-The 'GatePolicy' predicate checks that all overlaps in the occupied segments have their 'next' segment in the 'closed' set of GateState. It also checks if there is at most one segment in the set of segments where any segment's 'next' overlaps any other segment.
+'GatePolicy' predicate checks the two conditions against a given GateState and TrainState: one, all the segments overlapped by the currently occupied segments should be closed for their next segment; two, there remains at most one segment closed which is either next segment to a provided segment and is overlapped by some segment’s next, or is a next segment not overlapped by any segment’s next.
 
-The 'PolicyWorks' assertion states if it is permissible for a set of trains to move, the trains actually move, the initial train state is safe, and the gate policy is abided by, then the final train state will also be safe.
+The 'PolicyWorks' assertion checks if for any two TrainStates of an initial and a final state, a GateState, and a set of trains, if the MayMove, TrainsMove, Safe and GatePolicy predicates hold true for the mentioned conditions, it further implies the system remains safe in the final state.
 
-'PolicyWorks' is checked for a particular scope expecting a counterexample. The predicate 'TrainsMoveLegal' verifies the movement of trains given a certain TrainState, TrainState', GateState, and train set. It is run for a specific scope expecting a result.
+Among the commands, a 'check' command is defined with the name 'PolicyWorks' for a particular scope and expects the counterexample count. A 'run' command 'TrainsMoveLegal' is defined for a certain scope and expects results which only returns true for legal train movements that comply with the gate policy.
 
-The 'contains' function is defined to ascertain which train is on a particular segment in a given train state.
+Lastly, a function 'contain' is defined to get a train that is currently situated on a particular segment.

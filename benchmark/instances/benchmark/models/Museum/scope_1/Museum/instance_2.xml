@@ -1,0 +1,168 @@
+<alloy builddate="unknown">
+
+
+<bounds> 
+<upperbound name="Int/next"  arity="2">
+</upperbound>
+<upperbound name="seq/Int"  arity="1">
+</upperbound>
+<upperbound name="String"  arity="1">
+</upperbound>
+<upperbound name="this/Picture"  arity="1">
+   <tuple> <atom label="Picture$0"/> </tuple>
+   <tuple> <atom label="Picture$1"/> </tuple>
+   <tuple> <atom label="Picture$2"/> </tuple>
+   <tuple> <atom label="Picture$3"/> </tuple>
+   <tuple> <atom label="Picture$4"/> </tuple>
+   <tuple> <atom label="Picture$5"/> </tuple>
+   <tuple> <atom label="Picture$6"/> </tuple>
+   <tuple> <atom label="Picture$7"/> </tuple>
+</upperbound>
+<upperbound name="this/Client"  arity="1">
+   <tuple> <atom label="Client$0"/> </tuple>
+   <tuple> <atom label="Client$1"/> </tuple>
+   <tuple> <atom label="Client$2"/> </tuple>
+</upperbound>
+<upperbound name="this/Client.loaned"  arity="2">
+   <tuple> <atom label="Client$0"/> <atom label="Picture$0"/> </tuple>
+   <tuple> <atom label="Client$0"/> <atom label="Picture$1"/> </tuple>
+   <tuple> <atom label="Client$0"/> <atom label="Picture$2"/> </tuple>
+   <tuple> <atom label="Client$0"/> <atom label="Picture$3"/> </tuple>
+   <tuple> <atom label="Client$0"/> <atom label="Picture$4"/> </tuple>
+   <tuple> <atom label="Client$0"/> <atom label="Picture$5"/> </tuple>
+   <tuple> <atom label="Client$0"/> <atom label="Picture$6"/> </tuple>
+   <tuple> <atom label="Client$0"/> <atom label="Picture$7"/> </tuple>
+   <tuple> <atom label="Client$1"/> <atom label="Picture$0"/> </tuple>
+   <tuple> <atom label="Client$1"/> <atom label="Picture$1"/> </tuple>
+   <tuple> <atom label="Client$1"/> <atom label="Picture$2"/> </tuple>
+   <tuple> <atom label="Client$1"/> <atom label="Picture$3"/> </tuple>
+   <tuple> <atom label="Client$1"/> <atom label="Picture$4"/> </tuple>
+   <tuple> <atom label="Client$1"/> <atom label="Picture$5"/> </tuple>
+   <tuple> <atom label="Client$1"/> <atom label="Picture$6"/> </tuple>
+   <tuple> <atom label="Client$1"/> <atom label="Picture$7"/> </tuple>
+   <tuple> <atom label="Client$2"/> <atom label="Picture$0"/> </tuple>
+   <tuple> <atom label="Client$2"/> <atom label="Picture$1"/> </tuple>
+   <tuple> <atom label="Client$2"/> <atom label="Picture$2"/> </tuple>
+   <tuple> <atom label="Client$2"/> <atom label="Picture$3"/> </tuple>
+   <tuple> <atom label="Client$2"/> <atom label="Picture$4"/> </tuple>
+   <tuple> <atom label="Client$2"/> <atom label="Picture$5"/> </tuple>
+   <tuple> <atom label="Client$2"/> <atom label="Picture$6"/> </tuple>
+   <tuple> <atom label="Client$2"/> <atom label="Picture$7"/> </tuple>
+</upperbound>
+<upperbound name="this/Client.desires"  arity="2">
+   <tuple> <atom label="Client$0"/> <atom label="Picture$0"/> </tuple>
+   <tuple> <atom label="Client$0"/> <atom label="Picture$1"/> </tuple>
+   <tuple> <atom label="Client$0"/> <atom label="Picture$2"/> </tuple>
+   <tuple> <atom label="Client$0"/> <atom label="Picture$3"/> </tuple>
+   <tuple> <atom label="Client$0"/> <atom label="Picture$4"/> </tuple>
+   <tuple> <atom label="Client$0"/> <atom label="Picture$5"/> </tuple>
+   <tuple> <atom label="Client$0"/> <atom label="Picture$6"/> </tuple>
+   <tuple> <atom label="Client$0"/> <atom label="Picture$7"/> </tuple>
+   <tuple> <atom label="Client$1"/> <atom label="Picture$0"/> </tuple>
+   <tuple> <atom label="Client$1"/> <atom label="Picture$1"/> </tuple>
+   <tuple> <atom label="Client$1"/> <atom label="Picture$2"/> </tuple>
+   <tuple> <atom label="Client$1"/> <atom label="Picture$3"/> </tuple>
+   <tuple> <atom label="Client$1"/> <atom label="Picture$4"/> </tuple>
+   <tuple> <atom label="Client$1"/> <atom label="Picture$5"/> </tuple>
+   <tuple> <atom label="Client$1"/> <atom label="Picture$6"/> </tuple>
+   <tuple> <atom label="Client$1"/> <atom label="Picture$7"/> </tuple>
+   <tuple> <atom label="Client$2"/> <atom label="Picture$0"/> </tuple>
+   <tuple> <atom label="Client$2"/> <atom label="Picture$1"/> </tuple>
+   <tuple> <atom label="Client$2"/> <atom label="Picture$2"/> </tuple>
+   <tuple> <atom label="Client$2"/> <atom label="Picture$3"/> </tuple>
+   <tuple> <atom label="Client$2"/> <atom label="Picture$4"/> </tuple>
+   <tuple> <atom label="Client$2"/> <atom label="Picture$5"/> </tuple>
+   <tuple> <atom label="Client$2"/> <atom label="Picture$6"/> </tuple>
+   <tuple> <atom label="Client$2"/> <atom label="Picture$7"/> </tuple>
+</upperbound>
+<upperbound name="this/Museum"  arity="1">
+   <tuple> <atom label="Museum$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Museum.permanent"  arity="2">
+   <tuple> <atom label="Museum$0"/> <atom label="Picture$0"/> </tuple>
+   <tuple> <atom label="Museum$0"/> <atom label="Picture$1"/> </tuple>
+   <tuple> <atom label="Museum$0"/> <atom label="Picture$2"/> </tuple>
+   <tuple> <atom label="Museum$0"/> <atom label="Picture$3"/> </tuple>
+   <tuple> <atom label="Museum$0"/> <atom label="Picture$4"/> </tuple>
+   <tuple> <atom label="Museum$0"/> <atom label="Picture$5"/> </tuple>
+   <tuple> <atom label="Museum$0"/> <atom label="Picture$6"/> </tuple>
+   <tuple> <atom label="Museum$0"/> <atom label="Picture$7"/> </tuple>
+</upperbound>
+<upperbound name="this/Museum.onDisplay"  arity="2">
+   <tuple> <atom label="Museum$0"/> <atom label="Picture$0"/> </tuple>
+   <tuple> <atom label="Museum$0"/> <atom label="Picture$1"/> </tuple>
+   <tuple> <atom label="Museum$0"/> <atom label="Picture$2"/> </tuple>
+   <tuple> <atom label="Museum$0"/> <atom label="Picture$3"/> </tuple>
+   <tuple> <atom label="Museum$0"/> <atom label="Picture$4"/> </tuple>
+   <tuple> <atom label="Museum$0"/> <atom label="Picture$5"/> </tuple>
+   <tuple> <atom label="Museum$0"/> <atom label="Picture$6"/> </tuple>
+   <tuple> <atom label="Museum$0"/> <atom label="Picture$7"/> </tuple>
+</upperbound>
+</bounds><instance bitwidth="0" maxseq="0" command="Run run$1 for exactly 3 Client, exactly 8 Picture" filename="">
+
+<sig label="seq/Int" ID="0" parentID="1" builtin="yes">
+</sig>
+
+<sig label="Int" ID="1" parentID="2" builtin="yes">
+</sig>
+
+<sig label="String" ID="3" parentID="2" builtin="yes">
+</sig>
+
+<sig label="this/Picture" ID="4" parentID="2" some="yes">
+   <atom label="Picture$0"/>
+   <atom label="Picture$1"/>
+   <atom label="Picture$2"/>
+   <atom label="Picture$3"/>
+   <atom label="Picture$4"/>
+   <atom label="Picture$5"/>
+   <atom label="Picture$6"/>
+   <atom label="Picture$7"/>
+</sig>
+
+<sig label="this/Client" ID="5" parentID="2" some="yes">
+   <atom label="Client$0"/>
+   <atom label="Client$1"/>
+   <atom label="Client$2"/>
+</sig>
+
+<field label="loaned" ID="6" parentID="5">
+   <tuple> <atom label="Client$1"/> <atom label="Picture$1"/> </tuple>
+   <tuple> <atom label="Client$2"/> <atom label="Picture$0"/> </tuple>
+   <tuple> <atom label="Client$2"/> <atom label="Picture$2"/> </tuple>
+   <tuple> <atom label="Client$2"/> <atom label="Picture$3"/> </tuple>
+   <tuple> <atom label="Client$2"/> <atom label="Picture$4"/> </tuple>
+   <tuple> <atom label="Client$2"/> <atom label="Picture$5"/> </tuple>
+   <types> <type ID="5"/> <type ID="4"/> </types>
+</field>
+
+<field label="desires" ID="7" parentID="5">
+   <tuple> <atom label="Client$1"/> <atom label="Picture$2"/> </tuple>
+   <tuple> <atom label="Client$1"/> <atom label="Picture$3"/> </tuple>
+   <tuple> <atom label="Client$1"/> <atom label="Picture$4"/> </tuple>
+   <tuple> <atom label="Client$1"/> <atom label="Picture$5"/> </tuple>
+   <tuple> <atom label="Client$2"/> <atom label="Picture$1"/> </tuple>
+   <types> <type ID="5"/> <type ID="4"/> </types>
+</field>
+
+<sig label="this/Museum" ID="8" parentID="2" one="yes">
+   <atom label="Museum$0"/>
+</sig>
+
+<field label="permanent" ID="9" parentID="8">
+   <tuple> <atom label="Museum$0"/> <atom label="Picture$7"/> </tuple>
+   <types> <type ID="8"/> <type ID="4"/> </types>
+</field>
+
+<field label="onDisplay" ID="10" parentID="8">
+   <tuple> <atom label="Museum$0"/> <atom label="Picture$6"/> </tuple>
+   <tuple> <atom label="Museum$0"/> <atom label="Picture$7"/> </tuple>
+   <types> <type ID="8"/> <type ID="4"/> </types>
+</field>
+
+<sig label="univ" ID="2" builtin="yes">
+</sig>
+
+</instance>
+
+</alloy>

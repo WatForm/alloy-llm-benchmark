@@ -16,6 +16,8 @@ from datetime import datetime
 from collections import defaultdict
 from pathlib import Path
 
+from syntax_utils import check_syntax, require_java_for_version
+
 
 TIMEOUT_SECONDS = 300
 COMPOSAT_TIMEOUT_SECONDS = 300
@@ -55,56 +57,6 @@ def run_command(cmd: list[str], cwd: Path | None = None, timeout: int = TIMEOUT_
     )
 
 
-def java_major_version(java_bin: Path) -> int | None:
-    try:
-        result = run_command([str(java_bin), "-version"], timeout=30)
-    except Exception:
-        return None
-
-    output = (result.stderr or "") + (result.stdout or "")
-    match = re.search(r'version "(\d+)(?:\.(\d+))?', output)
-    if not match:
-        return None
-
-    major = int(match.group(1))
-    if major == 1 and match.group(2):
-        return int(match.group(2))
-    return major
-
-
-def require_java_for_version(
-    major: int,
-    tool_name: str,
-    require_javac: bool = False,
-) -> tuple[Path, Path | None]:
-    env_name = f"JAVA_HOME_{major}"
-    env_home = os.environ.get(env_name)
-    if not env_home:
-        raise RuntimeError(
-            f"{env_name} is required for {tool_name}. "
-            f"Set it first, for example: export {env_name}=\"/path/to/jdk-{major}\""
-        )
-
-    java_bin = Path(env_home) / "bin" / "java"
-    if not java_bin.exists() or not os.access(java_bin, os.X_OK):
-        raise RuntimeError(f"{env_name} does not point to a valid Java binary: {java_bin}")
-
-    detected_major = java_major_version(java_bin)
-    if detected_major != major:
-        raise RuntimeError(
-            f"Java {major} is required for {tool_name}. "
-            f"Current {env_name}: {env_home}. This resolves to Java {detected_major}."
-        )
-
-    javac_bin: Path | None = None
-    if require_javac:
-        javac_bin = Path(env_home) / "bin" / "javac"
-        if not javac_bin.exists() or not os.access(javac_bin, os.X_OK):
-            raise RuntimeError(f"{env_name} does not provide a valid javac binary: {javac_bin}")
-
-    return java_bin, javac_bin
-
-
 def resolve_alloy_tmpdir() -> Path:
     alloy_tmpdir = os.environ.get("ALLOY_TMPDIR")
     if alloy_tmpdir:
@@ -115,38 +67,6 @@ def resolve_alloy_tmpdir() -> Path:
         return Path(tmpdir.rstrip("/")) / "alloy-benchmark"
 
     return Path("/tmp/alloy-benchmark")
-
-
-def check_syntax(model_file: Path, diff_jar: Path, java17_bin: Path) -> tuple[int, str]:
-    if not model_file.exists():
-        return 0, f"Missing generated file: {model_file}"
-
-    cmd = [
-        str(java17_bin),
-        "-cp",
-        str(diff_jar),
-        "org.alloytools.alloy.diff.ModuleDiff",
-        str(model_file),
-        str(model_file),
-        "SemDiff",
-        "1",
-        "false",
-        SOLVER,
-    ]
-
-    try:
-        result = run_command(cmd)
-    except subprocess.TimeoutExpired:
-        return 0, "Syntax check timed out"
-    except Exception as exc:
-        return 0, f"Syntax check failed: {exc}"
-
-    output = (result.stdout or "") + (result.stderr or "")
-    if result.returncode == 0 and "The two modules are equivalent for the given scope." in output:
-        return 1, "OK"
-
-    details = output.strip()
-    return 0, details if details else "Syntax check failed"
 
 
 def semdiff_implication_holds(
@@ -279,6 +199,94 @@ def discover_general_instances_by_scope(general_instances_root: Path, model_name
         grouped[scope].append(xml_path)
 
     return dict(sorted(grouped.items(), key=lambda item: item[0]))
+
+
+def discover_output_attempts(outputs_dir: Path, model_name: str) -> list[tuple[int, Path]]:
+    attempts: list[tuple[int, Path]] = []
+    pattern = re.compile(rf"{re.escape(model_name)}\.attempt(\d+)\.als$")
+    for path in sorted(outputs_dir.glob(f"{model_name}.attempt*.als")):
+        match = pattern.fullmatch(path.name)
+        if not match:
+            continue
+        attempts.append((int(match.group(1)), path))
+    return sorted(attempts, key=lambda item: item[0])
+
+
+def pick_final_generated_model(outputs_dir: Path, model_name: str) -> tuple[Path, list[tuple[int, Path]]]:
+    attempts = discover_output_attempts(outputs_dir, model_name)
+    if attempts:
+        return attempts[-1][1], attempts
+    return outputs_dir / f"{model_name}.als", []
+
+
+def compute_syntax_attempt_score(
+    model_name: str,
+    attempts: list[tuple[int, Path]],
+    final_model: Path,
+    diff_jar: Path,
+    java17_bin: Path,
+) -> dict:
+    # Legacy runs may only have model.als; treat that as a single attempt.
+    if not attempts:
+        syntax_score, syntax_msg = check_syntax(final_model, diff_jar, java17_bin)
+        tries_score = 3 if syntax_score == 1 else 0
+        return {
+            "score": tries_score,
+            "max": 3,
+            "first_valid_attempt": 1 if syntax_score == 1 else None,
+            "attempt_count": 1,
+            "attempts": [
+                {
+                    "attempt": 1,
+                    "file": str(final_model),
+                    "syntax_ok": syntax_score == 1,
+                    "message": syntax_msg,
+                }
+            ],
+            "final_syntax_ok": syntax_score == 1,
+            "final_syntax_message": syntax_msg,
+        }
+
+    attempt_rows: list[dict] = []
+    first_valid_attempt = None
+    final_syntax_ok = False
+    final_syntax_message = "Missing final attempt"
+
+    for attempt_num, attempt_path in attempts:
+        syntax_score, syntax_msg = check_syntax(attempt_path, diff_jar, java17_bin)
+        syntax_ok = syntax_score == 1
+        attempt_rows.append(
+            {
+                "attempt": attempt_num,
+                "file": str(attempt_path),
+                "syntax_ok": syntax_ok,
+                "message": syntax_msg,
+            }
+        )
+        if first_valid_attempt is None and syntax_ok:
+            first_valid_attempt = attempt_num
+        if attempt_path == final_model:
+            final_syntax_ok = syntax_ok
+            final_syntax_message = syntax_msg
+
+    if first_valid_attempt is None:
+        tries_score = 0
+    else:
+        tries_score = max(0, 4 - first_valid_attempt)
+
+    progress(
+        f"[{model_name}] syntax attempts: first valid attempt={first_valid_attempt}, tries score {tries_score}/3"
+    )
+
+    return {
+        "score": tries_score,
+        "max": 3,
+        "first_valid_attempt": first_valid_attempt,
+        "attempt_count": len(attempt_rows),
+        "attempts": attempt_rows,
+        "final_syntax_ok": final_syntax_ok,
+        "final_syntax_message": final_syntax_message,
+    }
 
 
 def strip_run_and_check_commands(model_text: str) -> str:
@@ -607,7 +615,9 @@ def score_output_general_instances_against_reference(
 
 def score_one_model(
     model_name: str,
+    outputs_dir: Path,
     generated_model: Path,
+    output_attempts: list[tuple[int, Path]],
     reference_model: Path,
     composat_instances_root: Path,
     general_instances_root: Path,
@@ -620,9 +630,19 @@ def score_one_model(
     composat_tmpdir: Path,
 ) -> dict:
     progress(f"[{model_name}] start scoring")
-    progress(f"[{model_name}] syntax check starting")
-    syntax_score, syntax_msg = check_syntax(generated_model, diff_jar, java17_bin)
-    progress(f"[{model_name}] syntax check result: {syntax_score}/1")
+    progress(f"[{model_name}] syntax attempt scoring starting")
+    syntax_attempt_score = compute_syntax_attempt_score(
+        model_name,
+        output_attempts,
+        generated_model,
+        diff_jar,
+        java17_bin,
+    )
+    final_syntax_valid = syntax_attempt_score["final_syntax_ok"]
+    progress(
+        f"[{model_name}] syntax attempt score result: "
+        f"{syntax_attempt_score['score']}/{syntax_attempt_score['max']}"
+    )
     composat_instances_by_scope = discover_instances_by_scope(composat_instances_root, model_name)
     general_instances_by_scope = discover_general_instances_by_scope(general_instances_root, model_name)
     composat_max_scope = max(composat_instances_by_scope.keys(), default=0)
@@ -651,7 +671,7 @@ def score_one_model(
     ringert_original_to_output_score = 0
     ringert_output_to_original_score = 0
 
-    if syntax_score == 1:
+    if final_syntax_valid:
         for scope in ringert_scopes:
             progress(f"[{model_name}] Ringert scope_{scope}/{ringert_max_scope}: checking implications")
             output_implies_original_ok, _ = semdiff_implication_holds(
@@ -683,7 +703,7 @@ def score_one_model(
                 f"output=>original={int(output_implies_original_ok)}/1"
             )
     else:
-        progress(f"[{model_name}] syntax invalid; Ringert and instance checks will score 0 where applicable")
+        progress(f"[{model_name}] final attempt syntax invalid; Ringert and instance checks will score 0 where applicable")
         for scope in ringert_scopes:
             ringert_output_to_original_by_scope.append({"scope": scope, "score": 0, "max": 1})
             ringert_original_to_output_by_scope.append({"scope": scope, "score": 0, "max": 1})
@@ -698,7 +718,7 @@ def score_one_model(
             f"[{model_name}] original=>output (CompoSAT): scope_{scope} validating {scope_max} instance(s)"
         )
         for idx, xml in enumerate(xml_files, start=1):
-            if syntax_score == 1:
+            if final_syntax_valid:
                 valid, _ = check_instance_valid(generated_model, xml, scripts_dir, alloy_jar_620, java17_bin)
                 if valid:
                     scope_valid += 1
@@ -724,7 +744,7 @@ def score_one_model(
             f"[{model_name}] original=>output (general): scope_{scope} validating {scope_max} instance(s)"
         )
         for idx, xml in enumerate(xml_files, start=1):
-            if syntax_score == 1:
+            if final_syntax_valid:
                 valid, _ = check_instance_valid(generated_model, xml, scripts_dir, alloy_jar_620, java17_bin)
                 if valid:
                     scope_valid += 1
@@ -778,7 +798,7 @@ def score_one_model(
     ringert_output_to_original_max = len(ringert_scopes)
 
     total_score = (
-        syntax_score
+        syntax_attempt_score["score"]
         + ringert_original_to_output_score
         + ringert_output_to_original_score
         + original_composat_instance_score
@@ -787,7 +807,7 @@ def score_one_model(
         + output_general_instance_result["score"]
     )
     total_max = (
-        1
+        syntax_attempt_score["max"]
         + ringert_original_to_output_max
         + ringert_output_to_original_max
         + original_composat_instance_max
@@ -800,9 +820,10 @@ def score_one_model(
 
     return {
         "model": model_name,
+        "outputs_dir": str(outputs_dir),
         "generated_file": str(generated_model),
         "reference_file": str(reference_model),
-        "syntax": {"score": syntax_score, "max": 1, "message": syntax_msg},
+        "syntax_attempts": syntax_attempt_score,
         "directions": {
             "original_to_output": {
                 "ringert": {
@@ -852,9 +873,24 @@ def build_report(results: list[dict]) -> str:
         lines.append(f"Model: {result['model']}")
         lines.append(f"  Generated: {result['generated_file']}")
         lines.append(f"  Reference: {result['reference_file']}")
-        lines.append(f"  Syntax: {result['syntax']['score']}/{result['syntax']['max']}")
-        if result["syntax"]["message"] != "OK":
-            lines.append(f"  Syntax detail: {result['syntax']['message']}")
+        syntax_attempts = result["syntax_attempts"]
+        lines.append(
+            f"  Syntax attempts score: {syntax_attempts['score']}/{syntax_attempts['max']} "
+            f"(first valid attempt: {syntax_attempts['first_valid_attempt']})"
+        )
+        lines.append(
+            f"  Final attempt syntax valid: {'yes' if syntax_attempts['final_syntax_ok'] else 'no'}"
+        )
+        if syntax_attempts["final_syntax_message"] != "OK":
+            lines.append(f"  Final attempt syntax detail: {syntax_attempts['final_syntax_message']}")
+        lines.append("  Attempt history:")
+        for attempt in syntax_attempts["attempts"]:
+            lines.append(
+                f"    attempt_{attempt['attempt']}: "
+                f"{'OK' if attempt['syntax_ok'] else 'INVALID'} ({attempt['file']})"
+            )
+            if not attempt["syntax_ok"] and attempt["message"]:
+                lines.append(f"      detail: {attempt['message']}")
 
         original_to_output = result["directions"]["original_to_output"]
         output_to_original = result["directions"]["output_to_original"]
@@ -1037,10 +1073,19 @@ def main() -> int:
     def run_one_model(model_idx: int, reference_model: Path) -> dict:
         model_name = reference_model.stem
         progress(f"Model {model_idx}/{len(reference_models)}: {model_name}")
-        generated_model = outputs_dir / f"{model_name}.als"
+        generated_model, output_attempts = pick_final_generated_model(outputs_dir, model_name)
+        if output_attempts:
+            progress(
+                f"[{model_name}] scoring final attempt file {generated_model.name} "
+                f"from {len(output_attempts)} recorded attempt(s)"
+            )
+        else:
+            progress(f"[{model_name}] no attempt history found; scoring legacy file {generated_model.name}")
         result = score_one_model(
             model_name=model_name,
+            outputs_dir=outputs_dir,
             generated_model=generated_model,
+            output_attempts=output_attempts,
             reference_model=reference_model,
             composat_instances_root=instances_dir,
             general_instances_root=general_instances_dir,

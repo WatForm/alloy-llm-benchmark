@@ -1,0 +1,84 @@
+<alloy builddate="unknown">
+
+
+<bounds> 
+<upperbound name="Int/next"  arity="2">
+</upperbound>
+<upperbound name="seq/Int"  arity="1">
+</upperbound>
+<upperbound name="String"  arity="1">
+</upperbound>
+<upperbound name="this/Address"  arity="1">
+   <tuple> <atom label="Address$0"/> </tuple>
+   <tuple> <atom label="Name$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Name"  arity="1">
+   <tuple> <atom label="Address$0"/> </tuple>
+   <tuple> <atom label="Name$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Listing"  arity="1">
+   <tuple> <atom label="Address$0"/> </tuple>
+   <tuple> <atom label="Name$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Book"  arity="1">
+   <tuple> <atom label="Book$0"/> </tuple>
+   <tuple> <atom label="unused3"/> </tuple>
+</upperbound>
+<upperbound name="this/Book.entry"  arity="2">
+   <tuple> <atom label="Book$0"/> <atom label="Address$0"/> </tuple>
+   <tuple> <atom label="Book$0"/> <atom label="Name$0"/> </tuple>
+   <tuple> <atom label="unused3"/> <atom label="Address$0"/> </tuple>
+   <tuple> <atom label="unused3"/> <atom label="Name$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Book.listed"  arity="3">
+   <tuple> <atom label="Book$0"/> <atom label="Address$0"/> <atom label="Address$0"/> </tuple>
+   <tuple> <atom label="Book$0"/> <atom label="Address$0"/> <atom label="Name$0"/> </tuple>
+   <tuple> <atom label="Book$0"/> <atom label="Name$0"/> <atom label="Address$0"/> </tuple>
+   <tuple> <atom label="Book$0"/> <atom label="Name$0"/> <atom label="Name$0"/> </tuple>
+   <tuple> <atom label="unused3"/> <atom label="Address$0"/> <atom label="Address$0"/> </tuple>
+   <tuple> <atom label="unused3"/> <atom label="Address$0"/> <atom label="Name$0"/> </tuple>
+   <tuple> <atom label="unused3"/> <atom label="Name$0"/> <atom label="Address$0"/> </tuple>
+   <tuple> <atom label="unused3"/> <atom label="Name$0"/> <atom label="Name$0"/> </tuple>
+</upperbound>
+</bounds><instance bitwidth="0" maxseq="0" command="Run run$1 for 2" filename="">
+
+<sig label="seq/Int" ID="0" parentID="1" builtin="yes">
+</sig>
+
+<sig label="Int" ID="1" parentID="2" builtin="yes">
+</sig>
+
+<sig label="String" ID="3" parentID="2" builtin="yes">
+</sig>
+
+<sig label="this/Address" ID="4" parentID="5">
+   <atom label="Address$0"/>
+</sig>
+
+<sig label="this/Name" ID="6" parentID="5">
+   <atom label="Name$0"/>
+</sig>
+
+<sig label="this/Listing" ID="5" parentID="2" abstract="yes">
+</sig>
+
+<sig label="this/Book" ID="7" parentID="2">
+   <atom label="Book$0"/>
+</sig>
+
+<field label="entry" ID="8" parentID="7">
+   <tuple> <atom label="Book$0"/> <atom label="Name$0"/> </tuple>
+   <types> <type ID="7"/> <type ID="6"/> </types>
+</field>
+
+<field label="listed" ID="9" parentID="7">
+   <tuple> <atom label="Book$0"/> <atom label="Name$0"/> <atom label="Address$0"/> </tuple>
+   <types> <type ID="7"/> <type ID="6"/> <type ID="5"/> </types>
+</field>
+
+<sig label="univ" ID="2" builtin="yes">
+</sig>
+
+</instance>
+
+</alloy>

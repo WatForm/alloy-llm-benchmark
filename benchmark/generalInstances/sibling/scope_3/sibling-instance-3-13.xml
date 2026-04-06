@@ -1,0 +1,59 @@
+<alloy builddate="2025-03-10T15:06:21.150Z">
+
+<instance bitwidth="4" maxseq="3" mintrace="-1" maxtrace="-1" command="Run run$2 for 3 but exactly 3 Father, exactly 3 Mother, exactly 3 Child" filename="" tracelength="1" looplength="1">
+
+<sig label="seq/Int" ID="0" parentID="1" builtin="yes">
+</sig>
+
+<sig label="Int" ID="1" parentID="2" builtin="yes">
+</sig>
+
+<sig label="String" ID="3" parentID="2" builtin="yes">
+</sig>
+
+<sig label="this/Father" ID="4" parentID="2">
+   <atom label="Father$0"/>
+   <atom label="Father$1"/>
+   <atom label="Father$2"/>
+</sig>
+
+<sig label="this/Mother" ID="5" parentID="2">
+   <atom label="Mother$0"/>
+   <atom label="Mother$1"/>
+   <atom label="Mother$2"/>
+</sig>
+
+<sig label="this/Child" ID="6" parentID="2">
+   <atom label="Child$0"/>
+   <atom label="Child$1"/>
+   <atom label="Child$2"/>
+</sig>
+
+<field label="father" ID="7" parentID="6">
+   <tuple> <atom label="Child$0"/> <atom label="Father$2"/> </tuple>
+   <tuple> <atom label="Child$1"/> <atom label="Father$1"/> </tuple>
+   <tuple> <atom label="Child$2"/> <atom label="Father$2"/> </tuple>
+   <types> <type ID="6"/> <type ID="4"/> </types>
+</field>
+
+<field label="mother" ID="8" parentID="6">
+   <tuple> <atom label="Child$0"/> <atom label="Mother$2"/> </tuple>
+   <tuple> <atom label="Child$1"/> <atom label="Mother$1"/> </tuple>
+   <tuple> <atom label="Child$2"/> <atom label="Mother$0"/> </tuple>
+   <types> <type ID="6"/> <type ID="5"/> </types>
+</field>
+
+<field label="brothers" ID="9" parentID="6">
+   <tuple> <atom label="Child$0"/> <atom label="Child$2"/> </tuple>
+   <tuple> <atom label="Child$1"/> <atom label="Child$0"/> </tuple>
+   <tuple> <atom label="Child$1"/> <atom label="Child$2"/> </tuple>
+   <tuple> <atom label="Child$2"/> <atom label="Child$1"/> </tuple>
+   <types> <type ID="6"/> <type ID="6"/> </types>
+</field>
+
+<sig label="univ" ID="2" builtin="yes">
+</sig>
+
+</instance>
+
+</alloy>

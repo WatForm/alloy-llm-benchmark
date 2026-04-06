@@ -1,0 +1,268 @@
+<alloy builddate="unknown">
+
+
+<bounds> 
+<upperbound name="Int/next"  arity="2">
+</upperbound>
+<upperbound name="seq/Int"  arity="1">
+</upperbound>
+<upperbound name="String"  arity="1">
+</upperbound>
+<upperbound name="this/Coffee"  arity="1">
+   <tuple> <atom label="Coffee$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Substance"  arity="1">
+   <tuple> <atom label="Coffee$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Cup"  arity="1">
+   <tuple> <atom label="Cup$0"/> </tuple>
+</upperbound>
+<upperbound name="this/ThermalThing"  arity="1">
+   <tuple> <atom label="Coffee$0"/> </tuple>
+   <tuple> <atom label="Cup$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Thing"  arity="1">
+   <tuple> <atom label="Coffee$0"/> </tuple>
+   <tuple> <atom label="Cup$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Thing.touches"  arity="2">
+   <tuple> <atom label="Coffee$0"/> <atom label="Coffee$0"/> </tuple>
+   <tuple> <atom label="Coffee$0"/> <atom label="Cup$0"/> </tuple>
+   <tuple> <atom label="Cup$0"/> <atom label="Coffee$0"/> </tuple>
+   <tuple> <atom label="Cup$0"/> <atom label="Cup$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Thing.hasProperty"  arity="2">
+   <tuple> <atom label="Coffee$0"/> <atom label="HEAT_OF_COFFEE$0"/> </tuple>
+   <tuple> <atom label="Coffee$0"/> <atom label="HEAT_OF_CUP$0"/> </tuple>
+   <tuple> <atom label="Coffee$0"/> <atom label="TEMPERATURE_OF_COFFEE$0"/> </tuple>
+   <tuple> <atom label="Coffee$0"/> <atom label="TEMPERATURE_OF_CUP$0"/> </tuple>
+   <tuple> <atom label="Cup$0"/> <atom label="HEAT_OF_COFFEE$0"/> </tuple>
+   <tuple> <atom label="Cup$0"/> <atom label="HEAT_OF_CUP$0"/> </tuple>
+   <tuple> <atom label="Cup$0"/> <atom label="TEMPERATURE_OF_COFFEE$0"/> </tuple>
+   <tuple> <atom label="Cup$0"/> <atom label="TEMPERATURE_OF_CUP$0"/> </tuple>
+</upperbound>
+<upperbound name="this/HEAT_OF_COFFEE"  arity="1">
+   <tuple> <atom label="HEAT_OF_COFFEE$0"/> </tuple>
+</upperbound>
+<upperbound name="this/HEAT_OF_CUP"  arity="1">
+   <tuple> <atom label="HEAT_OF_CUP$0"/> </tuple>
+</upperbound>
+<upperbound name="this/HEAT"  arity="1">
+   <tuple> <atom label="HEAT_OF_COFFEE$0"/> </tuple>
+   <tuple> <atom label="HEAT_OF_CUP$0"/> </tuple>
+</upperbound>
+<upperbound name="this/HEAT.greaterThan"  arity="2">
+   <tuple> <atom label="HEAT_OF_COFFEE$0"/> <atom label="HEAT_OF_COFFEE$0"/> </tuple>
+   <tuple> <atom label="HEAT_OF_COFFEE$0"/> <atom label="HEAT_OF_CUP$0"/> </tuple>
+   <tuple> <atom label="HEAT_OF_CUP$0"/> <atom label="HEAT_OF_COFFEE$0"/> </tuple>
+   <tuple> <atom label="HEAT_OF_CUP$0"/> <atom label="HEAT_OF_CUP$0"/> </tuple>
+</upperbound>
+<upperbound name="this/TEMPERATURE_OF_COFFEE"  arity="1">
+   <tuple> <atom label="TEMPERATURE_OF_COFFEE$0"/> </tuple>
+</upperbound>
+<upperbound name="this/TEMPERATURE_OF_CUP"  arity="1">
+   <tuple> <atom label="TEMPERATURE_OF_CUP$0"/> </tuple>
+</upperbound>
+<upperbound name="this/TEMPERATURE"  arity="1">
+   <tuple> <atom label="TEMPERATURE_OF_COFFEE$0"/> </tuple>
+   <tuple> <atom label="TEMPERATURE_OF_CUP$0"/> </tuple>
+</upperbound>
+<upperbound name="this/ThermalProperty"  arity="1">
+   <tuple> <atom label="HEAT_OF_COFFEE$0"/> </tuple>
+   <tuple> <atom label="HEAT_OF_CUP$0"/> </tuple>
+   <tuple> <atom label="TEMPERATURE_OF_COFFEE$0"/> </tuple>
+   <tuple> <atom label="TEMPERATURE_OF_CUP$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Property"  arity="1">
+   <tuple> <atom label="HEAT_OF_COFFEE$0"/> </tuple>
+   <tuple> <atom label="HEAT_OF_CUP$0"/> </tuple>
+   <tuple> <atom label="TEMPERATURE_OF_COFFEE$0"/> </tuple>
+   <tuple> <atom label="TEMPERATURE_OF_CUP$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Property.influences"  arity="2">
+   <tuple> <atom label="HEAT_OF_COFFEE$0"/> <atom label="HEAT_OF_COFFEE$0"/> </tuple>
+   <tuple> <atom label="HEAT_OF_COFFEE$0"/> <atom label="HEAT_OF_CUP$0"/> </tuple>
+   <tuple> <atom label="HEAT_OF_COFFEE$0"/> <atom label="TEMPERATURE_OF_COFFEE$0"/> </tuple>
+   <tuple> <atom label="HEAT_OF_COFFEE$0"/> <atom label="TEMPERATURE_OF_CUP$0"/> </tuple>
+   <tuple> <atom label="HEAT_OF_CUP$0"/> <atom label="HEAT_OF_COFFEE$0"/> </tuple>
+   <tuple> <atom label="HEAT_OF_CUP$0"/> <atom label="HEAT_OF_CUP$0"/> </tuple>
+   <tuple> <atom label="HEAT_OF_CUP$0"/> <atom label="TEMPERATURE_OF_COFFEE$0"/> </tuple>
+   <tuple> <atom label="HEAT_OF_CUP$0"/> <atom label="TEMPERATURE_OF_CUP$0"/> </tuple>
+   <tuple> <atom label="TEMPERATURE_OF_COFFEE$0"/> <atom label="HEAT_OF_COFFEE$0"/> </tuple>
+   <tuple> <atom label="TEMPERATURE_OF_COFFEE$0"/> <atom label="HEAT_OF_CUP$0"/> </tuple>
+   <tuple> <atom label="TEMPERATURE_OF_COFFEE$0"/> <atom label="TEMPERATURE_OF_COFFEE$0"/> </tuple>
+   <tuple> <atom label="TEMPERATURE_OF_COFFEE$0"/> <atom label="TEMPERATURE_OF_CUP$0"/> </tuple>
+   <tuple> <atom label="TEMPERATURE_OF_CUP$0"/> <atom label="HEAT_OF_COFFEE$0"/> </tuple>
+   <tuple> <atom label="TEMPERATURE_OF_CUP$0"/> <atom label="HEAT_OF_CUP$0"/> </tuple>
+   <tuple> <atom label="TEMPERATURE_OF_CUP$0"/> <atom label="TEMPERATURE_OF_COFFEE$0"/> </tuple>
+   <tuple> <atom label="TEMPERATURE_OF_CUP$0"/> <atom label="TEMPERATURE_OF_CUP$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Property.state"  arity="2">
+   <tuple> <atom label="HEAT_OF_COFFEE$0"/> <atom label="DECREASING$0"/> </tuple>
+   <tuple> <atom label="HEAT_OF_COFFEE$0"/> <atom label="INCREASING$0"/> </tuple>
+   <tuple> <atom label="HEAT_OF_COFFEE$0"/> <atom label="NOCHANGE$0"/> </tuple>
+   <tuple> <atom label="HEAT_OF_CUP$0"/> <atom label="DECREASING$0"/> </tuple>
+   <tuple> <atom label="HEAT_OF_CUP$0"/> <atom label="INCREASING$0"/> </tuple>
+   <tuple> <atom label="HEAT_OF_CUP$0"/> <atom label="NOCHANGE$0"/> </tuple>
+   <tuple> <atom label="TEMPERATURE_OF_COFFEE$0"/> <atom label="DECREASING$0"/> </tuple>
+   <tuple> <atom label="TEMPERATURE_OF_COFFEE$0"/> <atom label="INCREASING$0"/> </tuple>
+   <tuple> <atom label="TEMPERATURE_OF_COFFEE$0"/> <atom label="NOCHANGE$0"/> </tuple>
+   <tuple> <atom label="TEMPERATURE_OF_CUP$0"/> <atom label="DECREASING$0"/> </tuple>
+   <tuple> <atom label="TEMPERATURE_OF_CUP$0"/> <atom label="INCREASING$0"/> </tuple>
+   <tuple> <atom label="TEMPERATURE_OF_CUP$0"/> <atom label="NOCHANGE$0"/> </tuple>
+</upperbound>
+<upperbound name="this/INCREASING"  arity="1">
+   <tuple> <atom label="INCREASING$0"/> </tuple>
+</upperbound>
+<upperbound name="this/DECREASING"  arity="1">
+   <tuple> <atom label="DECREASING$0"/> </tuple>
+</upperbound>
+<upperbound name="this/NOCHANGE"  arity="1">
+   <tuple> <atom label="NOCHANGE$0"/> </tuple>
+</upperbound>
+<upperbound name="this/QuallitativeState"  arity="1">
+   <tuple> <atom label="DECREASING$0"/> </tuple>
+   <tuple> <atom label="INCREASING$0"/> </tuple>
+   <tuple> <atom label="NOCHANGE$0"/> </tuple>
+</upperbound>
+<upperbound name="this/HeatFlow"  arity="1">
+   <tuple> <atom label="HeatFlow$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Process"  arity="1">
+   <tuple> <atom label="HeatFlow$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Process.increases"  arity="2">
+   <tuple> <atom label="HeatFlow$0"/> <atom label="HEAT_OF_COFFEE$0"/> </tuple>
+   <tuple> <atom label="HeatFlow$0"/> <atom label="HEAT_OF_CUP$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Process.decreases"  arity="2">
+   <tuple> <atom label="HeatFlow$0"/> <atom label="HEAT_OF_COFFEE$0"/> </tuple>
+   <tuple> <atom label="HeatFlow$0"/> <atom label="HEAT_OF_CUP$0"/> </tuple>
+</upperbound>
+</bounds><instance bitwidth="0" maxseq="0" command="Run run$1 for 1" filename="">
+
+<sig label="seq/Int" ID="0" parentID="1" builtin="yes">
+</sig>
+
+<sig label="Int" ID="1" parentID="2" builtin="yes">
+</sig>
+
+<sig label="String" ID="3" parentID="2" builtin="yes">
+</sig>
+
+<sig label="this/Coffee" ID="4" parentID="5" one="yes">
+   <atom label="Coffee$0"/>
+</sig>
+
+<sig label="this/Substance" ID="5" parentID="6" one="yes">
+</sig>
+
+<sig label="this/Cup" ID="7" parentID="6" one="yes">
+   <atom label="Cup$0"/>
+</sig>
+
+<sig label="this/ThermalThing" ID="6" parentID="8">
+</sig>
+
+<sig label="this/Thing" ID="8" parentID="2" abstract="yes">
+</sig>
+
+<field label="touches" ID="9" parentID="8">
+   <tuple> <atom label="Coffee$0"/> <atom label="Cup$0"/> </tuple>
+   <tuple> <atom label="Cup$0"/> <atom label="Coffee$0"/> </tuple>
+   <types> <type ID="8"/> <type ID="8"/> </types>
+</field>
+
+<field label="hasProperty" ID="10" parentID="8">
+   <tuple> <atom label="Coffee$0"/> <atom label="HEAT_OF_COFFEE$0"/> </tuple>
+   <tuple> <atom label="Coffee$0"/> <atom label="TEMPERATURE_OF_COFFEE$0"/> </tuple>
+   <tuple> <atom label="Cup$0"/> <atom label="HEAT_OF_CUP$0"/> </tuple>
+   <tuple> <atom label="Cup$0"/> <atom label="TEMPERATURE_OF_CUP$0"/> </tuple>
+   <types> <type ID="8"/> <type ID="11"/> </types>
+</field>
+
+<sig label="this/HEAT_OF_COFFEE" ID="12" parentID="13" one="yes">
+   <atom label="HEAT_OF_COFFEE$0"/>
+</sig>
+
+<sig label="this/HEAT_OF_CUP" ID="14" parentID="13" one="yes">
+   <atom label="HEAT_OF_CUP$0"/>
+</sig>
+
+<sig label="this/HEAT" ID="13" parentID="15">
+</sig>
+
+<field label="greaterThan" ID="16" parentID="13">
+   <tuple> <atom label="HEAT_OF_CUP$0"/> <atom label="HEAT_OF_COFFEE$0"/> </tuple>
+   <types> <type ID="13"/> <type ID="13"/> </types>
+</field>
+
+<sig label="this/TEMPERATURE_OF_COFFEE" ID="17" parentID="18" one="yes">
+   <atom label="TEMPERATURE_OF_COFFEE$0"/>
+</sig>
+
+<sig label="this/TEMPERATURE_OF_CUP" ID="19" parentID="18" one="yes">
+   <atom label="TEMPERATURE_OF_CUP$0"/>
+</sig>
+
+<sig label="this/TEMPERATURE" ID="18" parentID="15">
+</sig>
+
+<sig label="this/ThermalProperty" ID="15" parentID="11">
+</sig>
+
+<sig label="this/Property" ID="11" parentID="2" abstract="yes">
+</sig>
+
+<field label="influences" ID="20" parentID="11">
+   <tuple> <atom label="HEAT_OF_COFFEE$0"/> <atom label="TEMPERATURE_OF_COFFEE$0"/> </tuple>
+   <tuple> <atom label="HEAT_OF_CUP$0"/> <atom label="TEMPERATURE_OF_CUP$0"/> </tuple>
+   <types> <type ID="11"/> <type ID="11"/> </types>
+</field>
+
+<field label="state" ID="21" parentID="11">
+   <tuple> <atom label="HEAT_OF_COFFEE$0"/> <atom label="INCREASING$0"/> </tuple>
+   <tuple> <atom label="HEAT_OF_CUP$0"/> <atom label="DECREASING$0"/> </tuple>
+   <tuple> <atom label="TEMPERATURE_OF_COFFEE$0"/> <atom label="INCREASING$0"/> </tuple>
+   <tuple> <atom label="TEMPERATURE_OF_CUP$0"/> <atom label="DECREASING$0"/> </tuple>
+   <types> <type ID="11"/> <type ID="22"/> </types>
+</field>
+
+<sig label="this/INCREASING" ID="23" parentID="22" one="yes">
+   <atom label="INCREASING$0"/>
+</sig>
+
+<sig label="this/DECREASING" ID="24" parentID="22" one="yes">
+   <atom label="DECREASING$0"/>
+</sig>
+
+<sig label="this/NOCHANGE" ID="25" parentID="22" one="yes">
+   <atom label="NOCHANGE$0"/>
+</sig>
+
+<sig label="this/QuallitativeState" ID="22" parentID="2" abstract="yes">
+</sig>
+
+<sig label="this/HeatFlow" ID="26" parentID="27" one="yes">
+   <atom label="HeatFlow$0"/>
+</sig>
+
+<sig label="this/Process" ID="27" parentID="2" abstract="yes">
+</sig>
+
+<field label="increases" ID="28" parentID="27">
+   <tuple> <atom label="HeatFlow$0"/> <atom label="HEAT_OF_COFFEE$0"/> </tuple>
+   <types> <type ID="27"/> <type ID="13"/> </types>
+</field>
+
+<field label="decreases" ID="29" parentID="27">
+   <tuple> <atom label="HeatFlow$0"/> <atom label="HEAT_OF_CUP$0"/> </tuple>
+   <types> <type ID="27"/> <type ID="13"/> </types>
+</field>
+
+<sig label="univ" ID="2" builtin="yes">
+</sig>
+
+</instance>
+
+</alloy>

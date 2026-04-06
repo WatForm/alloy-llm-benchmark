@@ -129,23 +129,23 @@
 
 <field label="derivationOf" ID="5" parentID="4">
    <tuple> <atom label="StoredModel$1"/> <atom label="StoredModel$0"/> </tuple>
-   <tuple> <atom label="StoredModel$2"/> <atom label="StoredModel$1"/> </tuple>
+   <tuple> <atom label="StoredModel$2"/> <atom label="StoredModel$0"/> </tuple>
    <types> <type ID="4"/> <type ID="4"/> </types>
 </field>
 
 <field label="public" ID="6" parentID="4">
    <tuple> <atom label="StoredModel$0"/> <atom label="Link$1"/> </tuple>
-   <tuple> <atom label="StoredModel$1"/> <atom label="Link$0"/> </tuple>
+   <tuple> <atom label="StoredModel$2"/> <atom label="Link$0"/> </tuple>
    <types> <type ID="4"/> <type ID="7"/> </types>
 </field>
 
 <field label="secret" ID="8" parentID="4">
-   <tuple> <atom label="StoredModel$0"/> <atom label="Link$1"/> </tuple>
+   <tuple> <atom label="StoredModel$2"/> <atom label="Link$0"/> </tuple>
    <types> <type ID="4"/> <type ID="7"/> </types>
 </field>
 
 <field label="command" ID="9" parentID="4">
-   <tuple> <atom label="StoredModel$2"/> <atom label="Command$0"/> </tuple>
+   <tuple> <atom label="StoredModel$1"/> <atom label="Command$0"/> </tuple>
    <types> <type ID="4"/> <type ID="10"/> </types>
 </field>
 
@@ -177,8 +177,6 @@
 </sig>
 
 <sig label="this/Secret" ID="15">
-   <atom label="StoredModel$0"/>
-   <atom label="StoredModel$1"/>
    <atom label="StoredModel$2"/>
    <type ID="4"/>
 </sig>

@@ -47,13 +47,13 @@
    <tuple> <atom label="StoredModel$2"/> <atom label="Link$2"/> </tuple>
 </upperbound>
 <upperbound name="this/StoredModel.command"  arity="2">
-   <tuple> <atom label="StoredModel$0"/> <atom label="Command$0"/> </tuple>
+   <tuple> <atom label="StoredModel$0"/> <atom label="unused8"/> </tuple>
    <tuple> <atom label="StoredModel$0"/> <atom label="unused9"/> </tuple>
    <tuple> <atom label="StoredModel$0"/> <atom label="unused10"/> </tuple>
-   <tuple> <atom label="StoredModel$1"/> <atom label="Command$0"/> </tuple>
+   <tuple> <atom label="StoredModel$1"/> <atom label="unused8"/> </tuple>
    <tuple> <atom label="StoredModel$1"/> <atom label="unused9"/> </tuple>
    <tuple> <atom label="StoredModel$1"/> <atom label="unused10"/> </tuple>
-   <tuple> <atom label="StoredModel$2"/> <atom label="Command$0"/> </tuple>
+   <tuple> <atom label="StoredModel$2"/> <atom label="unused8"/> </tuple>
    <tuple> <atom label="StoredModel$2"/> <atom label="unused9"/> </tuple>
    <tuple> <atom label="StoredModel$2"/> <atom label="unused10"/> </tuple>
 </upperbound>
@@ -63,44 +63,44 @@
    <tuple> <atom label="Link$2"/> </tuple>
 </upperbound>
 <upperbound name="this/Command"  arity="1">
-   <tuple> <atom label="Command$0"/> </tuple>
+   <tuple> <atom label="unused8"/> </tuple>
    <tuple> <atom label="unused9"/> </tuple>
    <tuple> <atom label="unused10"/> </tuple>
 </upperbound>
 <upperbound name="this/Instance"  arity="1">
+   <tuple> <atom label="unused6"/> </tuple>
    <tuple> <atom label="unused7"/> </tuple>
-   <tuple> <atom label="unused8"/> </tuple>
    <tuple> <atom label="unused11"/> </tuple>
 </upperbound>
 <upperbound name="this/Instance.instanceOf"  arity="2">
-   <tuple> <atom label="unused7"/> <atom label="Command$0"/> </tuple>
+   <tuple> <atom label="unused6"/> <atom label="unused8"/> </tuple>
+   <tuple> <atom label="unused6"/> <atom label="unused9"/> </tuple>
+   <tuple> <atom label="unused6"/> <atom label="unused10"/> </tuple>
+   <tuple> <atom label="unused7"/> <atom label="unused8"/> </tuple>
    <tuple> <atom label="unused7"/> <atom label="unused9"/> </tuple>
    <tuple> <atom label="unused7"/> <atom label="unused10"/> </tuple>
-   <tuple> <atom label="unused8"/> <atom label="Command$0"/> </tuple>
-   <tuple> <atom label="unused8"/> <atom label="unused9"/> </tuple>
-   <tuple> <atom label="unused8"/> <atom label="unused10"/> </tuple>
-   <tuple> <atom label="unused11"/> <atom label="Command$0"/> </tuple>
+   <tuple> <atom label="unused11"/> <atom label="unused8"/> </tuple>
    <tuple> <atom label="unused11"/> <atom label="unused9"/> </tuple>
    <tuple> <atom label="unused11"/> <atom label="unused10"/> </tuple>
 </upperbound>
 <upperbound name="this/Instance.model"  arity="2">
+   <tuple> <atom label="unused6"/> <atom label="StoredModel$0"/> </tuple>
+   <tuple> <atom label="unused6"/> <atom label="StoredModel$1"/> </tuple>
+   <tuple> <atom label="unused6"/> <atom label="StoredModel$2"/> </tuple>
    <tuple> <atom label="unused7"/> <atom label="StoredModel$0"/> </tuple>
    <tuple> <atom label="unused7"/> <atom label="StoredModel$1"/> </tuple>
    <tuple> <atom label="unused7"/> <atom label="StoredModel$2"/> </tuple>
-   <tuple> <atom label="unused8"/> <atom label="StoredModel$0"/> </tuple>
-   <tuple> <atom label="unused8"/> <atom label="StoredModel$1"/> </tuple>
-   <tuple> <atom label="unused8"/> <atom label="StoredModel$2"/> </tuple>
    <tuple> <atom label="unused11"/> <atom label="StoredModel$0"/> </tuple>
    <tuple> <atom label="unused11"/> <atom label="StoredModel$1"/> </tuple>
    <tuple> <atom label="unused11"/> <atom label="StoredModel$2"/> </tuple>
 </upperbound>
 <upperbound name="this/Instance.link"  arity="2">
+   <tuple> <atom label="unused6"/> <atom label="Link$0"/> </tuple>
+   <tuple> <atom label="unused6"/> <atom label="Link$1"/> </tuple>
+   <tuple> <atom label="unused6"/> <atom label="Link$2"/> </tuple>
    <tuple> <atom label="unused7"/> <atom label="Link$0"/> </tuple>
    <tuple> <atom label="unused7"/> <atom label="Link$1"/> </tuple>
    <tuple> <atom label="unused7"/> <atom label="Link$2"/> </tuple>
-   <tuple> <atom label="unused8"/> <atom label="Link$0"/> </tuple>
-   <tuple> <atom label="unused8"/> <atom label="Link$1"/> </tuple>
-   <tuple> <atom label="unused8"/> <atom label="Link$2"/> </tuple>
    <tuple> <atom label="unused11"/> <atom label="Link$0"/> </tuple>
    <tuple> <atom label="unused11"/> <atom label="Link$1"/> </tuple>
    <tuple> <atom label="unused11"/> <atom label="Link$2"/> </tuple>
@@ -128,7 +128,7 @@
 </sig>
 
 <field label="derivationOf" ID="5" parentID="4">
-   <tuple> <atom label="StoredModel$1"/> <atom label="StoredModel$0"/> </tuple>
+   <tuple> <atom label="StoredModel$1"/> <atom label="StoredModel$2"/> </tuple>
    <tuple> <atom label="StoredModel$2"/> <atom label="StoredModel$0"/> </tuple>
    <types> <type ID="4"/> <type ID="4"/> </types>
 </field>
@@ -136,16 +136,18 @@
 <field label="public" ID="6" parentID="4">
    <tuple> <atom label="StoredModel$0"/> <atom label="Link$2"/> </tuple>
    <tuple> <atom label="StoredModel$1"/> <atom label="Link$1"/> </tuple>
+   <tuple> <atom label="StoredModel$2"/> <atom label="Link$0"/> </tuple>
    <types> <type ID="4"/> <type ID="7"/> </types>
 </field>
 
 <field label="secret" ID="8" parentID="4">
-   <tuple> <atom label="StoredModel$1"/> <atom label="Link$0"/> </tuple>
+   <tuple> <atom label="StoredModel$0"/> <atom label="Link$2"/> </tuple>
+   <tuple> <atom label="StoredModel$1"/> <atom label="Link$1"/> </tuple>
+   <tuple> <atom label="StoredModel$2"/> <atom label="Link$0"/> </tuple>
    <types> <type ID="4"/> <type ID="7"/> </types>
 </field>
 
 <field label="command" ID="9" parentID="4">
-   <tuple> <atom label="StoredModel$2"/> <atom label="Command$0"/> </tuple>
    <types> <type ID="4"/> <type ID="10"/> </types>
 </field>
 
@@ -156,7 +158,6 @@
 </sig>
 
 <sig label="this/Command" ID="10" parentID="2">
-   <atom label="Command$0"/>
 </sig>
 
 <sig label="this/Instance" ID="11" parentID="2">
@@ -178,6 +179,7 @@
 </sig>
 
 <sig label="this/Secret" ID="15">
+   <atom label="StoredModel$0"/>
    <atom label="StoredModel$1"/>
    <atom label="StoredModel$2"/>
    <type ID="4"/>

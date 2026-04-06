@@ -1,13 +1,13 @@
-This Alloy model contains three sets known as "signatures": Vertex, Joint, and End. Vertex is an abstract signature, which can be extended to other signatures, namely Joint and End. Both Joint and End inherit characteristics from Vertex. Each Vertex has at most one left vertex and at most one right vertex, both of which are Vertices as well.
+This model represents a system of nodes or "Vertices". There are two types of vertices: "Joint" and "End". All "Vertices" are either a "Joint" or an "End". Each vertex may have a left and right connection to other vertices.
 
-The model also includes three fact constraints: 
+There are several constraints in this system:
 
-1. Regarding ends, each End object must either only be connected to a right vertex (leaving its left vertex unoccupied), such that it should be the leftward vertex of its right vertex, or it must only be connected to a left vertex (leaving its right vertex unoccupied), such that it should be the rightward vertex of its left vertex. 
+- "End" vertices may only have one connection, either to the left or the right. If the connection is to the left, then this "End" vertex is also the left-connected vertex of the right-connected vertex of the "End", and vice versa.
 
-2. Regarding joints, each Joint object must be simultaneously connected to both a right and a left vertex, such that it is the rightward vertex of its left vertex, leftward vertex of its right vertex, and the left vertex cannot be the same as the right vertex.
+- "Joint" vertices must have two connections, one to the left and one to the right. Furthermore, the "Joint" vertex is the left-connected vertex of the right-connected vertex of the joint and the right-connected vertex of the left-connected vertex of the joint. The left-connected and right-connected vertices for a joint cannot be the same.
 
-3. Regarding vertices, each Vertex object must be able to reach any other vertex by traversing either the left or right relationships. That means, the Vertex set less any given vertex should be equal to the set of vertices that can be reached by repetitively following the left or right relationship from the given vertex.
+- All vertices, except for the current vertex, can be reached by following a series of left or right connections from the current vertex.
 
-The model also contains a helper function called 'neighbors'. Given a Vertex, the 'neighbors' function will return a set of Vertices that are either to the left or right of the input Vertex.
+The model includes a helper function, "neighbors", which returns the set of vertices directly connected to a given vertex.
 
-Lastly, the model includes a predicate and run command. The predicate, 'show', checks that the number of Vertices is greater than 0. The run command will execute this 'show' predicate for a maximum scope of 5.
+Lastly, the model includes a predicate called "show", which specifies a condition that the total number of vertices is greater than zero. An Alloy command is provided to execute the "show" predicate with a scope of 5 vertices.

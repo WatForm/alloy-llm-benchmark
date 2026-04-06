@@ -1,25 +1,25 @@
-This model is a representation of mark and sweep garbage collection. 
+The Alloy model represents a simulation of a mark and sweep garbage collection.
 
-It consists of two primary elements: Node and HeapState.
+There are two signatures in the model. The first one is "Node", which represents a node in the heap. The second signature is "HeapState". It has four fields: "left" and "right", both are relations from Node to at most one Node, "marked" which is a set of Nodes, and "freeList" which is a relation to at most one Node.
 
-'Node' is a base entity with no properties. 
+The model has various predicates and functions. 
 
-The other primary element is 'HeapState' with properties left, right, marked and freeList. It represents the state of a heap in a garbage-collected system. The 'left' and 'right' are relations from a Node to a maximum of one other Node, representing the links between nodes in the heap. The 'marked' property is a set of Nodes, signifying the nodes marked as live. The 'freeList' property refers to a single Node, which is the beginning of a linked list of free (unallocated) nodes.
+The "clearMarks" predicate takes two HeapState as input, let's call them "hs" and "hs'". It guarantees that "hs'" does not have any marked Node and, both the left and right relations remain unchanged.
 
-The 'clearMarks' predicate ensures that in the state transition from 'hs' to 'hs"', all nodes become unmarked, while 'left' and 'right' fields remain the same.
+The function "reachable" takes a HeapState and a Node as input, and it returns a set of Nodes which are the given Node and all other Nodes that can be reached from it through the left and the right relations of HeapState.
 
-The 'reachable' function calculates the transitive closure of nodes from a given node 'n', considering both 'left' and 'right' relations, hence simulating the behavior of the mark() function.
+The "mark" predicate takes a HeapState(hs), a Node(from), and another HeapState(hs'). It ensures that in the new state hs', the marked set is equivalent to all the nodes reachable from the Node which was passed in. Furthermore, it ensures that the left and right relations of hs remain unchanged in hs'.
 
-The 'mark' predicate marks all nodes reachable from a node 'from' in the state transition from 'hs' to 'hs"'.
+The "setFreeList" predicate represents a code that sets the freeList. It ensures that in the new state hs', the set of Nodes reachable from the freeList Node through the left relation belongs in the set of Nodes that are not marked. 
 
-The 'setFreeList' predicate sets up the free list of nodes, ensuring that only nodes not marked live are in the list. The nodes not marked as live are reachable from 'freeList' through only 'left' links.
+The "GC" predicate stands for the garbage collection process. It guarantees that the clearMarks, mark and setFreeList predicates are executed sequentially on the heap state for a given root node. 
 
-The predicate 'GC' simulates the garbage collection process. The process transitions from one state to another, first clearing marks, then marking live objects, and finally setting up the free list. 
+Following are three assertions in the model, Soundness1, Soundness2 and Completeness.
 
-The 'Soundness1' assertion checks that all reachable nodes preserve their 'left' and 'right' fields after a garbage collection.
+"Soundness1" says that for all heapStates h and h' and for all root Nodes for which the garbage collection predicate "GC" holds true, any Node that is live (or, reachable from the root in h) has its left and right relations unchanged in h'.
 
-The 'Soundness2' assertion assures that there are no nodes that are simultaneously reachable from the 'root' and from the 'freeList' after garbage collection, preventing allocation of live nodes.
+"Soundness2" says that for all heapStates h and h' and for all root Nodes for which the garbage collection predicate "GC" holds true, no Node which is reachable from the root in h' is also reachable from a freeList in h'.
 
-The 'Completeness' assertion verifies that all nodes not reachable from 'root' are in the free list after garbage collection, indicating that all garbage has been collected.
+"Completeness" says that for all heapStates h and h' and for all root Nodes for which the garbage collection predicate "GC" holds true, all Nodes not reachable from the root in h' are part of the set reachable from a freeList in h'.
 
-The commands 'check Soundness1 for 3 expect 0', 'check Soundness2 for 3 expect 0', and 'check Completeness for 3 expect 0' evaluate these assertions respectively expecting 0 counter-examples within a scope of 3 for the 'HeapState' and 'Node' signatures.
+For all the three assertions checks are performed up to a scope of 3 and expects a result of 0 as there are no expected counterexamples.

@@ -1,0 +1,62 @@
+<alloy builddate="2025-03-10T15:06:21.150Z">
+
+<instance bitwidth="4" maxseq="2" mintrace="-1" maxtrace="-1" command="Run run$2 for 2 but exactly 2 Color, exactly 2 Light, exactly 2 LightState, exactly 2 Junction" filename="" tracelength="1" looplength="1">
+
+<sig label="seq/Int" ID="0" parentID="1" builtin="yes">
+</sig>
+
+<sig label="Int" ID="1" parentID="2" builtin="yes">
+</sig>
+
+<sig label="String" ID="3" parentID="2" builtin="yes">
+</sig>
+
+<sig label="this/Red" ID="4" parentID="5" one="yes">
+   <atom label="Red$0"/>
+</sig>
+
+<sig label="this/Yellow" ID="6" parentID="5" one="yes">
+   <atom label="Yellow$0"/>
+</sig>
+
+<sig label="this/Green" ID="7" parentID="5" one="yes">
+   <atom label="Green$0"/>
+</sig>
+
+<sig label="this/Color" ID="5" parentID="2" abstract="yes">
+</sig>
+
+<sig label="this/Light" ID="8" parentID="2">
+   <atom label="Light$0"/>
+   <atom label="Light$1"/>
+</sig>
+
+<sig label="this/LightState" ID="9" parentID="2">
+   <atom label="LightState$0"/>
+   <atom label="LightState$1"/>
+</sig>
+
+<field label="color" ID="10" parentID="9">
+   <tuple> <atom label="LightState$0"/> <atom label="Light$0"/> <atom label="Green$0"/> </tuple>
+   <tuple> <atom label="LightState$0"/> <atom label="Light$1"/> <atom label="Yellow$0"/> </tuple>
+   <tuple> <atom label="LightState$1"/> <atom label="Light$0"/> <atom label="Red$0"/> </tuple>
+   <tuple> <atom label="LightState$1"/> <atom label="Light$1"/> <atom label="Yellow$0"/> </tuple>
+   <types> <type ID="9"/> <type ID="8"/> <type ID="5"/> </types>
+</field>
+
+<sig label="this/Junction" ID="11" parentID="2">
+   <atom label="Junction$0"/>
+   <atom label="Junction$1"/>
+</sig>
+
+<field label="lights" ID="12" parentID="11">
+   <tuple> <atom label="Junction$1"/> <atom label="Light$1"/> </tuple>
+   <types> <type ID="11"/> <type ID="8"/> </types>
+</field>
+
+<sig label="univ" ID="2" builtin="yes">
+</sig>
+
+</instance>
+
+</alloy>

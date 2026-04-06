@@ -7,15 +7,19 @@ Usage:
 
 import argparse
 from concurrent.futures import ThreadPoolExecutor, as_completed
+import shutil
 import subprocess
 import sys
 import tempfile
 from pathlib import Path
 
+from syntax_utils import check_syntax, require_java_for_version
+
 
 PROMPT_PREFIX_PATH = "prompts/english-alloy-prefix.txt"
 PROMPT_SUFFIX_PATH = "prompts/english-alloy-suffix.txt"
 MAX_PARALLEL_REQUESTS = 5
+MAX_GENERATION_ATTEMPTS = 3
 
 
 def parse_args() -> argparse.Namespace:
@@ -46,6 +50,30 @@ def run_command(cmd: list[str], cwd: Path) -> None:
 		raise RuntimeError("\n".join(error_parts))
 
 
+def build_repair_prompt(base_prompt: str, attempts: list[dict]) -> str:
+	lines: list[str] = [base_prompt.rstrip(), "", "# Repair Task", ""]
+	lines.append(
+		"Your previous Alloy output was syntactically invalid. Produce a corrected Alloy model."
+	)
+	lines.append("Return only valid Alloy code, with no markdown fences and no extra explanation.")
+	lines.append("")
+	lines.append("## Previous Attempts And Syntax Errors")
+
+	for item in attempts:
+		lines.append("")
+		lines.append(f"### Attempt {item['attempt']} Output")
+		lines.append("```alloy")
+		lines.append(item["text"].rstrip())
+		lines.append("```")
+		lines.append("")
+		lines.append(f"### Attempt {item['attempt']} Syntax Error")
+		lines.append(item["syntax_message"].rstrip())
+
+	lines.append("")
+	lines.append("Please fix the syntax issues and return a complete Alloy model.")
+	return "\n".join(lines) + "\n"
+
+
 def process_description(
 	idx: int,
 	total: int,
@@ -55,7 +83,9 @@ def process_description(
 	suffix_file: Path,
 	scripts_dir: Path,
 	repo_root: Path,
-) -> str:
+	diff_jar: Path,
+	java17_bin: Path,
+) -> tuple[str, int, bool]:
 	name = desc_file.stem
 	output_file = outputs_dir / f"{name}.als"
 
@@ -75,21 +105,63 @@ def process_description(
 			],
 			cwd=repo_root,
 		)
+		base_prompt = prompt_file.read_text(encoding="utf-8")
 
-		print(f"[{idx}/{total}] Calling model and writing {output_file.name}")
-		run_command(
-			[
-				sys.executable,
-				str(scripts_dir / "openAI.py"),
-				str(prompt_file),
-				str(output_file),
-			],
-			cwd=repo_root,
-		)
+		attempts: list[dict] = []
+		syntax_ok = False
+		final_attempt = 0
+
+		for attempt in range(1, MAX_GENERATION_ATTEMPTS + 1):
+			final_attempt = attempt
+			attempt_output_file = outputs_dir / f"{name}.attempt{attempt}.als"
+
+			if attempt == 1:
+				current_prompt = base_prompt
+			else:
+				current_prompt = build_repair_prompt(base_prompt, attempts)
+
+			prompt_file.write_text(current_prompt, encoding="utf-8")
+
+			print(
+				f"[{idx}/{total}] Calling model for {output_file.name} "
+				f"(attempt {attempt}/{MAX_GENERATION_ATTEMPTS})"
+			)
+			run_command(
+				[
+					sys.executable,
+					str(scripts_dir / "openAI.py"),
+					str(prompt_file),
+					str(attempt_output_file),
+				],
+				cwd=repo_root,
+			)
+
+			attempt_text = attempt_output_file.read_text(encoding="utf-8", errors="replace")
+			score, syntax_msg = check_syntax(attempt_output_file, diff_jar, java17_bin)
+			syntax_ok = score == 1
+			attempts.append(
+				{
+					"attempt": attempt,
+					"text": attempt_text,
+					"syntax_message": syntax_msg,
+				}
+			)
+
+			if syntax_ok:
+				print(f"[{idx}/{total}] {name}: syntax valid on attempt {attempt}")
+				break
+
+			if attempt < MAX_GENERATION_ATTEMPTS:
+				print(f"[{idx}/{total}] {name}: syntax invalid on attempt {attempt}; retrying with error feedback")
+
+		final_output_file = outputs_dir / f"{name}.attempt{final_attempt}.als"
+		shutil.copyfile(final_output_file, output_file)
+		print(f"[{idx}/{total}] Final output for {name} -> {output_file.name} (from attempt {final_attempt})")
+
 	finally:
 		prompt_file.unlink(missing_ok=True)
 
-	return name
+	return name, final_attempt, syntax_ok
 
 
 def main() -> int:
@@ -102,6 +174,7 @@ def main() -> int:
 	outputs_dir = (repo_root / args.outputs_dir).resolve()
 	prefix_file = (repo_root / PROMPT_PREFIX_PATH).resolve()
 	suffix_file = (repo_root / PROMPT_SUFFIX_PATH).resolve()
+	diff_jar = (repo_root / "scoring" / "alloy-diff.jar").resolve()
 
 	if not descriptions_dir.exists() or not descriptions_dir.is_dir():
 		print(f"Error: descriptions directory not found: {descriptions_dir}")
@@ -111,6 +184,15 @@ def main() -> int:
 		return 1
 	if not suffix_file.exists():
 		print(f"Error: suffix file not found: {suffix_file}")
+		return 1
+	if not diff_jar.exists():
+		print(f"Error: alloy-diff.jar not found: {diff_jar}")
+		return 1
+
+	try:
+		java17_bin, _ = require_java_for_version(17, "generation syntax checks")
+	except RuntimeError as exc:
+		print(f"Error: {exc}")
 		return 1
 
 	outputs_dir.mkdir(parents=True, exist_ok=True)
@@ -123,7 +205,10 @@ def main() -> int:
 	total = len(description_files)
 	print(f"Found {total} description files")
 	workers = min(MAX_PARALLEL_REQUESTS, total)
-	print(f"Running with up to {workers} parallel request(s)")
+	print(
+		f"Running with up to {workers} parallel request(s), "
+		f"and up to {MAX_GENERATION_ATTEMPTS} generation attempt(s) per file"
+	)
 
 	failures: list[str] = []
 	with ThreadPoolExecutor(max_workers=workers) as executor:
@@ -138,6 +223,8 @@ def main() -> int:
 				suffix_file,
 				scripts_dir,
 				repo_root,
+				diff_jar,
+				java17_bin,
 			): desc_file.name
 			for idx, desc_file in enumerate(description_files, start=1)
 		}
@@ -145,8 +232,9 @@ def main() -> int:
 		for future in as_completed(future_to_name):
 			file_name = future_to_name[future]
 			try:
-				finished_name = future.result()
-				print(f"Completed: {finished_name}.als")
+				finished_name, final_attempt, syntax_ok = future.result()
+				status = "syntax-valid" if syntax_ok else "syntax-invalid"
+				print(f"Completed: {finished_name}.als (final attempt {final_attempt}, {status})")
 			except Exception as exc:
 				error_msg = f"Failed for {file_name}: {exc}"
 				failures.append(error_msg)

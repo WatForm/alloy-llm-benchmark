@@ -1,34 +1,28 @@
-This model represents a system, comprising of StoredModels, Secret, Link, Command, and Instance. The following are the details about each element and their relations between each other.
+This Alloy model describes an assortment of features for a system known as Alloy4Fun.
 
-StoredModel contains four fields: derivationOf, public, secret, and command. A StoredModel can have at most one other StoredModel from which it is derived (derivationOf), at most one Link meant for public use (public), another Link meant for secret use (secret), and at most one Command. 
+Within this system, there are several elements, or "signatures", that interact with each other:
 
-Secret is a subtype of StoredModel, hence all Secret instances are also StoredModels. 
+- 'StoredModel': this represents a saved model within the system. It may predict a single other 'StoredModel' as its derivation, and it may be linked to a 'Link' or 'Secret'. Furthermore, it might have executed a 'Command'.
+- 'Secret' is a subset of 'StoredModel' that represents confidential models.
+- 'Link' represents a hyperlink or connection between elements.
+- 'Command' refers to an executable action, likely performed on a 'StoredModel'.
+- 'Instance' represents an instance of a command. It is related to one 'Command', it contains a set of 'StoredModel', and it holds a 'Link'.
 
-Links and Commands are standalone elements with no specific properties or relations. 
+Important relations and constraints among these signatures include:
 
-An Instance is associated with a single Command or model (instanceOf), can be related to multiple StoredModels (model), and has one Link associated with it (link). 
+- Every 'Link' must relate to one entity in 'StoredModel'.
+- Only 'Secret' models can have a 'secret' link. 
+- If a 'Secret' model has a 'secret' link, it must also have a 'public' link.
+- If a 'Secret' model has a 'public' link, it must originate from a model with a 'secret' link.
+- For each 'StoredModel', its 'public' and 'secret' links, if they exist, must be separate and distinct.
+- A model's derivations form a tree, with no 'StoredModel' being a derivation of itself.
+- 'StoredModel' without a 'public' link can have at most one derivation.
+- If a 'Secret' model derivation tree starts, it remains as such; it cannot be converted into a non-Secret tree.
+- If a 'Secret' model only has a 'public' link and no 'secret' link, it cannot have any derivations with 'secret' links.
+- Every 'Command' is unique to one 'StoredModel', and there cannot be commands without associated models.
+- If a 'StoredModel' doesn't have a public link, it must have a command.
+- Each command can have at most one instance.
 
-This model also imposes several constraints and facts.
+The predicates 'GoodSpec' and 'BadSpec' specify constraints about the relationships between the public and secret links of StoredModels. 
 
-- Every Link is associated with exactly one StoredModel through either public, secret, or link fields.
-- A Secret StoredModel can have a secret Link.
-- If a Secret StoredModel has a secret link, it should also have a public link.
-- If a Secret StoredModel has a public link, it must be derived from a StoredModel that has a secret link.
-- Private and public links must be different in a StoredModel.
-- The derivation trees from StoredModels do not contain cycles, i.e., a StoredModel cannot be derived from itself.
-- A StoredModel without a public link can at most have one derivation.
-- If a Secret StoredModel is a derivation from another, then the derived StoredModel must also be a Secret.
-- A Secret StoredModel with a public link and without a secret link should not lead to a StoredModel with a secret link in its derivation tree.
-- Each Command is associated with one StoredModel. 
-- A StoredModel with no public link must have at least one Command; if it has a public link, it cannot have any command.
-- Each Command has at most one associated Instance.
-
-This model also defines several predicates and checks:
-
-'GoodSpec' and 'BadSpec' are predicates that ensure the public and secret links of a StoredModel are different. 'GoodSpec' ensures a public and a secret link are disjoint, while 'BadSpec' only demands they are not equal.
-
-'NoCommands' is an assert checking that if 'BadSpec' holds, then no commands exist in the system. 
-
-'PublicAndSecretLinksDisjoint' checks that if 'GoodSpec' holds then the sets of public and secret links must be disjoint.
-
-Finally, 'OneDerivation' checks that StoredModels without a public link can only have maximum one derivation.
+The model also includes commands, or checks, such as 'NoCommands', 'PublicAndSecretLinksDisjoint', and 'OneDerivation'. These commands are used to verify specific aspects of the model: 'NoCommands' checks if there are any commands present; 'PublicAndSecretLinksDisjoint' validates that the sets of public and secret links do not overlap; 'OneDerivation' ensures models without a public link have at most one derivation. Each of these checks are made for a certain scope (e.g., for 20 or 30).

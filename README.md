@@ -25,14 +25,14 @@ This repository expects your OpenAI key in:
 
 Create the file and paste only the raw key value into it.
 
-## 2) Java requirements (for scoring)
+## 2) Java requirements (for generation and scoring)
 
-Scoring uses three Java tools:
+Generation and scoring use Java tools:
 1. `scoring/alloy-diff.jar` (Java 17)
 2. `scoring/org.alloytools.alloy.dist-6.2.0.jar` (Java 17)
 3. `scoring/CompoSAT.jar` (Java 8)
 
-The scoring script requires explicit Java homes:
+Generation syntax checks and scoring require explicit Java homes:
 1. `JAVA_HOME_17`
 2. `JAVA_HOME_8`
 
@@ -89,7 +89,10 @@ What this does:
 1. reads each `.md` description file,
 2. wraps it with the prompt prefix and suffix,
 3. calls the LLM in parallel,
-4. writes one `.als` output per description into `benchmark/outputs`.
+4. checks the generated `.als` syntax,
+5. if syntax is invalid, retries up to 2 times (3 attempts total) using a repair prompt that includes prior attempts and syntax errors,
+6. writes all attempts as `<model>.attempt1.als`, `<model>.attempt2.als`, `<model>.attempt3.als` (as needed),
+7. writes/overwrites `<model>.als` with the final attempt for compatibility.
 
 ## 5) Score outputs against models and instances
 
@@ -106,12 +109,13 @@ python3 scripts/score.py benchmark/outputs benchmark/models benchmark/instances 
 ```
 
 What this does for each model:
-1. checks syntactic validity (`0/1`),
-2. runs Ringert/SemDiff implications in both directions for scopes `1..max(composat_max_scope, general_max_scope)`,
-3. checks CompoSAT instances from the original model against the output model (`original => output`),
-4. checks general instances from the original model against the output model (`original => output`),
-5. runs CompoSAT on the output model for scopes `1..composat_max_scope`, then checks those instances against the original model (`output => original`),
-6. runs `InstanceGenerator` on the output model for scopes `1..general_max_scope`, then checks those instances against the original model (`output => original`).
+1. selects the final attempt file for each model (`<model>.attemptN.als` if present, otherwise `<model>.als`),
+2. computes syntax-attempt score (`/3`): `3/3` if attempt 1 is syntactically valid, `2/3` if attempt 2, `1/3` if attempt 3, `0/3` if none,
+3. runs Ringert/SemDiff implications in both directions for scopes `1..max(composat_max_scope, general_max_scope)`,
+4. checks CompoSAT instances from the original model against the output model (`original => output`),
+5. checks general instances from the original model against the output model (`original => output`),
+6. runs CompoSAT on the output model for scopes `1..composat_max_scope`, then checks those instances against the original model (`output => original`),
+7. runs `InstanceGenerator` on the output model for scopes `1..general_max_scope`, then checks those instances against the original model (`output => original`).
 
 Notes:
 1. CompoSAT runs in scoring have a `300s` timeout per scope.

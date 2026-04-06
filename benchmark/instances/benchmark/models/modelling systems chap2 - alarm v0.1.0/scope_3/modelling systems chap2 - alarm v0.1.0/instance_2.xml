@@ -1,0 +1,117 @@
+<alloy builddate="unknown">
+
+
+<bounds> 
+<upperbound name="Int/next"  arity="2">
+</upperbound>
+<upperbound name="seq/Int"  arity="1">
+</upperbound>
+<upperbound name="String"  arity="1">
+</upperbound>
+<upperbound name="this/Condition"  arity="1">
+   <tuple> <atom label="Condition$0"/> </tuple>
+   <tuple> <atom label="unused4"/> </tuple>
+</upperbound>
+<upperbound name="this/Sensor"  arity="1">
+</upperbound>
+<upperbound name="this/Sensor.raise_alarm_on"  arity="2">
+</upperbound>
+<upperbound name="this/Qualification"  arity="1">
+   <tuple> <atom label="Qualification$0"/> </tuple>
+   <tuple> <atom label="unused5"/> </tuple>
+</upperbound>
+<upperbound name="this/Qualification.conditions"  arity="2">
+   <tuple> <atom label="Qualification$0"/> <atom label="Condition$0"/> </tuple>
+   <tuple> <atom label="Qualification$0"/> <atom label="unused4"/> </tuple>
+   <tuple> <atom label="unused5"/> <atom label="Condition$0"/> </tuple>
+   <tuple> <atom label="unused5"/> <atom label="unused4"/> </tuple>
+</upperbound>
+<upperbound name="this/Expert"  arity="1">
+   <tuple> <atom label="Expert$0"/> </tuple>
+   <tuple> <atom label="unused6"/> </tuple>
+</upperbound>
+<upperbound name="this/Expert.qualifications"  arity="2">
+   <tuple> <atom label="Expert$0"/> <atom label="Qualification$0"/> </tuple>
+   <tuple> <atom label="Expert$0"/> <atom label="unused5"/> </tuple>
+   <tuple> <atom label="unused6"/> <atom label="Qualification$0"/> </tuple>
+   <tuple> <atom label="unused6"/> <atom label="unused5"/> </tuple>
+</upperbound>
+<upperbound name="this/State"  arity="1">
+   <tuple> <atom label="State$0"/> </tuple>
+</upperbound>
+<upperbound name="this/State.called_experts"  arity="2">
+   <tuple> <atom label="State$0"/> <atom label="Expert$0"/> </tuple>
+   <tuple> <atom label="State$0"/> <atom label="unused6"/> </tuple>
+</upperbound>
+<upperbound name="this/State.onsite_experts"  arity="2">
+   <tuple> <atom label="State$0"/> <atom label="Expert$0"/> </tuple>
+   <tuple> <atom label="State$0"/> <atom label="unused6"/> </tuple>
+</upperbound>
+<upperbound name="this/State.current_alarms"  arity="2">
+   <tuple> <atom label="State$0"/> <atom label="Condition$0"/> </tuple>
+   <tuple> <atom label="State$0"/> <atom label="unused4"/> </tuple>
+</upperbound>
+</bounds><instance bitwidth="0" maxseq="0" command="Run run$1 for 2 but 1 State, 0 Sensor" filename="">
+
+<sig label="seq/Int" ID="0" parentID="1" builtin="yes">
+</sig>
+
+<sig label="Int" ID="1" parentID="2" builtin="yes">
+</sig>
+
+<sig label="String" ID="3" parentID="2" builtin="yes">
+</sig>
+
+<sig label="this/Condition" ID="4" parentID="2">
+   <atom label="Condition$0"/>
+</sig>
+
+<sig label="this/Sensor" ID="5" parentID="2">
+</sig>
+
+<field label="raise_alarm_on" ID="6" parentID="5">
+   <types> <type ID="5"/> <type ID="4"/> </types>
+</field>
+
+<sig label="this/Qualification" ID="7" parentID="2">
+   <atom label="Qualification$0"/>
+</sig>
+
+<field label="conditions" ID="8" parentID="7">
+   <tuple> <atom label="Qualification$0"/> <atom label="Condition$0"/> </tuple>
+   <types> <type ID="7"/> <type ID="4"/> </types>
+</field>
+
+<sig label="this/Expert" ID="9" parentID="2">
+   <atom label="Expert$0"/>
+</sig>
+
+<field label="qualifications" ID="10" parentID="9">
+   <tuple> <atom label="Expert$0"/> <atom label="Qualification$0"/> </tuple>
+   <types> <type ID="9"/> <type ID="7"/> </types>
+</field>
+
+<sig label="this/State" ID="11" parentID="2">
+   <atom label="State$0"/>
+</sig>
+
+<field label="called_experts" ID="12" parentID="11">
+   <types> <type ID="11"/> <type ID="9"/> </types>
+</field>
+
+<field label="onsite_experts" ID="13" parentID="11">
+   <tuple> <atom label="State$0"/> <atom label="Expert$0"/> </tuple>
+   <types> <type ID="11"/> <type ID="9"/> </types>
+</field>
+
+<field label="current_alarms" ID="14" parentID="11">
+   <tuple> <atom label="State$0"/> <atom label="Condition$0"/> </tuple>
+   <types> <type ID="11"/> <type ID="4"/> </types>
+</field>
+
+<sig label="univ" ID="2" builtin="yes">
+</sig>
+
+</instance>
+
+</alloy>

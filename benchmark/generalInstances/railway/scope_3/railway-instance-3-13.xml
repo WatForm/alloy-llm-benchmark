@@ -1,0 +1,89 @@
+<alloy builddate="2025-03-10T15:06:21.150Z">
+
+<instance bitwidth="4" maxseq="3" mintrace="-1" maxtrace="-1" command="Run run$3 for 3 but exactly 3 Seg, exactly 3 Train, exactly 3 GateState, exactly 3 TrainState" filename="" tracelength="1" looplength="1">
+
+<sig label="seq/Int" ID="0" parentID="1" builtin="yes">
+</sig>
+
+<sig label="Int" ID="1" parentID="2" builtin="yes">
+</sig>
+
+<sig label="String" ID="3" parentID="2" builtin="yes">
+</sig>
+
+<sig label="this/Seg" ID="4" parentID="2">
+   <atom label="Seg$0"/>
+   <atom label="Seg$1"/>
+   <atom label="Seg$2"/>
+</sig>
+
+<field label="next" ID="5" parentID="4">
+   <tuple> <atom label="Seg$0"/> <atom label="Seg$1"/> </tuple>
+   <tuple> <atom label="Seg$1"/> <atom label="Seg$1"/> </tuple>
+   <tuple> <atom label="Seg$1"/> <atom label="Seg$2"/> </tuple>
+   <tuple> <atom label="Seg$2"/> <atom label="Seg$0"/> </tuple>
+   <types> <type ID="4"/> <type ID="4"/> </types>
+</field>
+
+<field label="overlaps" ID="6" parentID="4">
+   <tuple> <atom label="Seg$0"/> <atom label="Seg$0"/> </tuple>
+   <tuple> <atom label="Seg$0"/> <atom label="Seg$1"/> </tuple>
+   <tuple> <atom label="Seg$1"/> <atom label="Seg$0"/> </tuple>
+   <tuple> <atom label="Seg$1"/> <atom label="Seg$1"/> </tuple>
+   <tuple> <atom label="Seg$1"/> <atom label="Seg$2"/> </tuple>
+   <tuple> <atom label="Seg$2"/> <atom label="Seg$1"/> </tuple>
+   <tuple> <atom label="Seg$2"/> <atom label="Seg$2"/> </tuple>
+   <types> <type ID="4"/> <type ID="4"/> </types>
+</field>
+
+<sig label="this/Train" ID="7" parentID="2">
+   <atom label="Train$0"/>
+   <atom label="Train$1"/>
+   <atom label="Train$2"/>
+</sig>
+
+<sig label="this/GateState" ID="8" parentID="2">
+   <atom label="GateState$0"/>
+   <atom label="GateState$1"/>
+   <atom label="GateState$2"/>
+</sig>
+
+<field label="closed" ID="9" parentID="8">
+   <tuple> <atom label="GateState$0"/> <atom label="Seg$2"/> </tuple>
+   <tuple> <atom label="GateState$1"/> <atom label="Seg$2"/> </tuple>
+   <tuple> <atom label="GateState$2"/> <atom label="Seg$1"/> </tuple>
+   <types> <type ID="8"/> <type ID="4"/> </types>
+</field>
+
+<sig label="this/TrainState" ID="10" parentID="2">
+   <atom label="TrainState$0"/>
+   <atom label="TrainState$1"/>
+   <atom label="TrainState$2"/>
+</sig>
+
+<field label="on" ID="11" parentID="10">
+   <tuple> <atom label="TrainState$0"/> <atom label="Train$0"/> <atom label="Seg$1"/> </tuple>
+   <tuple> <atom label="TrainState$0"/> <atom label="Train$1"/> <atom label="Seg$1"/> </tuple>
+   <tuple> <atom label="TrainState$0"/> <atom label="Train$2"/> <atom label="Seg$1"/> </tuple>
+   <tuple> <atom label="TrainState$1"/> <atom label="Train$0"/> <atom label="Seg$1"/> </tuple>
+   <tuple> <atom label="TrainState$1"/> <atom label="Train$1"/> <atom label="Seg$1"/> </tuple>
+   <tuple> <atom label="TrainState$1"/> <atom label="Train$2"/> <atom label="Seg$1"/> </tuple>
+   <tuple> <atom label="TrainState$2"/> <atom label="Train$0"/> <atom label="Seg$1"/> </tuple>
+   <tuple> <atom label="TrainState$2"/> <atom label="Train$1"/> <atom label="Seg$1"/> </tuple>
+   <tuple> <atom label="TrainState$2"/> <atom label="Train$2"/> <atom label="Seg$1"/> </tuple>
+   <types> <type ID="10"/> <type ID="7"/> <type ID="4"/> </types>
+</field>
+
+<field label="occupied" ID="12" parentID="10">
+   <tuple> <atom label="TrainState$0"/> <atom label="Seg$1"/> </tuple>
+   <tuple> <atom label="TrainState$1"/> <atom label="Seg$1"/> </tuple>
+   <tuple> <atom label="TrainState$2"/> <atom label="Seg$1"/> </tuple>
+   <types> <type ID="10"/> <type ID="4"/> </types>
+</field>
+
+<sig label="univ" ID="2" builtin="yes">
+</sig>
+
+</instance>
+
+</alloy>

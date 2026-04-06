@@ -1,0 +1,135 @@
+<alloy builddate="unknown">
+
+
+<bounds> 
+<upperbound name="Int/next"  arity="2">
+</upperbound>
+<upperbound name="seq/Int"  arity="1">
+</upperbound>
+<upperbound name="String"  arity="1">
+</upperbound>
+<upperbound name="this/Student"  arity="1">
+   <tuple> <atom label="Professor$0"/> </tuple>
+   <tuple> <atom label="Student$0"/> </tuple>
+   <tuple> <atom label="unused4"/> </tuple>
+</upperbound>
+<upperbound name="this/Professor"  arity="1">
+   <tuple> <atom label="Professor$0"/> </tuple>
+   <tuple> <atom label="Student$0"/> </tuple>
+   <tuple> <atom label="unused4"/> </tuple>
+</upperbound>
+<upperbound name="this/Person"  arity="1">
+   <tuple> <atom label="Professor$0"/> </tuple>
+   <tuple> <atom label="Student$0"/> </tuple>
+   <tuple> <atom label="unused4"/> </tuple>
+</upperbound>
+<upperbound name="this/Class"  arity="1">
+   <tuple> <atom label="Class$0"/> </tuple>
+   <tuple> <atom label="unused5"/> </tuple>
+   <tuple> <atom label="unused6"/> </tuple>
+</upperbound>
+<upperbound name="this/Class.assistant_for"  arity="2">
+   <tuple> <atom label="Class$0"/> <atom label="Professor$0"/> </tuple>
+   <tuple> <atom label="Class$0"/> <atom label="Student$0"/> </tuple>
+   <tuple> <atom label="Class$0"/> <atom label="unused4"/> </tuple>
+   <tuple> <atom label="unused5"/> <atom label="Professor$0"/> </tuple>
+   <tuple> <atom label="unused5"/> <atom label="Student$0"/> </tuple>
+   <tuple> <atom label="unused5"/> <atom label="unused4"/> </tuple>
+   <tuple> <atom label="unused6"/> <atom label="Professor$0"/> </tuple>
+   <tuple> <atom label="unused6"/> <atom label="Student$0"/> </tuple>
+   <tuple> <atom label="unused6"/> <atom label="unused4"/> </tuple>
+</upperbound>
+<upperbound name="this/Class.instructor_of"  arity="2">
+   <tuple> <atom label="Class$0"/> <atom label="Professor$0"/> </tuple>
+   <tuple> <atom label="Class$0"/> <atom label="Student$0"/> </tuple>
+   <tuple> <atom label="Class$0"/> <atom label="unused4"/> </tuple>
+   <tuple> <atom label="unused5"/> <atom label="Professor$0"/> </tuple>
+   <tuple> <atom label="unused5"/> <atom label="Student$0"/> </tuple>
+   <tuple> <atom label="unused5"/> <atom label="unused4"/> </tuple>
+   <tuple> <atom label="unused6"/> <atom label="Professor$0"/> </tuple>
+   <tuple> <atom label="unused6"/> <atom label="Student$0"/> </tuple>
+   <tuple> <atom label="unused6"/> <atom label="unused4"/> </tuple>
+</upperbound>
+<upperbound name="this/Assignment"  arity="1">
+   <tuple> <atom label="Assignment$0"/> </tuple>
+   <tuple> <atom label="unused7"/> </tuple>
+   <tuple> <atom label="unused8"/> </tuple>
+</upperbound>
+<upperbound name="this/Assignment.associated_with"  arity="2">
+   <tuple> <atom label="Assignment$0"/> <atom label="Class$0"/> </tuple>
+   <tuple> <atom label="Assignment$0"/> <atom label="unused5"/> </tuple>
+   <tuple> <atom label="Assignment$0"/> <atom label="unused6"/> </tuple>
+   <tuple> <atom label="unused7"/> <atom label="Class$0"/> </tuple>
+   <tuple> <atom label="unused7"/> <atom label="unused5"/> </tuple>
+   <tuple> <atom label="unused7"/> <atom label="unused6"/> </tuple>
+   <tuple> <atom label="unused8"/> <atom label="Class$0"/> </tuple>
+   <tuple> <atom label="unused8"/> <atom label="unused5"/> </tuple>
+   <tuple> <atom label="unused8"/> <atom label="unused6"/> </tuple>
+</upperbound>
+<upperbound name="this/Assignment.assigned_to"  arity="2">
+   <tuple> <atom label="Assignment$0"/> <atom label="Professor$0"/> </tuple>
+   <tuple> <atom label="Assignment$0"/> <atom label="Student$0"/> </tuple>
+   <tuple> <atom label="Assignment$0"/> <atom label="unused4"/> </tuple>
+   <tuple> <atom label="unused7"/> <atom label="Professor$0"/> </tuple>
+   <tuple> <atom label="unused7"/> <atom label="Student$0"/> </tuple>
+   <tuple> <atom label="unused7"/> <atom label="unused4"/> </tuple>
+   <tuple> <atom label="unused8"/> <atom label="Professor$0"/> </tuple>
+   <tuple> <atom label="unused8"/> <atom label="Student$0"/> </tuple>
+   <tuple> <atom label="unused8"/> <atom label="unused4"/> </tuple>
+</upperbound>
+</bounds><instance bitwidth="0" maxseq="0" command="Run run$1 for 3" filename="">
+
+<sig label="seq/Int" ID="0" parentID="1" builtin="yes">
+</sig>
+
+<sig label="Int" ID="1" parentID="2" builtin="yes">
+</sig>
+
+<sig label="String" ID="3" parentID="2" builtin="yes">
+</sig>
+
+<sig label="this/Student" ID="4" parentID="5">
+   <atom label="Student$0"/>
+</sig>
+
+<sig label="this/Professor" ID="6" parentID="5">
+   <atom label="Professor$0"/>
+</sig>
+
+<sig label="this/Person" ID="5" parentID="2" abstract="yes">
+</sig>
+
+<sig label="this/Class" ID="7" parentID="2">
+   <atom label="Class$0"/>
+</sig>
+
+<field label="assistant_for" ID="8" parentID="7">
+   <tuple> <atom label="Class$0"/> <atom label="Student$0"/> </tuple>
+   <types> <type ID="7"/> <type ID="4"/> </types>
+</field>
+
+<field label="instructor_of" ID="9" parentID="7">
+   <tuple> <atom label="Class$0"/> <atom label="Professor$0"/> </tuple>
+   <types> <type ID="7"/> <type ID="6"/> </types>
+</field>
+
+<sig label="this/Assignment" ID="10" parentID="2">
+   <atom label="Assignment$0"/>
+</sig>
+
+<field label="associated_with" ID="11" parentID="10">
+   <tuple> <atom label="Assignment$0"/> <atom label="Class$0"/> </tuple>
+   <types> <type ID="10"/> <type ID="7"/> </types>
+</field>
+
+<field label="assigned_to" ID="12" parentID="10">
+   <tuple> <atom label="Assignment$0"/> <atom label="Student$0"/> </tuple>
+   <types> <type ID="10"/> <type ID="4"/> </types>
+</field>
+
+<sig label="univ" ID="2" builtin="yes">
+</sig>
+
+</instance>
+
+</alloy>

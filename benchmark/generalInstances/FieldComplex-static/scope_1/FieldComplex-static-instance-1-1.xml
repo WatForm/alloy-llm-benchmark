@@ -1,0 +1,60 @@
+<alloy builddate="2025-03-10T15:06:21.150Z">
+
+<instance bitwidth="4" maxseq="1" mintrace="-1" maxtrace="-1" command="Run run$2 for 1 but exactly 1 Field, exactly 1 Game, exactly 1 Date, exactly 1 FieldComplex" filename="" tracelength="1" looplength="1">
+
+<sig label="seq/Int" ID="0" parentID="1" builtin="yes">
+</sig>
+
+<sig label="Int" ID="1" parentID="2" builtin="yes">
+</sig>
+
+<sig label="String" ID="3" parentID="2" builtin="yes">
+</sig>
+
+<sig label="this/Field" ID="4" parentID="2">
+   <atom label="Field$0"/>
+</sig>
+
+<sig label="this/Game" ID="5" parentID="2">
+   <atom label="Game$0"/>
+</sig>
+
+<field label="where" ID="6" parentID="5">
+   <tuple> <atom label="Game$0"/> <atom label="Field$0"/> </tuple>
+   <types> <type ID="5"/> <type ID="4"/> </types>
+</field>
+
+<field label="when" ID="7" parentID="5">
+   <tuple> <atom label="Game$0"/> <atom label="Date$0"/> </tuple>
+   <types> <type ID="5"/> <type ID="8"/> </types>
+</field>
+
+<sig label="this/Date" ID="8" parentID="2">
+   <atom label="Date$0"/>
+</sig>
+
+<sig label="this/FieldComplex" ID="9" parentID="2" one="yes">
+   <atom label="FieldComplex$0"/>
+</sig>
+
+<field label="schedule" ID="10" parentID="9">
+   <tuple> <atom label="FieldComplex$0"/> <atom label="Game$0"/> </tuple>
+   <types> <type ID="9"/> <type ID="5"/> </types>
+</field>
+
+<sig label="univ" ID="2" builtin="yes">
+</sig>
+
+<skolem label="$g" ID="11">
+   <tuple> <atom label="Game$0"/> </tuple>
+   <types> <type ID="5"/> </types>
+</skolem>
+
+<skolem label="$g&apos;" ID="12">
+   <tuple> <atom label="Game$0"/> </tuple>
+   <types> <type ID="5"/> </types>
+</skolem>
+
+</instance>
+
+</alloy>

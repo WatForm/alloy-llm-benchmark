@@ -1,3 +1,7 @@
-The model consists of two signatures: "Set" and "Element". Each "Set" contains elements, which are of signature "Element". The links between "Set" and "Element" are modeled as a relation named "elements", which qualifies as a set of "Element" for each "Set".
+This model describes two primary concepts: a Set and an Element. 
 
-There is an assertion named "Closed". This assertion states that for all instances of "Set", represented as s0 and s1, there exists another instance of "Set", represented as s2, such that the elements of s2 are equal to the union of elements of s0 and s1. This assertion is supposed to violate the model, and hence, a check command is used to search for a counterexample where this assertion does not hold. The name of this check command is the same as the assertion, "Closed".
+A Set is defined by its association to zero or more Elements. These Elements are encapsulated in the 'elements' field within the Set. Each Element does not have any further specification.
+
+The model imposes a single constraint, which is codified in the assertion 'Closed'. Specifically, the assertion states that for every pair of Sets (referred to as s0 and s1), there exists at least one other Set (referred to as s2) such that the 'elements' of s2 are exactly the union of the 'elements' of s0 and s1. 
+
+The model also includes a check command for the 'Closed' assertion. The purpose of this check is to find a counterexample where the assertion does not hold. No explicit scope or expected results for this check are specified in the model.

@@ -1,17 +1,23 @@
-This Alloy model is a representation of a Chord distributed hash table lookup protocol.
+This Alloy model represents a chord distributed hash table lookup protocol, which uses a set of nodes to store and retrieve values in a decentralized manner. In this model, the nodes and their relationships in the network are defined using signatures, predicates and facts.
 
-There are three core signatures described in the model: Id, Node, and NodeData. The State signature contains instances of node activity and related data.
+Signatures:
+1. Id: Each Id has a "next" field that refers to another Id.
+2. Node: Each Node has a unique Id.
+3. NodeData: For each NodeData, there is a "prev" and "next" field referring to other nodes. It also includes a "finger" table that maps Ids to zero or one Nodes, a "closest_preceding_finger" table that maps every Id to exactly one Node, a "find_predecessor" function that maps every Id to exactly one Node, and a "find_successor" function that maps every Id to exactly one Node.
+4. State: Every state has a set of "active" nodes, and a "data" relationship that maps each active node to exactly one NodeData.
 
-The Id signature has a relation 'next' that links an Id instance to another Id instance. A fact defined in the model demonstrates that every Id can reach any other Id through a traversal of next relations.
+Facts/Constraints:
+1. All Ids can be reached by a chain of "next" links from some Id.
+2. Nodes with different Ids are distinct.
+3. The "next" node in the "data" of a state "s" for each active node "n" is determined using the first entry of the "finger" table.
+4. There are constraints on relationships such as "finger" and "next" based on the node's location in the order defined by the Ids.
 
-The Node signature has a lone single relation 'id' that links a Node to an Id. There is a fact that shows that, for two different Nodes, they must have different associated Ids.
+Predicates:
+There are a number of predicates defined in the model to describe the conditions under which the Chord protocol operates correctly, such as:
+1. Predicates "NextCorrect", "NextCorrect'", "FingersCorrect", "FingersCorrect'", "ClosestPrecedingFinger", "ClosestPrecedingFinger'", "FindPredecessor", "FindPredecessor'" and "FindSuccessor" are defined to specify the correct operation of the next pointer, finger table, closest preceding finger, predecessor and successor finding operations.
+2. Predicates like "ShowMeFC", "ShowMeCPF", "SameFP", etc., are used to check or demonstrate certain properties of the model.
 
-NodeData contains several relations: 'prev' and 'next', which are relations linking to nodes; 'finger' and 'closest_preceding_finger' are relations from an Id to a single Node; 'find_predecessor' and 'find_successor' are relations from an Id to a single Node. 
+Commands:
+The model includes a number of commands to check the validity of assertions and run predicates within a certain scope, usually deciding on the number of Nodes and States to use. 
 
-The State signature has two sets: 'active' depicting the set of active nodes, and 'data' which is a relation linking active nodes to a single NodeData instance.
-
-The predicates in the model check for various conditions. For example, 'less_than' checks if one Id precedes another around the chord ring, starting from a given Id. 'FingersCorrect' checks that the entries of a node's finger table are actually pointers to the nodes that the finger table represents. 'NextCorrect' checks whether a node's next node is correct according to the protocol.
-
-There are also several assertions that check other constraints in the system. For example, 'InjectiveIds' checks that all Ids are unique. 'FindSuccessorWorks' checks the correct functioning of the find_successor predicate. 
-
-Several run commands are listed that depict possible setups of the system. The conditions for these runs vary in the number of Nodes and States. 'ShowMe2' for instance, checks for a system with three nodes. These run commands all are expected to execute successfully.
+However, it should be noted that this model doesn't consider any network failures or complexities like node join and departure. This is a simplified model and is only able to demonstrate the operations of Chord protocol in an ideal context.

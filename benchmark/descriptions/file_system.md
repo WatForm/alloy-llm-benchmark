@@ -1,23 +1,19 @@
-This model represents a generic file system. The following elements exist in this system:
+This model represents a generic file system. The file system contains different types of objects. A type of object is known as "Name". The objects in the file system may be of two kinds: "File" and "Dir". 
 
-- An abstract signature called "Object".
-- A signature called "Name".
-- A signature called "File" which is an extension of "Object". Each File belongs to some directory, implying they exist within directory entries. 
-- A signature called "Dir" that extends "Object", which includes a set of "DirEntry" referred to as "entries". Each "Dir" might have a parent from "Dir", but it can only be the parent of at most one other "Dir". The parent of a directory is the inverse of the entry's contents. Each directory entry in a Directory has a unique name. Each directory cannot be in its transitive closure of parents. If a directory is not the Root, then the Root should be in the transitive closure of this directory's parents.
-- A signature of "Root" which is a single instance of "Dir", indicating the topmost directory in the file system hierarchy with no parent.
-- A single signature named "Cur", which is a directory.
-- A signature of "DirEntry" which includes each "Name" and each "Object" as its contents. Each directory entry inversely looks up to one directory.
+"File" is an extension of the "Object". A file is contained in at least one directory, which means that there exists at least one directory "d" such that the file is in the content of the entries of the directory "d".
 
-The model also defines two predicates:
+The "Dir" is another extension of the "Object". A directory may have multiple directory entries, represented by the set "entries". A directory may also have at most one parent directory, represented by "parent". A directory's parent must also contain that directory in the contents of its entries. All the entries in a directory must have distinct names, that is, if two entries have the same name, then they must be the same entry. Furthermore, a directory can't be a parent of itself and there should not be a cycle of parents. If a directory is not the "Root" directory, then it must be a descendant of the "Root" directory.
 
-- "OneParent_buggyVersion" stating that every directory other than Root should have only one parent. This predicate has a bug because it does not consider objects in the directory.
-- "OneParent_correctVersion" corrects this bug by stating that each directory other than Root has only one parent and only one object as its contents.
+One singular "Root" directory extends from "Dir". The "Root" directory doesn't have a parent.
 
-Moreover, the model defines another predicate:
+There is at most one current directory represented by "Cur" that also extends from "Dir".
 
-- "NoDirAliases" stating that each directory in the file system should appear in at most one other directory's contents, which means no directory can have more than one entry.
+A directory entry, represented by the signature "DirEntry", consists of a name (which is a "Name") and contents (which is an "Object"). Each directory entry must belong to exactly one directory.
 
-The model has two checks:
+The predicate "OneParent_buggyVersion" stipulates that all directories, excluding the root, should have exactly one parent.
 
-- The first check uses the buggy predicate "OneParent_buggyVersion" which expects there to be an exception raised, meaning a counterexample where directories have more than one parent is expected.
-- The second check validates the corrected predicate "OneParent_correctVersion", which expects no exceptions to be raised. This means every directory, except Root, has exactly one parent and contains only one object in its contents.
+The corrected version of above, "OneParent_correctVersion", states that all directories, excluding the root, should have exactly one parent and that the directory should exist in the contents of exactly one directory entry.
+
+The predicate "NoDirAliases" asserts that a directory may be the contents of at most one directory entry.
+
+There are two checks in the model. The first check confirms whether, if the predicate "OneParent_buggyVersion" holds, the predicate "NoDirAliases" also holds, within a scope of 5. The expected result is one counterexample. The second check verifies whether, if the predicate "OneParent_correctVersion" holds, the predicate "NoDirAliases" also holds, within a scope of 5. The expected result is no counterexample.

@@ -1,0 +1,70 @@
+<alloy builddate="unknown">
+
+
+<bounds> 
+<upperbound name="Int/next"  arity="2">
+</upperbound>
+<upperbound name="seq/Int"  arity="1">
+</upperbound>
+<upperbound name="String"  arity="1">
+</upperbound>
+<upperbound name="this/Jocelyn"  arity="1">
+   <tuple> <atom label="Jocelyn$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Hilary"  arity="1">
+   <tuple> <atom label="Hilary$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Person"  arity="1">
+   <tuple> <atom label="Hilary$0"/> </tuple>
+   <tuple> <atom label="Jocelyn$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Person.spouse"  arity="2">
+   <tuple> <atom label="Hilary$0"/> <atom label="Hilary$0"/> </tuple>
+   <tuple> <atom label="Hilary$0"/> <atom label="Jocelyn$0"/> </tuple>
+   <tuple> <atom label="Jocelyn$0"/> <atom label="Hilary$0"/> </tuple>
+   <tuple> <atom label="Jocelyn$0"/> <atom label="Jocelyn$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Person.shaken"  arity="2">
+   <tuple> <atom label="Hilary$0"/> <atom label="Hilary$0"/> </tuple>
+   <tuple> <atom label="Hilary$0"/> <atom label="Jocelyn$0"/> </tuple>
+   <tuple> <atom label="Jocelyn$0"/> <atom label="Hilary$0"/> </tuple>
+   <tuple> <atom label="Jocelyn$0"/> <atom label="Jocelyn$0"/> </tuple>
+</upperbound>
+</bounds><instance bitwidth="0" maxseq="0" command="Run run$1 for 1" filename="">
+
+<sig label="seq/Int" ID="0" parentID="1" builtin="yes">
+</sig>
+
+<sig label="Int" ID="1" parentID="2" builtin="yes">
+</sig>
+
+<sig label="String" ID="3" parentID="2" builtin="yes">
+</sig>
+
+<sig label="this/Jocelyn" ID="4" parentID="5" one="yes">
+   <atom label="Jocelyn$0"/>
+</sig>
+
+<sig label="this/Hilary" ID="6" parentID="5" one="yes">
+   <atom label="Hilary$0"/>
+</sig>
+
+<sig label="this/Person" ID="5" parentID="2">
+</sig>
+
+<field label="spouse" ID="7" parentID="5">
+   <tuple> <atom label="Hilary$0"/> <atom label="Jocelyn$0"/> </tuple>
+   <tuple> <atom label="Jocelyn$0"/> <atom label="Hilary$0"/> </tuple>
+   <types> <type ID="5"/> <type ID="5"/> </types>
+</field>
+
+<field label="shaken" ID="8" parentID="5">
+   <types> <type ID="5"/> <type ID="5"/> </types>
+</field>
+
+<sig label="univ" ID="2" builtin="yes">
+</sig>
+
+</instance>
+
+</alloy>

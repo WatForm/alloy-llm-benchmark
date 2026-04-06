@@ -1,0 +1,147 @@
+<alloy builddate="unknown">
+
+
+<bounds> 
+<upperbound name="Int/next"  arity="2">
+</upperbound>
+<upperbound name="seq/Int"  arity="1">
+</upperbound>
+<upperbound name="String"  arity="1">
+</upperbound>
+<upperbound name="this/Field"  arity="1">
+   <tuple> <atom label="Field$0"/> </tuple>
+   <tuple> <atom label="Field$1"/> </tuple>
+   <tuple> <atom label="unused6"/> </tuple>
+   <tuple> <atom label="unused7"/> </tuple>
+   <tuple> <atom label="unused12"/> </tuple>
+</upperbound>
+<upperbound name="this/Game"  arity="1">
+   <tuple> <atom label="Game$0"/> </tuple>
+   <tuple> <atom label="Game$1"/> </tuple>
+   <tuple> <atom label="unused13"/> </tuple>
+   <tuple> <atom label="unused14"/> </tuple>
+   <tuple> <atom label="unused15"/> </tuple>
+</upperbound>
+<upperbound name="this/Game.where"  arity="2">
+   <tuple> <atom label="Game$0"/> <atom label="Field$0"/> </tuple>
+   <tuple> <atom label="Game$0"/> <atom label="Field$1"/> </tuple>
+   <tuple> <atom label="Game$0"/> <atom label="unused6"/> </tuple>
+   <tuple> <atom label="Game$0"/> <atom label="unused7"/> </tuple>
+   <tuple> <atom label="Game$0"/> <atom label="unused12"/> </tuple>
+   <tuple> <atom label="Game$1"/> <atom label="Field$0"/> </tuple>
+   <tuple> <atom label="Game$1"/> <atom label="Field$1"/> </tuple>
+   <tuple> <atom label="Game$1"/> <atom label="unused6"/> </tuple>
+   <tuple> <atom label="Game$1"/> <atom label="unused7"/> </tuple>
+   <tuple> <atom label="Game$1"/> <atom label="unused12"/> </tuple>
+   <tuple> <atom label="unused13"/> <atom label="Field$0"/> </tuple>
+   <tuple> <atom label="unused13"/> <atom label="Field$1"/> </tuple>
+   <tuple> <atom label="unused13"/> <atom label="unused6"/> </tuple>
+   <tuple> <atom label="unused13"/> <atom label="unused7"/> </tuple>
+   <tuple> <atom label="unused13"/> <atom label="unused12"/> </tuple>
+   <tuple> <atom label="unused14"/> <atom label="Field$0"/> </tuple>
+   <tuple> <atom label="unused14"/> <atom label="Field$1"/> </tuple>
+   <tuple> <atom label="unused14"/> <atom label="unused6"/> </tuple>
+   <tuple> <atom label="unused14"/> <atom label="unused7"/> </tuple>
+   <tuple> <atom label="unused14"/> <atom label="unused12"/> </tuple>
+   <tuple> <atom label="unused15"/> <atom label="Field$0"/> </tuple>
+   <tuple> <atom label="unused15"/> <atom label="Field$1"/> </tuple>
+   <tuple> <atom label="unused15"/> <atom label="unused6"/> </tuple>
+   <tuple> <atom label="unused15"/> <atom label="unused7"/> </tuple>
+   <tuple> <atom label="unused15"/> <atom label="unused12"/> </tuple>
+</upperbound>
+<upperbound name="this/Game.when"  arity="2">
+   <tuple> <atom label="Game$0"/> <atom label="Date$0"/> </tuple>
+   <tuple> <atom label="Game$0"/> <atom label="unused8"/> </tuple>
+   <tuple> <atom label="Game$0"/> <atom label="unused9"/> </tuple>
+   <tuple> <atom label="Game$0"/> <atom label="unused10"/> </tuple>
+   <tuple> <atom label="Game$0"/> <atom label="unused11"/> </tuple>
+   <tuple> <atom label="Game$1"/> <atom label="Date$0"/> </tuple>
+   <tuple> <atom label="Game$1"/> <atom label="unused8"/> </tuple>
+   <tuple> <atom label="Game$1"/> <atom label="unused9"/> </tuple>
+   <tuple> <atom label="Game$1"/> <atom label="unused10"/> </tuple>
+   <tuple> <atom label="Game$1"/> <atom label="unused11"/> </tuple>
+   <tuple> <atom label="unused13"/> <atom label="Date$0"/> </tuple>
+   <tuple> <atom label="unused13"/> <atom label="unused8"/> </tuple>
+   <tuple> <atom label="unused13"/> <atom label="unused9"/> </tuple>
+   <tuple> <atom label="unused13"/> <atom label="unused10"/> </tuple>
+   <tuple> <atom label="unused13"/> <atom label="unused11"/> </tuple>
+   <tuple> <atom label="unused14"/> <atom label="Date$0"/> </tuple>
+   <tuple> <atom label="unused14"/> <atom label="unused8"/> </tuple>
+   <tuple> <atom label="unused14"/> <atom label="unused9"/> </tuple>
+   <tuple> <atom label="unused14"/> <atom label="unused10"/> </tuple>
+   <tuple> <atom label="unused14"/> <atom label="unused11"/> </tuple>
+   <tuple> <atom label="unused15"/> <atom label="Date$0"/> </tuple>
+   <tuple> <atom label="unused15"/> <atom label="unused8"/> </tuple>
+   <tuple> <atom label="unused15"/> <atom label="unused9"/> </tuple>
+   <tuple> <atom label="unused15"/> <atom label="unused10"/> </tuple>
+   <tuple> <atom label="unused15"/> <atom label="unused11"/> </tuple>
+</upperbound>
+<upperbound name="this/Date"  arity="1">
+   <tuple> <atom label="Date$0"/> </tuple>
+   <tuple> <atom label="unused8"/> </tuple>
+   <tuple> <atom label="unused9"/> </tuple>
+   <tuple> <atom label="unused10"/> </tuple>
+   <tuple> <atom label="unused11"/> </tuple>
+</upperbound>
+<upperbound name="this/FieldComplex"  arity="1">
+   <tuple> <atom label="FieldComplex$0"/> </tuple>
+</upperbound>
+<upperbound name="this/FieldComplex.schedule"  arity="2">
+   <tuple> <atom label="FieldComplex$0"/> <atom label="Game$0"/> </tuple>
+   <tuple> <atom label="FieldComplex$0"/> <atom label="Game$1"/> </tuple>
+   <tuple> <atom label="FieldComplex$0"/> <atom label="unused13"/> </tuple>
+   <tuple> <atom label="FieldComplex$0"/> <atom label="unused14"/> </tuple>
+   <tuple> <atom label="FieldComplex$0"/> <atom label="unused15"/> </tuple>
+</upperbound>
+</bounds><instance bitwidth="0" maxseq="0" command="Run run$1 for 5" filename="">
+
+<sig label="seq/Int" ID="0" parentID="1" builtin="yes">
+</sig>
+
+<sig label="Int" ID="1" parentID="2" builtin="yes">
+</sig>
+
+<sig label="String" ID="3" parentID="2" builtin="yes">
+</sig>
+
+<sig label="this/Field" ID="4" parentID="2">
+   <atom label="Field$0"/>
+   <atom label="Field$1"/>
+</sig>
+
+<sig label="this/Game" ID="5" parentID="2">
+   <atom label="Game$0"/>
+   <atom label="Game$1"/>
+</sig>
+
+<field label="where" ID="6" parentID="5">
+   <tuple> <atom label="Game$0"/> <atom label="Field$1"/> </tuple>
+   <tuple> <atom label="Game$1"/> <atom label="Field$0"/> </tuple>
+   <types> <type ID="5"/> <type ID="4"/> </types>
+</field>
+
+<field label="when" ID="7" parentID="5">
+   <tuple> <atom label="Game$0"/> <atom label="Date$0"/> </tuple>
+   <tuple> <atom label="Game$1"/> <atom label="Date$0"/> </tuple>
+   <types> <type ID="5"/> <type ID="8"/> </types>
+</field>
+
+<sig label="this/Date" ID="8" parentID="2">
+   <atom label="Date$0"/>
+</sig>
+
+<sig label="this/FieldComplex" ID="9" parentID="2" one="yes">
+   <atom label="FieldComplex$0"/>
+</sig>
+
+<field label="schedule" ID="10" parentID="9">
+   <tuple> <atom label="FieldComplex$0"/> <atom label="Game$1"/> </tuple>
+   <types> <type ID="9"/> <type ID="5"/> </types>
+</field>
+
+<sig label="univ" ID="2" builtin="yes">
+</sig>
+
+</instance>
+
+</alloy>
