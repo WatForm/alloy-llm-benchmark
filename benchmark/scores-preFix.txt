@@ -23,8 +23,8 @@ Model: Avenant
       scope_2: 1/1
       scope_3: 1/1
       scope_4: 1/1
-    General instances from original model checked on output model: 1/1
-      scope_1: 1/1
+    General instances from original model checked on output model: 0/1
+      scope_1: 0/1
   Direction: output => original
     Ringert (SemDiff implication): 4/4
       scope_1: 1/1
@@ -36,9 +36,9 @@ Model: Avenant
       scope_2: 2/2
       scope_3: 1/1
       scope_4: 1/1
-    General instances from output model checked on original model: 1/1
-      scope_1: 1/1
-  TOTAL: 19/25
+    General instances from output model checked on original model: 0/1
+      scope_1: 0/1
+  TOTAL: 17/25
 
 Model: COFFEE
   Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/COFFEE.attempt1.als
@@ -89,8 +89,8 @@ Model: FieldComplex-static
     CompoSAT instances from original model checked on output model: 0/2
       scope_1: 0/1
       scope_2: 0/1
-    General instances from original model checked on output model: 1/1
-      scope_1: 1/1
+    General instances from original model checked on output model: 0/1
+      scope_1: 0/1
   Direction: output => original
     Ringert (SemDiff implication): 0/2
       scope_1: 0/1
@@ -98,9 +98,9 @@ Model: FieldComplex-static
     CompoSAT instances from output model checked on original model: 2/5
       scope_1: 1/3
       scope_2: 1/2
-    General instances from output model checked on original model: 1/1
-      scope_1: 1/1
-  TOTAL: 8/16
+    General instances from output model checked on original model: 0/1
+      scope_1: 0/1
+  TOTAL: 6/16
 
 Model: FileSystem-software_abstractions
   Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/FileSystem-software_abstractions.attempt1.als
@@ -161,8 +161,8 @@ Model: Museum
     CompoSAT instances from original model checked on output model: 4/4
       scope_1: 2/2
       scope_2: 2/2
-    General instances from original model checked on output model: 1/1
-      scope_1: 1/1
+    General instances from original model checked on output model: 0/1
+      scope_1: 0/1
   Direction: output => original
     Ringert (SemDiff implication): 0/2
       scope_1: 0/1
@@ -170,9 +170,9 @@ Model: Museum
     CompoSAT instances from output model checked on original model: 2/8
       scope_1: 1/5
       scope_2: 1/3
-    General instances from output model checked on original model: 1/1
-      scope_1: 1/1
-  TOTAL: 13/21
+    General instances from output model checked on original model: 0/1
+      scope_1: 0/1
+  TOTAL: 11/21
 
 Model: Puzzle
   Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/Puzzle.attempt1.als
@@ -200,12 +200,12 @@ Model: Puzzle
       scope_6: 1/1
       scope_7: 1/1
       scope_8: 1/1
-    General instances from original model checked on output model: 5/5
-      scope_1: 1/1
-      scope_2: 1/1
-      scope_3: 1/1
-      scope_4: 1/1
-      scope_5: 1/1
+    General instances from original model checked on output model: 0/5
+      scope_1: 0/1
+      scope_2: 0/1
+      scope_3: 0/1
+      scope_4: 0/1
+      scope_5: 0/1
   Direction: output => original
     Ringert (SemDiff implication): 8/8
       scope_1: 1/1
@@ -225,13 +225,13 @@ Model: Puzzle
       scope_6: 1/1
       scope_7: 1/1
       scope_8: 1/1
-    General instances from output model checked on original model: 5/5
-      scope_1: 1/1
-      scope_2: 1/1
-      scope_3: 1/1
-      scope_4: 1/1
-      scope_5: 1/1
-  TOTAL: 45/45
+    General instances from output model checked on original model: 0/5
+      scope_1: 0/1
+      scope_2: 0/1
+      scope_3: 0/1
+      scope_4: 0/1
+      scope_5: 0/1
+  TOTAL: 35/45
 
 Model: ThreeOfAKind
   Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/ThreeOfAKind.attempt1.als
@@ -255,12 +255,12 @@ Model: ThreeOfAKind
       scope_4: 1/1
       scope_5: 1/1
       scope_6: 1/1
-    General instances from original model checked on output model: 25/25
-      scope_1: 1/1
-      scope_2: 2/2
-      scope_3: 4/4
-      scope_4: 8/8
-      scope_5: 10/10
+    General instances from original model checked on output model: 0/25
+      scope_1: 0/1
+      scope_2: 0/2
+      scope_3: 0/4
+      scope_4: 0/8
+      scope_5: 0/10
   Direction: output => original
     Ringert (SemDiff implication): 6/6
       scope_1: 1/1
@@ -276,13 +276,13 @@ Model: ThreeOfAKind
       scope_4: 1/1
       scope_5: 1/1
       scope_6: 1/1
-    General instances from output model checked on original model: 25/25
-      scope_1: 1/1
-      scope_2: 2/2
-      scope_3: 4/4
-      scope_4: 8/8
-      scope_5: 10/10
-  TOTAL: 79/79
+    General instances from output model checked on original model: 0/25
+      scope_1: 0/1
+      scope_2: 0/2
+      scope_3: 0/4
+      scope_4: 0/8
+      scope_5: 0/10
+  TOTAL: 29/79
 
 Model: addr
   Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/addr.attempt1.als
@@ -302,12 +302,12 @@ Model: addr
       scope_1: 4/4
       scope_2: 2/3
       scope_3: 2/3
-    General instances from original model checked on output model: 35/43
-      scope_1: 3/3
-      scope_2: 9/10
-      scope_3: 8/10
-      scope_4: 8/10
-      scope_5: 7/10
+    General instances from original model checked on output model: 0/43
+      scope_1: 0/3
+      scope_2: 0/10
+      scope_3: 0/10
+      scope_4: 0/10
+      scope_5: 0/10
   Direction: output => original
     Ringert (SemDiff implication): 1/5
       scope_1: 1/1
@@ -319,13 +319,13 @@ Model: addr
       scope_1: 3/3
       scope_2: 3/3
       scope_3: 2/2
-    General instances from output model checked on original model: 17/43
-      scope_1: 3/3
-      scope_2: 8/10
-      scope_3: 2/10
-      scope_4: 3/10
-      scope_5: 1/10
-  TOTAL: 72/117
+    General instances from output model checked on original model: 0/43
+      scope_1: 0/3
+      scope_2: 0/10
+      scope_3: 0/10
+      scope_4: 0/10
+      scope_5: 0/10
+  TOTAL: 20/117
 
 Model: addressBook2d
   Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/addressBook2d.attempt1.als
@@ -344,12 +344,12 @@ Model: addressBook2d
     CompoSAT instances from original model checked on output model: 6/6
       scope_1: 4/4
       scope_2: 2/2
-    General instances from original model checked on output model: 43/43
-      scope_1: 3/3
-      scope_2: 10/10
-      scope_3: 10/10
-      scope_4: 10/10
-      scope_5: 10/10
+    General instances from original model checked on output model: 0/43
+      scope_1: 0/3
+      scope_2: 0/10
+      scope_3: 0/10
+      scope_4: 0/10
+      scope_5: 0/10
   Direction: output => original
     Ringert (SemDiff implication): 5/5
       scope_1: 1/1
@@ -360,13 +360,13 @@ Model: addressBook2d
     CompoSAT instances from output model checked on original model: 6/6
       scope_1: 4/4
       scope_2: 2/2
-    General instances from output model checked on original model: 43/43
-      scope_1: 3/3
-      scope_2: 10/10
-      scope_3: 10/10
-      scope_4: 10/10
-      scope_5: 10/10
-  TOTAL: 111/111
+    General instances from output model checked on original model: 0/43
+      scope_1: 0/3
+      scope_2: 0/10
+      scope_3: 0/10
+      scope_4: 0/10
+      scope_5: 0/10
+  TOTAL: 25/111
 
 Model: all_isas
   Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/all_isas.attempt1.als
@@ -386,8 +386,8 @@ Model: all_isas
       scope_1: 0/2
       scope_2: 0/2
       scope_3: 0/2
-    General instances from original model checked on output model: 1/34
-      scope_1: 1/1
+    General instances from original model checked on output model: 0/34
+      scope_1: 0/1
       scope_2: 0/3
       scope_3: 0/10
       scope_4: 0/10
@@ -403,13 +403,13 @@ Model: all_isas
       scope_1: 2/2
       scope_2: 1/1
       scope_3: 1/1
-    General instances from output model checked on original model: 1/1
-      scope_1: 1/1
+    General instances from output model checked on original model: 0/1
+      scope_1: 0/1
       scope_2: 0/0
       scope_3: 0/0
       scope_4: 0/0
       scope_5: 0/0
-  TOTAL: 9/58
+  TOTAL: 7/58
 
 Model: alloy4fun_SPL_1_2_3_4
   Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/alloy4fun_SPL_1_2_3_4.attempt1.als
@@ -637,9 +637,9 @@ You must specify a scope for sig "this/Color"
       scope_3: 1/2
       scope_4: 0/1
       scope_5: 0/1
-    General instances from original model checked on output model: 5/5
-      scope_1: 2/2
-      scope_2: 3/3
+    General instances from original model checked on output model: 0/5
+      scope_1: 0/2
+      scope_2: 0/3
   Direction: output => original
     Ringert (SemDiff implication): 0/5
       scope_1: 0/1
@@ -653,10 +653,10 @@ You must specify a scope for sig "this/Color"
       scope_3: 1/1
       scope_4: 1/1
       scope_5: 1/1
-    General instances from output model checked on original model: 3/5
+    General instances from output model checked on original model: 0/5
       scope_1: 0/2
-      scope_2: 3/3
-  TOTAL: 19/38
+      scope_2: 0/3
+  TOTAL: 11/38
 
 Model: ex_Arity
   Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/ex_Arity.attempt1.als
@@ -676,9 +676,9 @@ Model: ex_Arity
       scope_1: 3/4
       scope_2: 1/1
       scope_3: 1/1
-    General instances from original model checked on output model: 3/37
-      scope_1: 1/1
-      scope_2: 2/6
+    General instances from original model checked on output model: 0/37
+      scope_1: 0/1
+      scope_2: 0/6
       scope_3: 0/10
       scope_4: 0/10
       scope_5: 0/10
@@ -693,13 +693,13 @@ Model: ex_Arity
       scope_1: 3/3
       scope_2: 1/1
       scope_3: 1/1
-    General instances from output model checked on original model: 33/33
-      scope_1: 1/1
-      scope_2: 2/2
-      scope_3: 10/10
-      scope_4: 10/10
-      scope_5: 10/10
-  TOTAL: 54/94
+    General instances from output model checked on original model: 0/33
+      scope_1: 0/1
+      scope_2: 0/2
+      scope_3: 0/10
+      scope_4: 0/10
+      scope_5: 0/10
+  TOTAL: 18/94
 
 Model: ex_ColorState
   Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/ex_ColorState.attempt1.als
@@ -754,12 +754,12 @@ Model: ex_FileSystem
       scope_3: 4/4
       scope_4: 2/2
       scope_5: 1/1
-    General instances from original model checked on output model: 35/35
-      scope_1: 1/1
-      scope_2: 4/4
-      scope_3: 10/10
-      scope_4: 10/10
-      scope_5: 10/10
+    General instances from original model checked on output model: 0/35
+      scope_1: 0/1
+      scope_2: 0/4
+      scope_3: 0/10
+      scope_4: 0/10
+      scope_5: 0/10
   Direction: output => original
     Ringert (SemDiff implication): 5/5
       scope_1: 1/1
@@ -773,13 +773,13 @@ Model: ex_FileSystem
       scope_3: 4/4
       scope_4: 2/2
       scope_5: 1/1
-    General instances from output model checked on original model: 35/35
-      scope_1: 1/1
-      scope_2: 4/4
-      scope_3: 10/10
-      scope_4: 10/10
-      scope_5: 10/10
-  TOTAL: 105/105
+    General instances from output model checked on original model: 0/35
+      scope_1: 0/1
+      scope_2: 0/4
+      scope_3: 0/10
+      scope_4: 0/10
+      scope_5: 0/10
+  TOTAL: 35/105
 
 Model: ex_Host
   Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/ex_Host.attempt1.als
@@ -800,12 +800,12 @@ Model: ex_Host
       scope_2: 1/3
       scope_3: 1/3
       scope_4: 0/3
-    General instances from original model checked on output model: 9/34
+    General instances from original model checked on output model: 0/34
       scope_1: 0/1
-      scope_2: 1/3
-      scope_3: 2/10
-      scope_4: 3/10
-      scope_5: 3/10
+      scope_2: 0/3
+      scope_3: 0/10
+      scope_4: 0/10
+      scope_5: 0/10
   Direction: output => original
     Ringert (SemDiff implication): 2/5
       scope_1: 1/1
@@ -818,13 +818,13 @@ Model: ex_Host
       scope_2: 1/1
       scope_3: 2/3
       scope_4: 1/3
-    General instances from output model checked on original model: 15/27
+    General instances from output model checked on original model: 0/27
       scope_1: 0/0
-      scope_2: 1/1
-      scope_3: 2/6
-      scope_4: 6/10
-      scope_5: 6/10
-  TOTAL: 35/92
+      scope_2: 0/1
+      scope_3: 0/6
+      scope_4: 0/10
+      scope_5: 0/10
+  TOTAL: 11/92
 
 Model: file_system
   Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/file_system.attempt3.als
@@ -1061,12 +1061,12 @@ Model: filesystem
       scope_2: 3/3
       scope_3: 4/4
       scope_4: 2/2
-    General instances from original model checked on output model: 42/42
-      scope_1: 2/2
-      scope_2: 10/10
-      scope_3: 10/10
-      scope_4: 10/10
-      scope_5: 10/10
+    General instances from original model checked on output model: 0/42
+      scope_1: 0/2
+      scope_2: 0/10
+      scope_3: 0/10
+      scope_4: 0/10
+      scope_5: 0/10
   Direction: output => original
     Ringert (SemDiff implication): 5/5
       scope_1: 1/1
@@ -1079,13 +1079,13 @@ Model: filesystem
       scope_2: 3/3
       scope_3: 4/4
       scope_4: 2/2
-    General instances from output model checked on original model: 42/42
-      scope_1: 2/2
-      scope_2: 10/10
-      scope_3: 10/10
-      scope_4: 10/10
-      scope_5: 10/10
-  TOTAL: 117/117
+    General instances from output model checked on original model: 0/42
+      scope_1: 0/2
+      scope_2: 0/10
+      scope_3: 0/10
+      scope_4: 0/10
+      scope_5: 0/10
+  TOTAL: 33/117
 
 Model: fruitbowl
   Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/fruitbowl.attempt1.als
@@ -1143,12 +1143,12 @@ Model: fullTree
     CompoSAT instances from original model checked on output model: 3/3
       scope_2: 2/2
       scope_3: 1/1
-    General instances from original model checked on output model: 44/44
-      scope_1: 4/4
-      scope_2: 10/10
-      scope_3: 10/10
-      scope_4: 10/10
-      scope_5: 10/10
+    General instances from original model checked on output model: 0/44
+      scope_1: 0/4
+      scope_2: 0/10
+      scope_3: 0/10
+      scope_4: 0/10
+      scope_5: 0/10
   Direction: output => original
     Ringert (SemDiff implication): 5/5
       scope_1: 1/1
@@ -1160,13 +1160,13 @@ Model: fullTree
       scope_1: 0/0
       scope_2: 2/2
       scope_3: 1/1
-    General instances from output model checked on original model: 44/44
-      scope_1: 4/4
-      scope_2: 10/10
-      scope_3: 10/10
-      scope_4: 10/10
-      scope_5: 10/10
-  TOTAL: 107/107
+    General instances from output model checked on original model: 0/44
+      scope_1: 0/4
+      scope_2: 0/10
+      scope_3: 0/10
+      scope_4: 0/10
+      scope_5: 0/10
+  TOTAL: 19/107
 
 Model: grade
   Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/grade.attempt1.als
@@ -1186,11 +1186,11 @@ Model: grade
       scope_1: 2/2
       scope_2: 1/1
       scope_3: 1/1
-    General instances from original model checked on output model: 40/40
-      scope_2: 10/10
-      scope_3: 10/10
-      scope_4: 10/10
-      scope_5: 10/10
+    General instances from original model checked on output model: 0/40
+      scope_2: 0/10
+      scope_3: 0/10
+      scope_4: 0/10
+      scope_5: 0/10
   Direction: output => original
     Ringert (SemDiff implication): 0/5
       scope_1: 0/1
@@ -1202,13 +1202,13 @@ Model: grade
       scope_1: 1/2
       scope_2: 1/1
       scope_3: 1/1
-    General instances from output model checked on original model: 36/41
+    General instances from output model checked on original model: 0/41
       scope_1: 0/1
-      scope_2: 7/10
-      scope_3: 10/10
-      scope_4: 9/10
-      scope_5: 10/10
-  TOTAL: 91/102
+      scope_2: 0/10
+      scope_3: 0/10
+      scope_4: 0/10
+      scope_5: 0/10
+  TOTAL: 15/102
 
 Model: grandpa3
   Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/grandpa3.attempt1.als
@@ -1229,11 +1229,11 @@ Model: grandpa3
       scope_2: 1/6
       scope_3: 0/5
       scope_4: 0/2
-    General instances from original model checked on output model: 4/42
+    General instances from original model checked on output model: 0/42
       scope_1: 0/2
-      scope_2: 3/10
+      scope_2: 0/10
       scope_3: 0/10
-      scope_4: 1/10
+      scope_4: 0/10
       scope_5: 0/10
   Direction: output => original
     Ringert (SemDiff implication): 0/5
@@ -1247,13 +1247,13 @@ Model: grandpa3
       scope_2: 2/2
       scope_3: 2/2
       scope_4: 1/2
-    General instances from output model checked on original model: 10/28
-      scope_1: 1/1
-      scope_2: 2/2
-      scope_3: 5/5
-      scope_4: 2/10
+    General instances from output model checked on original model: 0/28
+      scope_1: 0/1
+      scope_2: 0/2
+      scope_3: 0/5
+      scope_4: 0/10
       scope_5: 0/10
-  TOTAL: 24/105
+  TOTAL: 10/105
 
 Model: handshake
   Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/handshake.attempt2.als
@@ -1290,10 +1290,10 @@ The exactly keyword is redundant here since the integer bitwidth must be exact.
       scope_3: 1/1
       scope_4: 1/2
       scope_5: 1/2
-    General instances from original model checked on output model: 4/12
-      scope_1: 1/1
-      scope_2: 1/1
-      scope_4: 2/10
+    General instances from original model checked on output model: 0/12
+      scope_1: 0/1
+      scope_2: 0/1
+      scope_4: 0/10
   Direction: output => original
     Ringert (SemDiff implication): 0/5
       scope_1: 0/1
@@ -1307,12 +1307,12 @@ The exactly keyword is redundant here since the integer bitwidth must be exact.
       scope_3: 1/1
       scope_4: 0/0
       scope_5: 0/0
-    General instances from output model checked on original model: 2/6
+    General instances from output model checked on original model: 0/6
       scope_1: 0/0
-      scope_2: 1/1
+      scope_2: 0/1
       scope_3: 0/0
-      scope_4: 1/5
-  TOTAL: 15/42
+      scope_4: 0/5
+  TOTAL: 9/42
 
 Model: hc4
   Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/hc4.attempt1.als
@@ -1336,11 +1336,11 @@ Model: hc4
       scope_4: 2/2
       scope_5: 2/2
       scope_6: 1/1
-    General instances from original model checked on output model: 28/28
-      scope_2: 2/2
-      scope_3: 6/6
-      scope_4: 10/10
-      scope_5: 10/10
+    General instances from original model checked on output model: 0/28
+      scope_2: 0/2
+      scope_3: 0/6
+      scope_4: 0/10
+      scope_5: 0/10
   Direction: output => original
     Ringert (SemDiff implication): 2/6
       scope_1: 1/1
@@ -1356,13 +1356,13 @@ Model: hc4
       scope_4: 2/2
       scope_5: 2/2
       scope_6: 1/1
-    General instances from output model checked on original model: 5/9
+    General instances from output model checked on original model: 0/9
       scope_1: 0/0
-      scope_2: 1/1
-      scope_3: 1/2
-      scope_4: 1/2
-      scope_5: 2/4
-  TOTAL: 64/72
+      scope_2: 0/1
+      scope_3: 0/2
+      scope_4: 0/2
+      scope_5: 0/4
+  TOTAL: 31/72
 
 Model: marksweepgc
   Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/marksweepgc.attempt1.als
@@ -1729,12 +1729,12 @@ Instead, its possible type(s) are:
       scope_5: 0/1
       scope_6: 0/1
       scope_7: 0/1
-    General instances from original model checked on output model: 30/30
-      scope_1: 1/1
-      scope_2: 2/2
-      scope_3: 7/7
-      scope_4: 10/10
-      scope_5: 10/10
+    General instances from original model checked on output model: 0/30
+      scope_1: 0/1
+      scope_2: 0/2
+      scope_3: 0/7
+      scope_4: 0/10
+      scope_5: 0/10
   Direction: output => original
     Ringert (SemDiff implication): 3/7
       scope_1: 1/1
@@ -1753,13 +1753,13 @@ Instead, its possible type(s) are:
       scope_6: 1/1
     TIMEOUT: CompoSAT hit the 300s limit at scope_7.
     Note: scope_7: CompoSAT timed out after 300s; remaining scopes skipped.
-    General instances from output model checked on original model: 29/30
-      scope_1: 1/1
-      scope_2: 2/2
-      scope_3: 7/7
-      scope_4: 10/10
-      scope_5: 9/10
-  TOTAL: 79/92
+    General instances from output model checked on original model: 0/30
+      scope_1: 0/1
+      scope_2: 0/2
+      scope_3: 0/7
+      scope_4: 0/10
+      scope_5: 0/10
+  TOTAL: 20/92
 
 Model: phones_c
   Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/phones_c.attempt1.als
@@ -1778,12 +1778,12 @@ Model: phones_c
     CompoSAT instances from original model checked on output model: 5/5
       scope_1: 3/3
       scope_2: 2/2
-    General instances from original model checked on output model: 43/45
-      scope_1: 5/5
-      scope_2: 10/10
-      scope_3: 10/10
-      scope_4: 10/10
-      scope_5: 8/10
+    General instances from original model checked on output model: 0/45
+      scope_1: 0/5
+      scope_2: 0/10
+      scope_3: 0/10
+      scope_4: 0/10
+      scope_5: 0/10
   Direction: output => original
     Ringert (SemDiff implication): 0/5
       scope_1: 0/1
@@ -1794,13 +1794,13 @@ Model: phones_c
     CompoSAT instances from output model checked on original model: 4/6
       scope_1: 2/2
       scope_2: 2/4
-    General instances from output model checked on original model: 5/45
-      scope_1: 5/5
+    General instances from output model checked on original model: 0/45
+      scope_1: 0/5
       scope_2: 0/10
       scope_3: 0/10
       scope_4: 0/10
       scope_5: 0/10
-  TOTAL: 61/114
+  TOTAL: 13/114
 
 Model: railway
   Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/railway.attempt3.als
@@ -2027,12 +2027,12 @@ Model: sets1
       scope_2: 1/1
       scope_3: 1/1
       scope_4: 1/1
-    General instances from original model checked on output model: 39/39
-      scope_1: 2/2
-      scope_2: 7/7
-      scope_3: 10/10
-      scope_4: 10/10
-      scope_5: 10/10
+    General instances from original model checked on output model: 0/39
+      scope_1: 0/2
+      scope_2: 0/7
+      scope_3: 0/10
+      scope_4: 0/10
+      scope_5: 0/10
   Direction: output => original
     Ringert (SemDiff implication): 5/5
       scope_1: 1/1
@@ -2045,13 +2045,13 @@ Model: sets1
       scope_2: 1/1
       scope_3: 1/1
       scope_4: 1/1
-    General instances from output model checked on original model: 39/39
-      scope_1: 2/2
-      scope_2: 7/7
-      scope_3: 10/10
-      scope_4: 10/10
-      scope_5: 10/10
-  TOTAL: 103/103
+    General instances from output model checked on original model: 0/39
+      scope_1: 0/2
+      scope_2: 0/7
+      scope_3: 0/10
+      scope_4: 0/10
+      scope_5: 0/10
+  TOTAL: 25/103
 
 Model: sibling
   Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/sibling.attempt1.als
@@ -2071,12 +2071,12 @@ Model: sibling
       scope_1: 2/2
       scope_2: 3/3
       scope_3: 2/2
-    General instances from original model checked on output model: 41/41
-      scope_1: 1/1
-      scope_2: 10/10
-      scope_3: 10/10
-      scope_4: 10/10
-      scope_5: 10/10
+    General instances from original model checked on output model: 0/41
+      scope_1: 0/1
+      scope_2: 0/10
+      scope_3: 0/10
+      scope_4: 0/10
+      scope_5: 0/10
   Direction: output => original
     Ringert (SemDiff implication): 5/5
       scope_1: 1/1
@@ -2088,13 +2088,13 @@ Model: sibling
       scope_1: 2/2
       scope_2: 3/3
       scope_3: 2/2
-    General instances from output model checked on original model: 41/41
-      scope_1: 1/1
-      scope_2: 10/10
-      scope_3: 10/10
-      scope_4: 10/10
-      scope_5: 10/10
-  TOTAL: 109/109
+    General instances from output model checked on original model: 0/41
+      scope_1: 0/1
+      scope_2: 0/10
+      scope_3: 0/10
+      scope_4: 0/10
+      scope_5: 0/10
+  TOTAL: 27/109
 
 Model: singlyLinkedList
   Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/outputs/singlyLinkedList.attempt1.als
@@ -2114,12 +2114,12 @@ Model: singlyLinkedList
       scope_1: 3/3
       scope_2: 2/2
       scope_3: 1/1
-    General instances from original model checked on output model: 44/44
-      scope_1: 4/4
-      scope_2: 10/10
-      scope_3: 10/10
-      scope_4: 10/10
-      scope_5: 10/10
+    General instances from original model checked on output model: 0/44
+      scope_1: 0/4
+      scope_2: 0/10
+      scope_3: 0/10
+      scope_4: 0/10
+      scope_5: 0/10
   Direction: output => original
     Ringert (SemDiff implication): 5/5
       scope_1: 1/1
@@ -2131,13 +2131,13 @@ Model: singlyLinkedList
       scope_1: 3/3
       scope_2: 2/2
       scope_3: 1/1
-    General instances from output model checked on original model: 44/44
-      scope_1: 4/4
-      scope_2: 10/10
-      scope_3: 10/10
-      scope_4: 10/10
-      scope_5: 10/10
-  TOTAL: 113/113
+    General instances from output model checked on original model: 0/44
+      scope_1: 0/4
+      scope_2: 0/10
+      scope_3: 0/10
+      scope_4: 0/10
+      scope_5: 0/10
+  TOTAL: 25/113
 
 ================================================================================
-OVERALL TOTAL: 1492/2703
+OVERALL TOTAL: 492/2703
