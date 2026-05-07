@@ -1,0 +1,244 @@
+<alloy builddate="2025-03-10T15:06:21.150Z">
+
+<instance bitwidth="4" maxseq="4" mintrace="-1" maxtrace="-1" command="Run run$1 for 4 but exactly 4 DeductibleLevel, exactly 4 Product, exactly 4 Coverage, exactly 4 RiskType, exactly 4 DeductibleValue" filename="" tracelength="1" looplength="1">
+
+<sig label="seq/Int" ID="0" parentID="1" builtin="yes">
+</sig>
+
+<sig label="Int" ID="1" parentID="2" builtin="yes">
+</sig>
+
+<sig label="String" ID="3" parentID="2" builtin="yes">
+</sig>
+
+<sig label="this/DeductibleLevel" ID="4" parentID="2">
+   <atom label="DeductibleLevel$0"/>
+   <atom label="DeductibleLevel$1"/>
+   <atom label="DeductibleLevel$2"/>
+   <atom label="DeductibleLevel$3"/>
+</sig>
+
+<field label="product" ID="5" parentID="4">
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Product$3"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$1"/> <atom label="Product$3"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Product$3"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$3"/> <atom label="Product$2"/> </tuple>
+   <types> <type ID="4"/> <type ID="6"/> </types>
+</field>
+
+<field label="coverages" ID="7" parentID="4">
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$0"/> <atom label="RiskType$0"/> <atom label="DeductibleValue$2"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$0"/> <atom label="RiskType$0"/> <atom label="DeductibleValue$3"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$0"/> <atom label="RiskType$1"/> <atom label="DeductibleValue$1"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$0"/> <atom label="RiskType$1"/> <atom label="DeductibleValue$2"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$0"/> <atom label="RiskType$1"/> <atom label="DeductibleValue$3"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$0"/> <atom label="RiskType$2"/> <atom label="DeductibleValue$0"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$0"/> <atom label="RiskType$2"/> <atom label="DeductibleValue$1"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$0"/> <atom label="RiskType$2"/> <atom label="DeductibleValue$3"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$0"/> <atom label="RiskType$3"/> <atom label="DeductibleValue$0"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$0"/> <atom label="RiskType$3"/> <atom label="DeductibleValue$1"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$0"/> <atom label="RiskType$3"/> <atom label="DeductibleValue$2"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$1"/> <atom label="RiskType$0"/> <atom label="DeductibleValue$0"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$1"/> <atom label="RiskType$0"/> <atom label="DeductibleValue$2"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$1"/> <atom label="RiskType$0"/> <atom label="DeductibleValue$3"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$1"/> <atom label="RiskType$1"/> <atom label="DeductibleValue$0"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$1"/> <atom label="RiskType$1"/> <atom label="DeductibleValue$2"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$1"/> <atom label="RiskType$1"/> <atom label="DeductibleValue$3"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$1"/> <atom label="RiskType$2"/> <atom label="DeductibleValue$0"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$1"/> <atom label="RiskType$2"/> <atom label="DeductibleValue$1"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$1"/> <atom label="RiskType$2"/> <atom label="DeductibleValue$2"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$1"/> <atom label="RiskType$3"/> <atom label="DeductibleValue$0"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$1"/> <atom label="RiskType$3"/> <atom label="DeductibleValue$1"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$1"/> <atom label="RiskType$3"/> <atom label="DeductibleValue$3"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$2"/> <atom label="RiskType$0"/> <atom label="DeductibleValue$0"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$2"/> <atom label="RiskType$0"/> <atom label="DeductibleValue$1"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$2"/> <atom label="RiskType$0"/> <atom label="DeductibleValue$3"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$2"/> <atom label="RiskType$1"/> <atom label="DeductibleValue$0"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$2"/> <atom label="RiskType$1"/> <atom label="DeductibleValue$1"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$2"/> <atom label="RiskType$1"/> <atom label="DeductibleValue$3"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$2"/> <atom label="RiskType$2"/> <atom label="DeductibleValue$0"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$2"/> <atom label="RiskType$2"/> <atom label="DeductibleValue$1"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$2"/> <atom label="RiskType$2"/> <atom label="DeductibleValue$3"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$2"/> <atom label="RiskType$3"/> <atom label="DeductibleValue$0"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$2"/> <atom label="RiskType$3"/> <atom label="DeductibleValue$2"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$2"/> <atom label="RiskType$3"/> <atom label="DeductibleValue$3"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$3"/> <atom label="RiskType$0"/> <atom label="DeductibleValue$0"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$3"/> <atom label="RiskType$0"/> <atom label="DeductibleValue$1"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$3"/> <atom label="RiskType$0"/> <atom label="DeductibleValue$2"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$3"/> <atom label="RiskType$1"/> <atom label="DeductibleValue$0"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$3"/> <atom label="RiskType$1"/> <atom label="DeductibleValue$1"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$3"/> <atom label="RiskType$1"/> <atom label="DeductibleValue$2"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$3"/> <atom label="RiskType$2"/> <atom label="DeductibleValue$0"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$3"/> <atom label="RiskType$2"/> <atom label="DeductibleValue$1"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$3"/> <atom label="RiskType$2"/> <atom label="DeductibleValue$2"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$3"/> <atom label="RiskType$3"/> <atom label="DeductibleValue$0"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$0"/> <atom label="Coverage$3"/> <atom label="RiskType$3"/> <atom label="DeductibleValue$1"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$1"/> <atom label="Coverage$0"/> <atom label="RiskType$0"/> <atom label="DeductibleValue$1"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$1"/> <atom label="Coverage$0"/> <atom label="RiskType$1"/> <atom label="DeductibleValue$0"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$1"/> <atom label="Coverage$0"/> <atom label="RiskType$2"/> <atom label="DeductibleValue$2"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$1"/> <atom label="Coverage$0"/> <atom label="RiskType$3"/> <atom label="DeductibleValue$3"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$1"/> <atom label="Coverage$1"/> <atom label="RiskType$0"/> <atom label="DeductibleValue$1"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$1"/> <atom label="Coverage$1"/> <atom label="RiskType$1"/> <atom label="DeductibleValue$1"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$1"/> <atom label="Coverage$1"/> <atom label="RiskType$2"/> <atom label="DeductibleValue$3"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$1"/> <atom label="Coverage$1"/> <atom label="RiskType$3"/> <atom label="DeductibleValue$2"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$1"/> <atom label="Coverage$2"/> <atom label="RiskType$0"/> <atom label="DeductibleValue$2"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$1"/> <atom label="Coverage$2"/> <atom label="RiskType$1"/> <atom label="DeductibleValue$2"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$1"/> <atom label="Coverage$2"/> <atom label="RiskType$2"/> <atom label="DeductibleValue$2"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$1"/> <atom label="Coverage$2"/> <atom label="RiskType$3"/> <atom label="DeductibleValue$1"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$1"/> <atom label="Coverage$3"/> <atom label="RiskType$0"/> <atom label="DeductibleValue$3"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$1"/> <atom label="Coverage$3"/> <atom label="RiskType$1"/> <atom label="DeductibleValue$3"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$1"/> <atom label="Coverage$3"/> <atom label="RiskType$2"/> <atom label="DeductibleValue$3"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$1"/> <atom label="Coverage$3"/> <atom label="RiskType$3"/> <atom label="DeductibleValue$2"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$1"/> <atom label="Coverage$3"/> <atom label="RiskType$3"/> <atom label="DeductibleValue$3"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$0"/> <atom label="RiskType$0"/> <atom label="DeductibleValue$0"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$0"/> <atom label="RiskType$0"/> <atom label="DeductibleValue$2"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$0"/> <atom label="RiskType$0"/> <atom label="DeductibleValue$3"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$0"/> <atom label="RiskType$1"/> <atom label="DeductibleValue$1"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$0"/> <atom label="RiskType$1"/> <atom label="DeductibleValue$2"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$0"/> <atom label="RiskType$1"/> <atom label="DeductibleValue$3"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$0"/> <atom label="RiskType$2"/> <atom label="DeductibleValue$0"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$0"/> <atom label="RiskType$2"/> <atom label="DeductibleValue$1"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$0"/> <atom label="RiskType$2"/> <atom label="DeductibleValue$3"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$0"/> <atom label="RiskType$3"/> <atom label="DeductibleValue$0"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$0"/> <atom label="RiskType$3"/> <atom label="DeductibleValue$1"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$0"/> <atom label="RiskType$3"/> <atom label="DeductibleValue$2"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$1"/> <atom label="RiskType$0"/> <atom label="DeductibleValue$0"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$1"/> <atom label="RiskType$0"/> <atom label="DeductibleValue$2"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$1"/> <atom label="RiskType$0"/> <atom label="DeductibleValue$3"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$1"/> <atom label="RiskType$1"/> <atom label="DeductibleValue$0"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$1"/> <atom label="RiskType$1"/> <atom label="DeductibleValue$2"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$1"/> <atom label="RiskType$1"/> <atom label="DeductibleValue$3"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$1"/> <atom label="RiskType$2"/> <atom label="DeductibleValue$0"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$1"/> <atom label="RiskType$2"/> <atom label="DeductibleValue$1"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$1"/> <atom label="RiskType$2"/> <atom label="DeductibleValue$2"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$1"/> <atom label="RiskType$3"/> <atom label="DeductibleValue$0"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$1"/> <atom label="RiskType$3"/> <atom label="DeductibleValue$1"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$1"/> <atom label="RiskType$3"/> <atom label="DeductibleValue$3"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$2"/> <atom label="RiskType$0"/> <atom label="DeductibleValue$0"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$2"/> <atom label="RiskType$0"/> <atom label="DeductibleValue$1"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$2"/> <atom label="RiskType$0"/> <atom label="DeductibleValue$3"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$2"/> <atom label="RiskType$1"/> <atom label="DeductibleValue$0"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$2"/> <atom label="RiskType$1"/> <atom label="DeductibleValue$1"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$2"/> <atom label="RiskType$1"/> <atom label="DeductibleValue$3"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$2"/> <atom label="RiskType$2"/> <atom label="DeductibleValue$0"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$2"/> <atom label="RiskType$2"/> <atom label="DeductibleValue$1"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$2"/> <atom label="RiskType$2"/> <atom label="DeductibleValue$3"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$2"/> <atom label="RiskType$3"/> <atom label="DeductibleValue$0"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$2"/> <atom label="RiskType$3"/> <atom label="DeductibleValue$2"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$2"/> <atom label="RiskType$3"/> <atom label="DeductibleValue$3"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$3"/> <atom label="RiskType$0"/> <atom label="DeductibleValue$0"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$3"/> <atom label="RiskType$0"/> <atom label="DeductibleValue$1"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$3"/> <atom label="RiskType$0"/> <atom label="DeductibleValue$2"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$3"/> <atom label="RiskType$1"/> <atom label="DeductibleValue$0"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$3"/> <atom label="RiskType$1"/> <atom label="DeductibleValue$1"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$3"/> <atom label="RiskType$1"/> <atom label="DeductibleValue$2"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$3"/> <atom label="RiskType$2"/> <atom label="DeductibleValue$0"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$3"/> <atom label="RiskType$2"/> <atom label="DeductibleValue$1"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$3"/> <atom label="RiskType$2"/> <atom label="DeductibleValue$2"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$3"/> <atom label="RiskType$3"/> <atom label="DeductibleValue$0"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$2"/> <atom label="Coverage$3"/> <atom label="RiskType$3"/> <atom label="DeductibleValue$1"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$3"/> <atom label="Coverage$0"/> <atom label="RiskType$0"/> <atom label="DeductibleValue$1"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$3"/> <atom label="Coverage$0"/> <atom label="RiskType$1"/> <atom label="DeductibleValue$0"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$3"/> <atom label="Coverage$0"/> <atom label="RiskType$2"/> <atom label="DeductibleValue$2"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$3"/> <atom label="Coverage$0"/> <atom label="RiskType$3"/> <atom label="DeductibleValue$3"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$3"/> <atom label="Coverage$1"/> <atom label="RiskType$0"/> <atom label="DeductibleValue$1"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$3"/> <atom label="Coverage$1"/> <atom label="RiskType$1"/> <atom label="DeductibleValue$1"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$3"/> <atom label="Coverage$1"/> <atom label="RiskType$2"/> <atom label="DeductibleValue$3"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$3"/> <atom label="Coverage$1"/> <atom label="RiskType$3"/> <atom label="DeductibleValue$2"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$3"/> <atom label="Coverage$2"/> <atom label="RiskType$0"/> <atom label="DeductibleValue$2"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$3"/> <atom label="Coverage$2"/> <atom label="RiskType$1"/> <atom label="DeductibleValue$2"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$3"/> <atom label="Coverage$2"/> <atom label="RiskType$2"/> <atom label="DeductibleValue$2"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$3"/> <atom label="Coverage$2"/> <atom label="RiskType$3"/> <atom label="DeductibleValue$1"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$3"/> <atom label="Coverage$3"/> <atom label="RiskType$0"/> <atom label="DeductibleValue$3"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$3"/> <atom label="Coverage$3"/> <atom label="RiskType$1"/> <atom label="DeductibleValue$3"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$3"/> <atom label="Coverage$3"/> <atom label="RiskType$2"/> <atom label="DeductibleValue$3"/> </tuple>
+   <tuple> <atom label="DeductibleLevel$3"/> <atom label="Coverage$3"/> <atom label="RiskType$3"/> <atom label="DeductibleValue$2"/> </tuple>
+   <types> <type ID="4"/> <type ID="8"/> <type ID="9"/> <type ID="10"/> </types>
+</field>
+
+<sig label="this/Product" ID="6" parentID="2">
+   <atom label="Product$0"/>
+   <atom label="Product$1"/>
+   <atom label="Product$2"/>
+   <atom label="Product$3"/>
+</sig>
+
+<field label="base_coverages" ID="11" parentID="6">
+   <tuple> <atom label="Product$2"/> <atom label="Coverage$0"/> </tuple>
+   <tuple> <atom label="Product$2"/> <atom label="Coverage$1"/> </tuple>
+   <tuple> <atom label="Product$2"/> <atom label="Coverage$2"/> </tuple>
+   <tuple> <atom label="Product$2"/> <atom label="Coverage$3"/> </tuple>
+   <types> <type ID="6"/> <type ID="8"/> </types>
+</field>
+
+<field label="optional_coverages" ID="12" parentID="6">
+   <tuple> <atom label="Product$1"/> <atom label="Coverage$0"/> </tuple>
+   <tuple> <atom label="Product$1"/> <atom label="Coverage$1"/> </tuple>
+   <tuple> <atom label="Product$1"/> <atom label="Coverage$2"/> </tuple>
+   <tuple> <atom label="Product$1"/> <atom label="Coverage$3"/> </tuple>
+   <tuple> <atom label="Product$3"/> <atom label="Coverage$0"/> </tuple>
+   <tuple> <atom label="Product$3"/> <atom label="Coverage$1"/> </tuple>
+   <tuple> <atom label="Product$3"/> <atom label="Coverage$2"/> </tuple>
+   <tuple> <atom label="Product$3"/> <atom label="Coverage$3"/> </tuple>
+   <types> <type ID="6"/> <type ID="8"/> </types>
+</field>
+
+<field label="risk_types" ID="13" parentID="6">
+   <tuple> <atom label="Product$0"/> <atom label="RiskType$3"/> </tuple>
+   <tuple> <atom label="Product$1"/> <atom label="RiskType$0"/> </tuple>
+   <tuple> <atom label="Product$1"/> <atom label="RiskType$1"/> </tuple>
+   <tuple> <atom label="Product$1"/> <atom label="RiskType$2"/> </tuple>
+   <tuple> <atom label="Product$2"/> <atom label="RiskType$3"/> </tuple>
+   <tuple> <atom label="Product$3"/> <atom label="RiskType$0"/> </tuple>
+   <tuple> <atom label="Product$3"/> <atom label="RiskType$1"/> </tuple>
+   <tuple> <atom label="Product$3"/> <atom label="RiskType$2"/> </tuple>
+   <types> <type ID="6"/> <type ID="9"/> </types>
+</field>
+
+<sig label="this/Coverage" ID="8" parentID="2">
+   <atom label="Coverage$0"/>
+   <atom label="Coverage$1"/>
+   <atom label="Coverage$2"/>
+   <atom label="Coverage$3"/>
+</sig>
+
+<field label="risk_types" ID="14" parentID="8">
+   <tuple> <atom label="Coverage$0"/> <atom label="RiskType$0"/> </tuple>
+   <tuple> <atom label="Coverage$0"/> <atom label="RiskType$1"/> </tuple>
+   <tuple> <atom label="Coverage$0"/> <atom label="RiskType$2"/> </tuple>
+   <tuple> <atom label="Coverage$0"/> <atom label="RiskType$3"/> </tuple>
+   <tuple> <atom label="Coverage$1"/> <atom label="RiskType$0"/> </tuple>
+   <tuple> <atom label="Coverage$1"/> <atom label="RiskType$1"/> </tuple>
+   <tuple> <atom label="Coverage$1"/> <atom label="RiskType$2"/> </tuple>
+   <tuple> <atom label="Coverage$1"/> <atom label="RiskType$3"/> </tuple>
+   <tuple> <atom label="Coverage$2"/> <atom label="RiskType$0"/> </tuple>
+   <tuple> <atom label="Coverage$2"/> <atom label="RiskType$1"/> </tuple>
+   <tuple> <atom label="Coverage$2"/> <atom label="RiskType$2"/> </tuple>
+   <tuple> <atom label="Coverage$2"/> <atom label="RiskType$3"/> </tuple>
+   <tuple> <atom label="Coverage$3"/> <atom label="RiskType$0"/> </tuple>
+   <tuple> <atom label="Coverage$3"/> <atom label="RiskType$1"/> </tuple>
+   <tuple> <atom label="Coverage$3"/> <atom label="RiskType$2"/> </tuple>
+   <tuple> <atom label="Coverage$3"/> <atom label="RiskType$3"/> </tuple>
+   <types> <type ID="8"/> <type ID="9"/> </types>
+</field>
+
+<sig label="this/RiskType" ID="9" parentID="2">
+   <atom label="RiskType$0"/>
+   <atom label="RiskType$1"/>
+   <atom label="RiskType$2"/>
+   <atom label="RiskType$3"/>
+</sig>
+
+<sig label="this/DeductibleValue" ID="10" parentID="2">
+   <atom label="DeductibleValue$0"/>
+   <atom label="DeductibleValue$1"/>
+   <atom label="DeductibleValue$2"/>
+   <atom label="DeductibleValue$3"/>
+</sig>
+
+<sig label="univ" ID="2" builtin="yes">
+</sig>
+
+</instance>
+
+</alloy>

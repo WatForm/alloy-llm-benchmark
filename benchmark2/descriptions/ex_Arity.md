@@ -1,0 +1,3 @@
+This Alloy model consists of three sets named A, B, and C. The set A has a relation named 'r' that maps to elements from set B and set C.
+
+A constraint exists on the relation 'r'. For every element 'a' in the set A, the elements that 'a' relates to via 'r' must be such that for every element in set B, there is exactly one corresponding element in set C. This means that, for each 'a', any given element from set B can be related to through 'r' by 'a' with exactly one unique element from set C.
