@@ -107,7 +107,7 @@ public class InstanceGenerator {
         try {
             CompModule modelWorld = CompUtil.parseEverything_fromString(rep, modelString);
             for (Sig sig : modelWorld.getAllReachableSigs()) {
-                if (sig.isTopLevel() && !sig.builtin) {
+                if (sig.isTopLevel() && !sig.builtin && sig.isOne == null && sig.isLone == null) {
                     topLevelSigs.add(sig.label.replace("this/",""));
                 }
             }
