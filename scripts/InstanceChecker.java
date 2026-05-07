@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -92,6 +94,15 @@ public class InstanceChecker {
         }
         atoms.addAll(idToSigInfo.get(id).atoms);
         return atoms;
+    }
+
+    private static Integer parseScopeFromCommand(String cmd) {
+        Pattern pattern = Pattern.compile("\\bfor\\s+(\\d+)");
+        Matcher matcher = pattern.matcher(cmd);
+        if (!matcher.find()) {
+            return null;
+        }
+        return Integer.parseInt(matcher.group(1));
     }
 
     public static void main(String[] args) throws Exception {
@@ -301,7 +312,7 @@ public class InstanceChecker {
             arrows = new ArrayList<String>();
             
             if (tuples.getLength() == 0) {
-                arrows.add(String.join(" -> ", java.util.Collections.nCopies(arity, "none")));
+                continue;
             } else {
                 arrows = new ArrayList<String>();
 
@@ -345,17 +356,19 @@ public class InstanceChecker {
             System.out.println("FAIL: Instance should be for a run {} cmd\n");
             System.exit(1);
         }
-        //cmd = cmd.replace("Run run$1", "run {}");
-        checkerModel.append("\nrun {} for 0\n");     
-        Integer modelNumCmds = modelWorld.getAllCommands().size();  
-        Integer satCmdNum = modelNumCmds;   // cmds are zero indexed
-
+        Integer scope = parseScopeFromCommand(cmd);
+        if (scope == null) {
+            System.out.println("FAIL: Could not parse scope from XML command: " + cmd);
+            System.exit(1);
+        }
+        checkerModel.append("\nrun {} for " + scope + "\n");
         System.out.println(checkerModel.toString());
         A4Solution sol = null;
         try {
             // check if checkerModel is Sat
             // parsing or solve will fail if xml has names that model does not
             CompModule checkerModelWorld = CompUtil.parseEverything_fromString(rep, checkerModel.toString());
+            int satCmdNum = checkerModelWorld.getAllCommands().size() - 1;
             // this is the only place we do solving
             // hopefully it is quick because the instance is specific
             A4Options opt = new A4Options();
