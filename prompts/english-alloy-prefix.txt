@@ -1,6 +1,6 @@
-You are an expert in Alloy, a formal specification language. Your task is to convert the following English description of a model into a complete, valid Alloy 6 specification.
+You are an expert in Alloy, a formal modelling language for software-based systems. Your task is to convert the following English description of a model into an Alloy 6 specification.  Your output must be syntactically correct in Alloy and include exactly the details from the English description without any extra details.
 
-Any term enclosed in double quotes in the description (e.g., "sample") dictates the exact identifier you must use for the corresponding signature or relation, these are all case sensitive.
+Any text  enclosed in double quotes in the description (e.g., "sample") dictates the exact identifier you must use for the corresponding signature or relation, these are all case sensitive. Use exactly this set of signatures and relations in the model.
 
 Below is the English description:
 

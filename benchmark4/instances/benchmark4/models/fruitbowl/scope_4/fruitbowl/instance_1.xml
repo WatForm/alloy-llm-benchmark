@@ -1,0 +1,220 @@
+<alloy builddate="unknown">
+
+
+<bounds> 
+<upperbound name="Int/next"  arity="2">
+</upperbound>
+<upperbound name="seq/Int"  arity="1">
+</upperbound>
+<upperbound name="String"  arity="1">
+</upperbound>
+<upperbound name="this/apple"  arity="1">
+   <tuple> <atom label="apple$0"/> </tuple>
+</upperbound>
+<upperbound name="this/apple.color"  arity="2">
+   <tuple> <atom label="apple$0"/> <atom label="RED$0"/> </tuple>
+</upperbound>
+<upperbound name="this/apple.quality"  arity="2">
+   <tuple> <atom label="apple$0"/> <atom label="Brown$0"/> </tuple>
+   <tuple> <atom label="apple$0"/> <atom label="Juicy$0"/> </tuple>
+   <tuple> <atom label="apple$0"/> <atom label="Moldy$0"/> </tuple>
+   <tuple> <atom label="apple$0"/> <atom label="Organic$0"/> </tuple>
+   <tuple> <atom label="apple$0"/> <atom label="Ripe$0"/> </tuple>
+</upperbound>
+<upperbound name="this/apple.size"  arity="2">
+   <tuple> <atom label="apple$0"/> <atom label="Large$0"/> </tuple>
+   <tuple> <atom label="apple$0"/> <atom label="Medium$0"/> </tuple>
+   <tuple> <atom label="apple$0"/> <atom label="Small$0"/> </tuple>
+</upperbound>
+<upperbound name="this/orange"  arity="1">
+   <tuple> <atom label="orange$0"/> </tuple>
+</upperbound>
+<upperbound name="this/orange.color"  arity="2">
+   <tuple> <atom label="orange$0"/> <atom label="ORANGE$0"/> </tuple>
+</upperbound>
+<upperbound name="this/orange.quality"  arity="2">
+   <tuple> <atom label="orange$0"/> <atom label="Brown$0"/> </tuple>
+   <tuple> <atom label="orange$0"/> <atom label="Juicy$0"/> </tuple>
+   <tuple> <atom label="orange$0"/> <atom label="Moldy$0"/> </tuple>
+   <tuple> <atom label="orange$0"/> <atom label="Organic$0"/> </tuple>
+   <tuple> <atom label="orange$0"/> <atom label="Ripe$0"/> </tuple>
+</upperbound>
+<upperbound name="this/orange.size"  arity="2">
+   <tuple> <atom label="orange$0"/> <atom label="Large$0"/> </tuple>
+   <tuple> <atom label="orange$0"/> <atom label="Medium$0"/> </tuple>
+   <tuple> <atom label="orange$0"/> <atom label="Small$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Fruit"  arity="1">
+   <tuple> <atom label="apple$0"/> </tuple>
+   <tuple> <atom label="orange$0"/> </tuple>
+</upperbound>
+<upperbound name="this/RED"  arity="1">
+   <tuple> <atom label="RED$0"/> </tuple>
+</upperbound>
+<upperbound name="this/ORANGE"  arity="1">
+   <tuple> <atom label="ORANGE$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Color"  arity="1">
+   <tuple> <atom label="ORANGE$0"/> </tuple>
+   <tuple> <atom label="RED$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Ripe"  arity="1">
+   <tuple> <atom label="Ripe$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Juicy"  arity="1">
+   <tuple> <atom label="Juicy$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Moldy"  arity="1">
+   <tuple> <atom label="Moldy$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Brown"  arity="1">
+   <tuple> <atom label="Brown$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Organic"  arity="1">
+   <tuple> <atom label="Organic$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Quality"  arity="1">
+   <tuple> <atom label="Brown$0"/> </tuple>
+   <tuple> <atom label="Juicy$0"/> </tuple>
+   <tuple> <atom label="Moldy$0"/> </tuple>
+   <tuple> <atom label="Organic$0"/> </tuple>
+   <tuple> <atom label="Ripe$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Large"  arity="1">
+   <tuple> <atom label="Large$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Medium"  arity="1">
+   <tuple> <atom label="Medium$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Small"  arity="1">
+   <tuple> <atom label="Small$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Size"  arity="1">
+   <tuple> <atom label="Large$0"/> </tuple>
+   <tuple> <atom label="Medium$0"/> </tuple>
+   <tuple> <atom label="Small$0"/> </tuple>
+</upperbound>
+<upperbound name="this/FruitBowl"  arity="1">
+   <tuple> <atom label="FruitBowl$0"/> </tuple>
+</upperbound>
+<upperbound name="this/FruitBowl.contains"  arity="2">
+   <tuple> <atom label="FruitBowl$0"/> <atom label="apple$0"/> </tuple>
+   <tuple> <atom label="FruitBowl$0"/> <atom label="orange$0"/> </tuple>
+</upperbound>
+</bounds><instance bitwidth="0" maxseq="0" command="Run run$1 for 4" filename="">
+
+<sig label="seq/Int" ID="0" parentID="1" builtin="yes">
+</sig>
+
+<sig label="Int" ID="1" parentID="2" builtin="yes">
+</sig>
+
+<sig label="String" ID="3" parentID="2" builtin="yes">
+</sig>
+
+<sig label="this/apple" ID="4" parentID="5" one="yes">
+   <atom label="apple$0"/>
+</sig>
+
+<field label="color" ID="6" parentID="4">
+   <tuple> <atom label="apple$0"/> <atom label="RED$0"/> </tuple>
+   <types> <type ID="4"/> <type ID="7"/> </types>
+</field>
+
+<field label="quality" ID="8" parentID="4">
+   <tuple> <atom label="apple$0"/> <atom label="Organic$0"/> </tuple>
+   <types> <type ID="4"/> <type ID="9"/> </types>
+</field>
+
+<field label="size" ID="10" parentID="4">
+   <tuple> <atom label="apple$0"/> <atom label="Small$0"/> </tuple>
+   <types> <type ID="4"/> <type ID="11"/> </types>
+</field>
+
+<sig label="this/orange" ID="12" parentID="5" one="yes">
+   <atom label="orange$0"/>
+</sig>
+
+<field label="color" ID="13" parentID="12">
+   <tuple> <atom label="orange$0"/> <atom label="ORANGE$0"/> </tuple>
+   <types> <type ID="12"/> <type ID="14"/> </types>
+</field>
+
+<field label="quality" ID="15" parentID="12">
+   <tuple> <atom label="orange$0"/> <atom label="Organic$0"/> </tuple>
+   <types> <type ID="12"/> <type ID="9"/> </types>
+</field>
+
+<field label="size" ID="16" parentID="12">
+   <tuple> <atom label="orange$0"/> <atom label="Small$0"/> </tuple>
+   <types> <type ID="12"/> <type ID="11"/> </types>
+</field>
+
+<sig label="this/Fruit" ID="5" parentID="2" abstract="yes">
+</sig>
+
+<sig label="this/RED" ID="7" parentID="17" one="yes">
+   <atom label="RED$0"/>
+</sig>
+
+<sig label="this/ORANGE" ID="14" parentID="17" one="yes">
+   <atom label="ORANGE$0"/>
+</sig>
+
+<sig label="this/Color" ID="17" parentID="2" abstract="yes">
+</sig>
+
+<sig label="this/Ripe" ID="18" parentID="9" one="yes">
+   <atom label="Ripe$0"/>
+</sig>
+
+<sig label="this/Juicy" ID="19" parentID="9" one="yes">
+   <atom label="Juicy$0"/>
+</sig>
+
+<sig label="this/Moldy" ID="20" parentID="9" one="yes">
+   <atom label="Moldy$0"/>
+</sig>
+
+<sig label="this/Brown" ID="21" parentID="9" one="yes">
+   <atom label="Brown$0"/>
+</sig>
+
+<sig label="this/Organic" ID="22" parentID="9" one="yes">
+   <atom label="Organic$0"/>
+</sig>
+
+<sig label="this/Quality" ID="9" parentID="2" abstract="yes">
+</sig>
+
+<sig label="this/Large" ID="23" parentID="11" one="yes">
+   <atom label="Large$0"/>
+</sig>
+
+<sig label="this/Medium" ID="24" parentID="11" one="yes">
+   <atom label="Medium$0"/>
+</sig>
+
+<sig label="this/Small" ID="25" parentID="11" one="yes">
+   <atom label="Small$0"/>
+</sig>
+
+<sig label="this/Size" ID="11" parentID="2" abstract="yes">
+</sig>
+
+<sig label="this/FruitBowl" ID="26" parentID="2" one="yes">
+   <atom label="FruitBowl$0"/>
+</sig>
+
+<field label="contains" ID="27" parentID="26">
+   <tuple> <atom label="FruitBowl$0"/> <atom label="apple$0"/> </tuple>
+   <tuple> <atom label="FruitBowl$0"/> <atom label="orange$0"/> </tuple>
+   <types> <type ID="26"/> <type ID="5"/> </types>
+</field>
+
+<sig label="univ" ID="2" builtin="yes">
+</sig>
+
+</instance>
+
+</alloy>

@@ -1,0 +1,70 @@
+<alloy builddate="unknown">
+
+
+<bounds> 
+<upperbound name="Int/next"  arity="2">
+</upperbound>
+<upperbound name="seq/Int"  arity="1">
+</upperbound>
+<upperbound name="String"  arity="1">
+</upperbound>
+<upperbound name="this/Phone"  arity="1">
+   <tuple> <atom label="Phone$0"/> </tuple>
+   <tuple> <atom label="Phone$1"/> </tuple>
+</upperbound>
+<upperbound name="this/Phone.requests"  arity="2">
+   <tuple> <atom label="Phone$0"/> <atom label="Phone$0"/> </tuple>
+   <tuple> <atom label="Phone$0"/> <atom label="Phone$1"/> </tuple>
+   <tuple> <atom label="Phone$1"/> <atom label="Phone$0"/> </tuple>
+   <tuple> <atom label="Phone$1"/> <atom label="Phone$1"/> </tuple>
+</upperbound>
+<upperbound name="this/Phone.connects"  arity="2">
+   <tuple> <atom label="Phone$0"/> <atom label="Phone$0"/> </tuple>
+   <tuple> <atom label="Phone$0"/> <atom label="Phone$1"/> </tuple>
+   <tuple> <atom label="Phone$1"/> <atom label="Phone$0"/> </tuple>
+   <tuple> <atom label="Phone$1"/> <atom label="Phone$1"/> </tuple>
+</upperbound>
+<upperbound name="this/Phone.forward"  arity="2">
+   <tuple> <atom label="Phone$0"/> <atom label="Phone$0"/> </tuple>
+   <tuple> <atom label="Phone$0"/> <atom label="Phone$1"/> </tuple>
+   <tuple> <atom label="Phone$1"/> <atom label="Phone$0"/> </tuple>
+   <tuple> <atom label="Phone$1"/> <atom label="Phone$1"/> </tuple>
+</upperbound>
+</bounds><instance bitwidth="0" maxseq="0" command="Run run$1 for 2" filename="">
+
+<sig label="seq/Int" ID="0" parentID="1" builtin="yes">
+</sig>
+
+<sig label="Int" ID="1" parentID="2" builtin="yes">
+</sig>
+
+<sig label="String" ID="3" parentID="2" builtin="yes">
+</sig>
+
+<sig label="this/Phone" ID="4" parentID="2">
+   <atom label="Phone$0"/>
+   <atom label="Phone$1"/>
+</sig>
+
+<field label="requests" ID="5" parentID="4">
+   <tuple> <atom label="Phone$0"/> <atom label="Phone$1"/> </tuple>
+   <tuple> <atom label="Phone$1"/> <atom label="Phone$1"/> </tuple>
+   <types> <type ID="4"/> <type ID="4"/> </types>
+</field>
+
+<field label="connects" ID="6" parentID="4">
+   <tuple> <atom label="Phone$1"/> <atom label="Phone$0"/> </tuple>
+   <types> <type ID="4"/> <type ID="4"/> </types>
+</field>
+
+<field label="forward" ID="7" parentID="4">
+   <tuple> <atom label="Phone$1"/> <atom label="Phone$0"/> </tuple>
+   <types> <type ID="4"/> <type ID="4"/> </types>
+</field>
+
+<sig label="univ" ID="2" builtin="yes">
+</sig>
+
+</instance>
+
+</alloy>
