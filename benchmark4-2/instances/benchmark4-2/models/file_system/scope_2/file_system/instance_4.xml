@@ -1,0 +1,121 @@
+<alloy builddate="unknown">
+
+
+<bounds> 
+<upperbound name="Int/next"  arity="2">
+</upperbound>
+<upperbound name="seq/Int"  arity="1">
+</upperbound>
+<upperbound name="String"  arity="1">
+</upperbound>
+<upperbound name="this/File"  arity="1">
+   <tuple> <atom label="Cur$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Root"  arity="1">
+   <tuple> <atom label="Root$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Cur"  arity="1">
+   <tuple> <atom label="Cur$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Dir"  arity="1">
+   <tuple> <atom label="Cur$0"/> </tuple>
+   <tuple> <atom label="Root$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Dir.entries"  arity="2">
+   <tuple> <atom label="Cur$0"/> <atom label="DirEntry$0"/> </tuple>
+   <tuple> <atom label="Cur$0"/> <atom label="unused5"/> </tuple>
+   <tuple> <atom label="Root$0"/> <atom label="DirEntry$0"/> </tuple>
+   <tuple> <atom label="Root$0"/> <atom label="unused5"/> </tuple>
+</upperbound>
+<upperbound name="this/Dir.parent"  arity="2">
+   <tuple> <atom label="Cur$0"/> <atom label="Cur$0"/> </tuple>
+   <tuple> <atom label="Cur$0"/> <atom label="Root$0"/> </tuple>
+   <tuple> <atom label="Root$0"/> <atom label="Cur$0"/> </tuple>
+   <tuple> <atom label="Root$0"/> <atom label="Root$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Object"  arity="1">
+   <tuple> <atom label="Cur$0"/> </tuple>
+   <tuple> <atom label="Root$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Name"  arity="1">
+   <tuple> <atom label="Name$0"/> </tuple>
+   <tuple> <atom label="unused4"/> </tuple>
+</upperbound>
+<upperbound name="this/DirEntry"  arity="1">
+   <tuple> <atom label="DirEntry$0"/> </tuple>
+   <tuple> <atom label="unused5"/> </tuple>
+</upperbound>
+<upperbound name="this/DirEntry.name"  arity="2">
+   <tuple> <atom label="DirEntry$0"/> <atom label="Name$0"/> </tuple>
+   <tuple> <atom label="DirEntry$0"/> <atom label="unused4"/> </tuple>
+   <tuple> <atom label="unused5"/> <atom label="Name$0"/> </tuple>
+   <tuple> <atom label="unused5"/> <atom label="unused4"/> </tuple>
+</upperbound>
+<upperbound name="this/DirEntry.contents"  arity="2">
+   <tuple> <atom label="DirEntry$0"/> <atom label="Cur$0"/> </tuple>
+   <tuple> <atom label="DirEntry$0"/> <atom label="Root$0"/> </tuple>
+   <tuple> <atom label="unused5"/> <atom label="Cur$0"/> </tuple>
+   <tuple> <atom label="unused5"/> <atom label="Root$0"/> </tuple>
+</upperbound>
+</bounds><instance bitwidth="0" maxseq="0" command="Run run$1 for 2" filename="">
+
+<sig label="seq/Int" ID="0" parentID="1" builtin="yes">
+</sig>
+
+<sig label="Int" ID="1" parentID="2" builtin="yes">
+</sig>
+
+<sig label="String" ID="3" parentID="2" builtin="yes">
+</sig>
+
+<sig label="this/File" ID="4" parentID="5">
+</sig>
+
+<sig label="this/Root" ID="6" parentID="7" one="yes">
+   <atom label="Root$0"/>
+</sig>
+
+<sig label="this/Cur" ID="8" parentID="7" lone="yes">
+   <atom label="Cur$0"/>
+</sig>
+
+<sig label="this/Dir" ID="7" parentID="5">
+</sig>
+
+<field label="entries" ID="9" parentID="7">
+   <tuple> <atom label="Root$0"/> <atom label="DirEntry$0"/> </tuple>
+   <types> <type ID="7"/> <type ID="10"/> </types>
+</field>
+
+<field label="parent" ID="11" parentID="7">
+   <tuple> <atom label="Cur$0"/> <atom label="Root$0"/> </tuple>
+   <types> <type ID="7"/> <type ID="7"/> </types>
+</field>
+
+<sig label="this/Object" ID="5" parentID="2" abstract="yes">
+</sig>
+
+<sig label="this/Name" ID="12" parentID="2">
+   <atom label="Name$0"/>
+</sig>
+
+<sig label="this/DirEntry" ID="10" parentID="2">
+   <atom label="DirEntry$0"/>
+</sig>
+
+<field label="name" ID="13" parentID="10">
+   <tuple> <atom label="DirEntry$0"/> <atom label="Name$0"/> </tuple>
+   <types> <type ID="10"/> <type ID="12"/> </types>
+</field>
+
+<field label="contents" ID="14" parentID="10">
+   <tuple> <atom label="DirEntry$0"/> <atom label="Cur$0"/> </tuple>
+   <types> <type ID="10"/> <type ID="5"/> </types>
+</field>
+
+<sig label="univ" ID="2" builtin="yes">
+</sig>
+
+</instance>
+
+</alloy>

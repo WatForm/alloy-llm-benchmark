@@ -17,7 +17,7 @@ from pathlib import Path
 # Configuration constants
 SCOPE = 3
 SOLVER = "sat4j"
-TIMEOUT = 300  # 5 minutes
+TIMEOUT = 900  # 15 minutes
 JAR_PATH = Path(__file__).parent / "alloy-diff.jar"
 ALLOY_TOOLS_JAR = Path(__file__).parent / "org.alloytools.alloy.dist.jar"
 
