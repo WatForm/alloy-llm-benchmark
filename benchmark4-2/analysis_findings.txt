@@ -1,0 +1,496 @@
+Benchmark4-2 LLM Output Analysis
+================================================================================
+Goal: For every model that did NOT receive a full score in scores.txt, analyze
+  (a) WHICH part of the LLM-generated output diverges from the original model, and
+  (b) whether the divergence was caused by an INACCURATE english description or
+      was simply an LLM MISTAKE (description was adequate but the model got it wrong).
+
+Method:
+  - scores.txt gives the failing direction(s). Recall the SemDiff convention:
+      "ModuleDiff <left> <right> SemDiff reports equivalent when right => left."
+    * original=>output failing  => the OUTPUT is missing/stronger somewhere
+                                    (there is an ORIGINAL instance the output rejects;
+                                     output is too RESTRICTIVE).
+    * output=>original failing  => the OUTPUT permits something the original forbids
+                                    (output is too PERMISSIVE; it dropped a constraint).
+    * both failing              => the two models are INCOMPARABLE (each allows
+                                    behaviour the other does not).
+  - Concrete distinguishing instances were generated with the project's own
+    ModuleDiff tool (scoring/alloy-diff.jar) to ground each conclusion.
+  - The english description (descriptions/<name>.md) was then read to decide whether
+    the error was forced by the english or was a free LLM mistake.
+
+Models that received a FULL score (not analyzed): Avenant, FieldComplex-static,
+  Museum, Puzzle, addr, ctree, ex_Arity, ex_ColorState, ex_FileSystem, ex_Host,
+  file_system, grade, handshake, modelling systems chap2 - alarm v0.1.0, phones_c,
+  sets1, singlyLinkedList.
+
+Models analyzed below (imperfect): COFFEE, FileSystem-software_abstractions,
+  addressBook2d, all_isas, alloy4fun_SPL_1_2_3_4, fruitbowl, fullTree, hc4,
+  marksweepgc, niveaux_franchises, no_transitivity_redundancy.
+
+================================================================================
+
+MODEL: COFFEE            score 21/32   (failing direction: output => original)
+--------------------------------------------------------------------------------
+Direction of error: original=>output passes fully (Ringert 4/4, all instance
+  checks pass); output=>original FAILS at every scope (Ringert 0/4, CompoSAT
+  3/9). => the OUTPUT is strictly MORE PERMISSIVE: it dropped/loosened a
+  constraint the original enforces.
+
+What diverges:
+  The original encodes a single self-contained `fact { ... }` over a very specific
+  signature hierarchy:
+     abstract sig Property; sig ThermalProperty extends Property;
+     sig HEAT extends ThermalProperty; sig TEMPERATURE extends ThermalProperty;
+     abstract sig Thing; sig ThermalThing extends Thing;
+     one sig Substance, Cup extends ThermalThing; one sig Coffee extends Substance;
+     abstract sig Process;  one sig HeatFlow extends Process.
+  The LLM RESTRUCTURED this hierarchy and changed abstract/closure status:
+     - `Process` was made NON-abstract (original: `abstract sig Process`). With
+       HeatFlow only a `one sig` under a non-abstract Process, the output admits
+       extra anonymous Process atoms -> a genuine semantic relaxation the original
+       forbids (original: Process == HeatFlow).
+     - `Substance` was made `abstract sig` (original: `one sig Substance`), and the
+       Thing/ThermalThing/Substance and Property/ThermalProperty/HEAT/TEMPERATURE
+       trees were re-laid-out, with the closure that the original obtains from its
+       sig structure instead re-expressed as explicit facts
+       (`ThermalProperty = Property`, `HEAT = HEAT_OF_COFFEE + HEAT_OF_CUP`, ...).
+     - The body constraints were re-expressed from WHOLE-RELATION equalities
+       (`state = (...4 tuples...)`, `increases = HeatFlow->HEAT_OF_COFFEE`) into
+       per-element / navigation forms (`HEAT_OF_COFFEE.state = INCREASING`,
+       `increases.HEAT_OF_COFFEE = HeatFlow`). The per-element forms no longer pin
+       the ENTIRE relation, so other atoms' state/increases edges are left free.
+  A tool-generated witness (ModuleDiff models/COFFEE.als outputs/COFFEE.attempt2.als,
+  scope 1) is an instance accepted by the output but rejected by the original
+  (Cup<->Coffee touching, greaterThan = HEAT_OF_CUP->HEAT_OF_COFFEE).
+
+  NOTE: the original COFFEE model is itself convoluted and partially self-
+  inconsistent. The description author left an inline annotation
+  ("// NAD: this seems to be impossible b/c there must be a HeatFlow element")
+  flagging that one clause is unsatisfiable as written. This is an adversarial case.
+  (Also note: attempt_1 was a syntax failure - the LLM tried to `extend` the subset
+  signature TEMPERATURE; attempt_2 is the scored one.)
+
+Description vs mistake:  MIXED, leaning DESCRIPTION-INACCURACY (omission).
+  - The english faithfully renders the prose constraints, but it does NOT state
+    that `Process` is closed to HeatFlow. It says only: "There is exactly one
+    HeatFlow, and it is a Process. There are no other elements in HeatFlow." That
+    constrains HeatFlow, NOT Process; the original's `abstract sig Process`
+    (HeatFlow is the ONLY Process) is never expressed. With no instruction to
+    close Process, the LLM legitimately left it open -> the main permissiveness leak.
+  - The looser per-element re-encoding of the body relations is an LLM stylistic
+    choice / mistake (the prose's "only HeatFlow increases X" wording does imply a
+    whole-relation equality, which the LLM under-encoded).
+
+================================================================================
+
+MODEL: FileSystem-software_abstractions   score 45/119   (both directions fail)
+--------------------------------------------------------------------------------
+Direction of error: original=>output Ringert passes (5/5) but its instance checks
+  fail (general 8/39); output=>original Ringert FAILS (2/5) and instance checks
+  fail (general 7/37). Both directions fail => the two models are INCOMPARABLE.
+
+What diverges (single root cause):
+  The SIGNATURE HIERARCHY for Alias is wrong.
+    original:  sig Alias extends File   { to: Object }   // Alias is a kind of File
+    output:    sig Alias extends Object { to: one Object } // Alias is a sibling of File
+  In the original, Object is partitioned by {Directory, File} and File is further
+  split into plain files and Alias (Alias subset of File: every Alias IS a File).
+  In the output, Object is partitioned by {Directory, File, Alias} (three disjoint
+  siblings). So the extent of `File` differs between the two models (in the original
+  it includes the aliases; in the output it excludes them), which makes the models
+  mutually incomparable and breaks the instance checks in both directions.
+  (Everything else matches: `Root not in Directory.contents`, `Root.^contents =
+  Object - Root`, contents acyclic, `lone contents.o`, `to` acyclic are all faithful.)
+
+Description vs mistake:  DESCRIPTION INACCURACY (clear-cut).
+  The english says, verbatim:
+    "The sets "Directory", "File", and "Alias" are non-overlapping subsets of
+     "Object". Every element of "Object" is in at least one of its extending sets."
+  That sentence explicitly instructs a three-way disjoint partition of Object into
+  Directory/File/Alias, which is exactly what the LLM produced. The original instead
+  nests Alias UNDER File. The description never says "Alias is a File", so the LLM
+  could not have known to nest it. The model output is the faithful rendering of an
+  inaccurate description.
+
+================================================================================
+
+MODEL: addressBook2d     score 117/124   (failing direction: original => output)
+--------------------------------------------------------------------------------
+Direction of error: original=>output Ringert FAILS (0/5) and general instances
+  drop a couple; output=>original passes fully. => the OUTPUT is too RESTRICTIVE
+  (output ⊆ original); it added strength the original does not have.
+
+What diverges (single fact):
+  The Book signature fact about aliases.
+    original:  all a: Alias | lone a.addr
+               // (inside the sig fact `a.addr` == `a.(this.addr)`): an alias maps
+               //  to AT MOST ONE Target DIRECTLY (one step of addr).
+    output:    all b: Book, a: Alias | lone (a.^(b.addr) & Target)
+               // uses the TRANSITIVE CLOSURE ^: the entire set of Targets
+               //  reachable from the alias (any number of steps) must be <= 1.
+  The transitive-closure form is strictly stronger: it forbids an alias whose
+  direct target is a Name that itself maps onward (direct image 1 but transitive
+  image > 1), which the original permits. Hence output rejects some original
+  instances (original=>output fails) while every output instance is still legal in
+  the original (output=>original passes).
+  (The acyclicity fact `no n: Name | n in n.^(b.addr)` was reproduced correctly.)
+
+Description vs mistake:  DESCRIPTION INACCURACY (misleading verb "reach").
+  The english says: "every "Alias" can reach at most one "Target" of every "Book"."
+  The immediately preceding sentence had already defined "reach" transitively:
+  "...can reach itself by following one or more steps of the "addr" relation...".
+  So "reach at most one Target" naturally reads as a transitive-closure constraint,
+  which is exactly what the LLM encoded. The original, however, is a one-step
+  `lone a.addr`. The description should have said the alias "maps directly to at
+  most one Target" (no "reach"/multi-step wording). Faithful encoding of imprecise
+  english.
+
+================================================================================
+
+MODEL: all_isas         score 68/102   (both directions fail)
+--------------------------------------------------------------------------------
+Direction of error: original=>output Ringert FAILS (0/5, all scopes) AND
+  output=>original Ringert FAILS (2/5, scopes 3-5). Both fail => INCOMPARABLE.
+  Two independent defects, one per direction.
+
+What diverges:
+  The original opens `util/graph[C]` and asserts `tree[~genls]`. The library
+  predicate is:
+      pred tree [r] { forest[r]; lone root: node | no r.root }
+      pred forest[r] { dag[r]; all n: node | lone r.n }
+      pred dag  [r] { acyclic[r, node] }          // no iden & ^r
+  i.e. tree[~genls] == (1) acyclic, (2) all n:C | lone (~genls).n  [each node has
+  AT MOST ONE parent], and (3) lone root [AT MOST ONE root].
+  The LLM hand-rolled the predicate as:
+      no (iden & ^(~genls))                 // (1) acyclic  -- correct
+      one { c: C | no (~genls).c }           // root clause  -- WRONG (see below)
+      (no forest/unique-parent clause)       // (2) MISSING
+  Two concrete errors:
+    A. The unique-parent / forest constraint `all n: C | lone (~genls).n` is
+       MISSING. Without it the output accepts a rooted DAG where a node has two
+       parents (needs >=3 nodes), which the original (a true tree) forbids
+       => output too permissive => output=>original fails at scopes 3-5.
+    B. The root clause uses `one` (EXACTLY one root) where the library tree uses
+       `lone` (AT MOST one). So the output rejects the empty / root-less graph
+       (e.g. zero C atoms) that the original tree permits
+       => output too restrictive => original=>output fails (all scopes, incl. 1).
+  (The other constraints `all_isas_attr = isas.*genls` and the no-redundant-isas
+  rule `no disj c1,c2: e.isas | c1 in c2.*genls` were reproduced faithfully.)
+
+Description vs mistake:  DESCRIPTION INACCURACY (incorrect gloss of "tree").
+  The english says: "The inverse of "genls" forms a tree, meaning it is a directed
+  acyclic graph with one root." This definition is wrong on both counts that the
+  LLM got wrong: (a) a tree is NOT merely a DAG with one root - it also needs each
+  node to have a unique parent, which the gloss omits (=> defect A); and (b) it
+  says "one root" (exactly one) rather than the library's "at most one root"
+  (=> defect B). The LLM implemented the (inaccurate) definition it was given.
+
+================================================================================
+
+MODEL: alloy4fun_SPL_1_2_3_4   score 4/135   (both directions fail, near-disjoint)
+--------------------------------------------------------------------------------
+Direction of error: original=>output Ringert 0/5, output=>original 1/5, and ALL
+  instance checks are 0 in both directions. The two models are pervasively
+  INCOMPARABLE. Two distinct divergences, each significant.
+
+Divergence 1 - "Links" uniqueness was weakened:
+    original:  all l: Link | one (public+secret+link).l
+               // each Link has EXACTLY ONE preimage across the three fields:
+               //   exactly one StoredModel/Instance owns it, via exactly one role.
+    output:    Link = StoredModel.public + StoredModel.secret + Instance.link
+               no StoredModel.public & StoredModel.secret
+               no StoredModel.public & Instance.link
+               no StoredModel.secret & Instance.link
+               // coverage + the three IMAGE SETS are pairwise disjoint.
+  The output enforces only that the three roles are disjoint sets and that every
+  Link is owned by >=1 of them. It does NOT forbid two different StoredModels from
+  sharing the same public link, or two Instances sharing the same link. So the
+  output is strictly MORE PERMISSIVE on Links (multiple owners allowed) -> breaks
+  output=>original.
+
+Divergence 2 - a "Derivations" constraint has its DIRECTION FLIPPED:
+    original:  all m: Secret | ^derivationOf.m in Secret
+               // (^derivationOf).m  ==  the PREDECESSORS of m (models that
+               //  derive-chain INTO m) must all be Secret.
+    output:    all s: Secret | s.^derivationOf in Secret
+               // s.^derivationOf  ==  the DESCENDANTS of s (models reachable FROM
+               //  s) must all be Secret.   <-- OPPOSITE direction.
+  Predecessors-are-Secret vs descendants-are-Secret are different (and generally
+  incomparable) constraints -> this is the main reason both directions fail.
+  (All the other facts -- the self-derivation acyclicity, `lone derivationOf.m`,
+  the `some public implies some *derivationOf.secret` rule, the public/secret
+  closure rule #4 using predecessors, the Commands and Instances facts -- were
+  reproduced faithfully.)
+
+Description vs mistake:  DESCRIPTION INACCURACY (dominant) on both points.
+  - Divergence 2 is a clear description error: the english says "Every "StoredModel"
+    that can be reached by one or more steps of the "derivationOf" of a "Secret" is
+    also a "Secret"." "reached ... by the derivationOf OF a Secret" = start at the
+    Secret and follow derivationOf = DESCENDANTS, which is exactly what the LLM
+    wrote. The original constrains PREDECESSORS. (Note the very next bullet, rule
+    #4, says "...no StoredModel that can REACH IT..." = predecessors, which the LLM
+    rendered correctly - so the english is inconsistent about direction.)
+  - Divergence 1 stems from ambiguous english: "Every "Link" is exactly one of
+    1) the public value of some StoredModel, 2) the secret value..., or 3) the link
+    of some Instance." This reads as "exactly one of three ROLES" (role-disjointness)
+    rather than the original's "exactly one OWNER" (`one (...).l`), so the LLM
+    encoded the weaker role-disjoint reading.
+
+================================================================================
+
+MODEL: fruitbowl        score 73/183   (SEMANTICALLY EQUIVALENT - scoring artifact)
+--------------------------------------------------------------------------------
+Direction of error: Ringert/SemDiff gives 35/35 in BOTH directions (the two models
+  are provably semantically equivalent for the facts), yet CompoSAT 0/35 and
+  general instances 0/20 in BOTH directions. The lost points are NOT a semantic
+  error - they are an artifact of the instance-based checker.
+
+What diverges (representation only, not semantics):
+    original: fields are declared PER SUBSIGNATURE, with refined types -
+       one sig apple  extends Fruit { color: one RED,    quality: one Quality, size: one Size }
+       one sig orange extends Fruit { color: one ORANGE, quality: one Quality, size: one Size }
+       (so there are two distinct relations both labelled `color`: apple<:color
+        and orange<:color, the apple one typed to the singleton RED.)
+    output:  fields are hoisted to the PARENT and pinned with a fact -
+       abstract sig Fruit { color: one Color, quality: one Quality, size: one Size }
+       one sig apple, orange extends Fruit {}
+       fact { apple.color = RED;  orange.color = ORANGE;  FruitBowl.contains = apple + orange }
+  These are equivalent (Ringert confirms). But the instance scorer
+  (scripts/InstanceChecker.java) reconstructs the instance by emitting one fact
+  per XML <field> using the field LABEL, e.g. `color = <tuples>`. With the original
+  model carrying TWO relations named `color` (one per subsig) while the output
+  carries ONE `color` on Fruit, the rebuilt facts cannot be reconciled by name
+  (`color = apple->RED` and `color = orange->ORANGE` collide on a single Fruit-level
+  `color`, and the dual-declared `color` is ambiguous on the original side). Every
+  instance therefore fails to re-solve, giving 0 across all instance checks.
+
+Description vs mistake:  NEITHER - the output is correct.
+  The english ("The "apple" has exactly one "color", and that "color" is "RED". ...
+  The "orange" ... has exactly one "color", and that "color" is "ORANGE".") does not
+  prescribe whether the field lives on Fruit or on each subsig; the LLM's
+  parent-level encoding is a legitimate, semantically-equivalent modelling choice.
+  The point loss reflects a LIMITATION of the instance-based scoring (sensitive to
+  where same-named fields are declared), not an LLM error or a bad description.
+  ==> Recommend treating fruitbowl as a pass / excluding it, or making the
+      instance checker robust to field-declaration placement.
+
+================================================================================
+
+MODEL: fullTree         score 15/25    (failing direction: original => output)
+--------------------------------------------------------------------------------
+Direction of error: original=>output Ringert FAILS (0/5, all scopes);
+  output=>original passes fully (5/5). => the OUTPUT is too RESTRICTIVE
+  (output subset of original); it added a constraint the original does not have.
+
+What diverges (one extra fact):
+  The LLM added a single-root / connectedness requirement that the original omits:
+      output:  one root: Node | Node = root.*(left + right)
+  The original fullTree enforces only: lone left, lone right, acyclic, at-most-one
+  parent (`lone n.~(left+right)`), left/right disjoint, and the fullness/balance
+  condition `all n | #(n.*left) = #(n.*right)`. Crucially it does NOT force a unique
+  root or connectivity, so the original admits a FOREST of several disjoint balanced
+  trees. The output's `one root | Node = root.*(...)` forbids that (everything must
+  hang off one root) -> output rejects the original's multi-root instances
+  -> original=>output fails. (All the other facts were reproduced faithfully, incl.
+  the `lone (left+right).n` parent constraint and the `*left`/`*right` count balance.)
+
+Description vs mistake:  DESCRIPTION INACCURACY (over-strong word "tree").
+  The english says: "The "left" and "right" relations together form a perfect tree."
+  "perfect tree" (a single connected, rooted structure) naturally implies exactly
+  the unique-root/connectedness the LLM added. The original model, despite its name,
+  only enforces a balanced/"full" FOREST and never constrains rootedness or
+  connectivity. The description promises more structure ("a perfect tree") than the
+  reference actually encodes, so the LLM over-constrained. The english should have
+  said the relations form a forest of balanced binary trees (each node <=1 parent,
+  acyclic, balanced), without claiming a single tree/root.
+
+================================================================================
+
+MODEL: hc4              score 76/79    (failing direction: output => original)
+--------------------------------------------------------------------------------
+Direction of error: original=>output passes fully; output=>original Ringert FAILS
+  at scopes 3,4,5 (2/5). => the OUTPUT is too PERMISSIVE at larger scopes.
+
+What diverges (the Reachability fact - TWO weakenings):
+    original:  all v: Vertex | Vertex - v  =  v.(^left + ^right)
+    output:    all v: Vertex | Vertex - v  in  v.^(left + right)
+  Difference A - `=` vs `in`:
+     The original EQUALITY forces the reachable set to be EXACTLY the other vertices,
+     which also forbids v from reaching ITSELF (v is not in Vertex - v, so v must not
+     be in its own reachable set => no cycle returns to v). The output's `in` only
+     demands the others be a SUBSET of what v reaches, permitting v to also be
+     reachable from itself. => output admits cyclic-return structures the original
+     rejects (first possible around scope 3).
+  Difference B - `^left + ^right` vs `^(left + right)`:
+     The original requires every other vertex to be reachable by a PURE single-
+     direction chain (all-left OR all-right): `v.^left + v.^right`. The output uses
+     the transitive closure of the COMBINED relation, `v.^(left+right)`, which also
+     counts MIXED left/right paths and is a strict superset. => output again weaker.
+  Both weakenings push in the same direction (output more permissive), consistent
+  with output=>original failing only at the larger scopes. (The End and Joint
+  conditions were reproduced faithfully - `no e.left` == `e.left = none`, etc.)
+
+Description vs mistake:  DESCRIPTION INACCURACY / ambiguity.
+  The english says: "every other element of "Vertex" is reachable from it by a
+  nonempty path consisting only of repeated "left" steps and/or repeated "right"
+  steps." Two problems map exactly onto the two weakenings:
+   - It is phrased as a one-way REACHABILITY ("every other element is reachable"),
+     i.e. a subset/`in` claim; it never says the reachable set is EXACTLY the others
+     or that a vertex must NOT reach itself. So `in` is the faithful reading, not `=`.
+   - "repeated left steps and/or repeated right steps" most naturally permits MIXING
+     left and right within a path (and/or), i.e. `^(left+right)`, rather than the
+     original's pure single-direction `^left + ^right`.
+  The LLM's encoding is a defensible literal rendering of the (under-specified)
+  english; the original is stronger than the description states.
+
+================================================================================
+
+MODEL: marksweepgc      score 0/64    (FILENAME MISMATCH - not a modelling failure)
+--------------------------------------------------------------------------------
+Direction of error: the report says "Missing generated file:
+  outputs/marksweepgc.als" and every sub-score is 0. This is NOT because the LLM
+  failed - it is a NAME-PAIRING bug in the benchmark.
+    - reference model:   models/marksweepgc.als
+    - description:       descriptions/marksweep.md      (basename "marksweep")
+    - LLM output:        outputs/marksweep.als, outputs/marksweep.attempt1.als
+  The scorer pairs files by basename, so it looked for outputs/marksweepgc*.als,
+  found none, and scored 0/64. A perfectly real, parseable output model exists - it
+  is just stored under the basename "marksweep" (matching the description) rather
+  than "marksweepgc" (matching the reference). => FIX: rename the reference to
+  marksweep.als (or the output/description to marksweepgc.*) and re-score.
+
+Content check (outputs/marksweep.attempt1.als vs models/marksweepgc.als):
+  The generated model is essentially a faithful reproduction - Node, HeapState with
+  left/right/marked/freeList, the clearMarks / reachable / mark / setFreeList preds
+  and the final GC fact are all reproduced correctly (only cosmetic differences,
+  e.g. `no n.(a.right)` vs `no hsn.right[n]`, `reachable[b,from]` receiver style).
+  ONE genuine looseness, which would cost a little even after renaming:
+    original:  one sig h, hsn in HeapState   // h and hsn are each EXACTLY ONE
+    output:        sig h, hsn in HeapState   // h and hsn are arbitrary SUBSETS (0+)
+  and `one sig root in Node` (output) vs `one sig root extends Node` (original) -
+  the root difference is harmless, but dropping `one` on h/hsn is a real weakening.
+
+Description vs mistake:  HARNESS ARTIFACT (filename) + minor DESCRIPTION omission.
+  - The 0 score is entirely the filename/basename mismatch, not the LLM.
+  - The only semantic looseness (h/hsn not pinned to exactly one) traces to the
+    english, which says "There are two subsets of "HeapState", named "h" and "hsn"."
+    "subsets" (not "two distinguished single elements") is exactly the `sig ... in`
+    reading the LLM used. So even that minor gap is description-driven, not a free
+    LLM mistake.
+
+================================================================================
+
+MODEL: niveaux_franchises   score 119/131   (failing direction: output => original)
+--------------------------------------------------------------------------------
+Direction of error: original=>output passes fully; output=>original Ringert FAILS
+  (0/5) with a few general instances also lost. => the OUTPUT is too PERMISSIVE.
+
+What diverges (the quantifier domain in the validity rule):
+  The original validity predicate has two clauses:
+     (1) select12[this.coverages] = (this.product.coverages <: risk_types)
+         // the (Coverage,RiskType) projection of the ternary `coverages` ==
+         //   pairs (c,rt) with c in product.coverages and rt in c.risk_types
+     (2) all C: this.product.base_coverages, RT: RiskType | one this.coverages[C, RT]
+         // for every base coverage C and EVERY RiskType in the UNIVERSE, exactly
+         //   one deductible value at (C,RT).
+  Clause (1) was reproduced faithfully (output:
+     `dl.coverages.DeductibleValue = { c,r | c in base+optional and r in c.risk_types }`).
+  Clause (2) was WEAKENED: the output wrote
+     all c: dl.product.base_coverages, r: c.risk_types | one r.(c.(dl.coverages))
+  i.e. it quantifies r over `c.risk_types` (only that coverage's own risk types)
+  instead of over the FULL `RiskType` universe.
+  Why it matters: in the original, clause (2) over ALL RiskType together with clause
+  (1) (which forbids (C,rt) in the ternary when rt is NOT in C.risk_types) forces
+  every base coverage to have risk_types == the ENTIRE RiskType set (otherwise (2)
+  demands a value where (1) forbids one). The output drops that implicit
+  requirement, so it ADMITS deductible levels whose base coverages do not span all
+  RiskTypes - instances the original rejects. => output=>original fails.
+
+Description vs mistake:  DESCRIPTION INACCURACY / ambiguity.
+  The english says: "There is exactly one "DeductibleValue" for every combination of
+  the "DeductibleLevel"'s "product"'s "base_coverages" and "RiskType" in the
+  "coverages" of the "DeductibleLevel"." The qualifier "...RiskType in the
+  "coverages" of the "DeductibleLevel"" reads as a RESTRICTED set of risk types
+  (those actually appearing), which is exactly the `r: c.risk_types` domain the LLM
+  used. The original instead quantifies over every RiskType in the universe
+  (`RT: RiskType`), which is the source of the hidden "base coverages cover all risk
+  types" constraint. The english does not convey that universal quantification.
+
+================================================================================
+MODEL: no_transitivity_redundancy   score 71/91   (failing direction: output => original)
+--------------------------------------------------------------------------------
+Direction of error: original=>output passes fully; output=>original Ringert FAILS
+  at scopes 3,4,5 (2/5). => the OUTPUT is too PERMISSIVE at >=3 nodes.
+
+What diverges (an off-by-one in the "no redundant shortcut" rule):
+    original:  no suivant.^suivant & suivant
+               // suivant.^suivant == pairs reachable in TWO OR MORE steps (1 step
+               //   then 1+ steps). Forbids any DIRECT edge (a->c) that is also
+               //   reachable from a by a path of length >= 2.
+    output:    no n, m: N | m in n.suivant and m in n.(suivant.suivant.^suivant)
+               // suivant.suivant.^suivant == reachable in THREE OR MORE steps.
+               //   Forbids a direct edge also reachable in length >= 3, but
+               //   ALLOWS a direct edge also reachable in EXACTLY 2 steps.
+  So the output drops the length-exactly-2 redundancy case (e.g. a->c directly AND
+  a->b->c). That needs 3 nodes, so it only shows up at scope >= 3 -> output=>original
+  fails at scopes 3-5. (The acyclicity was reproduced - in fact duplicated as two
+  identical facts, harmless; `acyclic[suivant,N]` == `no n | n in n.^suivant`.)
+
+Description vs mistake:  DESCRIPTION INACCURACY (off-by-one wording).
+  The english says: "No "N" can reach a "N" in one step of "suivant" and reach that
+  same node in MORE THAN TWO steps of "suivant."" "more than two steps" = length >= 3,
+  which is exactly the `suivant.suivant.^suivant` the LLM wrote. The original
+  forbids length >= 2 ("two or more"), so the description should have said "in MORE
+  THAN ONE step" (or "in two or more steps"). The LLM faithfully encoded the wrong
+  threshold it was given.
+
+================================================================================
+SUMMARY
+================================================================================
+  model                         score    too-...      root cause classification
+  ----------------------------- -------- ------------ ---------------------------
+  COFFEE                        21/32    permissive   mixed (desc omission: Process
+                                                      not closed + loose re-encode)
+  FileSystem-software_abstr.    45/119   incomparable DESCRIPTION (Alias made a
+                                                      sibling of File, not a File)
+  addressBook2d                 117/124  restrictive  DESCRIPTION ("reach" => used
+                                                      ^ closure vs direct a.addr)
+  all_isas                      68/102   incomparable DESCRIPTION (wrong gloss of
+                                                      "tree": no unique-parent;
+                                                      "one" vs "lone" root)
+  alloy4fun_SPL_1_2_3_4         4/135    incomparable DESCRIPTION (derivationOf
+                                                      direction flipped; Link
+                                                      "exactly one role" vs owner)
+  fruitbowl                     73/183   EQUIVALENT   neither - scoring artifact
+                                                      (per-subsig vs parent fields)
+  fullTree                      15/25    restrictive  DESCRIPTION ("perfect tree"
+                                                      => added single-root; orig is
+                                                      a forest)
+  hc4                           76/79    permissive   DESCRIPTION (reachability:
+                                                      in vs =, mixed vs pure paths)
+  marksweepgc                   0/64     n/a          HARNESS (filename marksweep
+                                                      vs marksweepgc) + minor desc
+  niveaux_franchises            119/131  permissive   DESCRIPTION (RiskType domain:
+                                                      restricted vs whole universe)
+  no_transitivity_redundancy    71/91    permissive   DESCRIPTION ("more than two"
+                                                      should be "more than one")
+
+  Headline: of the 11 imperfect models, only 2 are genuinely "the LLM's fault" in
+  the modelling sense, and even those are soft:
+    * COFFEE - partly a description omission, partly loose encoding of an
+               adversarial/self-inconsistent reference.
+  The rest are dominated by NON-LLM causes:
+    * 7 are caused by INACCURATE / AMBIGUOUS english descriptions (FileSystem,
+      addressBook2d, all_isas, alloy4fun, fullTree, hc4, niveaux_franchises,
+      no_transitivity_redundancy).
+    * fruitbowl is a SCORING ARTIFACT (output is provably equivalent).
+    * marksweepgc is a HARNESS FILENAME mismatch (output never got scored).
+  Recurring description pitfalls worth fixing: (a) glossing library predicates
+  ("tree", "perfect tree") inexactly; (b) the verb "reach" implying transitive
+  closure where the original is a single step; (c) off-by-one step counts;
+  (d) subset-vs-exact-equality and restricted-vs-universal quantifier domains;
+  (e) signature hierarchy / closure (extends vs in, abstract/closed sigs) left
+  unstated.
+================================================================================

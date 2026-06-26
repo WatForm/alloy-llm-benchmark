@@ -1,0 +1,97 @@
+Benchmark4-2 Failed Models - Quick Summary
+================================================================================
+Only models that did NOT get full score are listed.
+Labels:
+  - ENGLISH ISSUE = description was inaccurate/ambiguous and drove the mismatch
+  - MODEL ISSUE   = LLM modelling error not forced by description
+  - ARTIFACT      = scoring/harness issue (not really a model semantics failure)
+
+================================================================================
+1) COFFEE  (21/32)
+Why it failed:
+  - Output was too permissive vs original.
+  - Main mismatch: output left Process open (non-abstract), while original closes
+    Process to HeatFlow; output also used looser per-element relation encoding.
+Classification:
+  - MIXED: mostly ENGLISH ISSUE (description omitted Process-closure) + some MODEL ISSUE
+
+2) FileSystem-software_abstractions  (45/119)
+Why it failed:
+  - Alias hierarchy mismatch.
+  - Original: Alias extends File. Output: Alias extends Object (sibling of File).
+Classification:
+  - ENGLISH ISSUE
+
+3) addressBook2d  (117/124)
+Why it failed:
+  - Alias-target constraint made too strong.
+  - Output used transitive reach (^addr) where original uses direct lone a.addr.
+Classification:
+  - ENGLISH ISSUE
+
+4) all_isas  (68/102)
+Why it failed:
+  - Tree encoding mismatch in two ways:
+    a) missing unique-parent (forest) condition
+    b) used exactly one root instead of at most one root
+Classification:
+  - ENGLISH ISSUE
+
+5) alloy4fun_SPL_1_2_3_4  (4/135)
+Why it failed:
+  - Derivation direction flipped (predecessors vs descendants).
+  - Link uniqueness weakened (role-disjointness instead of exact single owner).
+Classification:
+  - ENGLISH ISSUE (dominant)
+
+6) fruitbowl  (73/183)
+Why it failed:
+  - Semantically equivalent by Ringert, but instance checks fail due to field
+    declaration placement sensitivity (per-subsig fields vs parent fields).
+Classification:
+  - ARTIFACT (scoring/checker artifact; not a real model failure)
+
+7) fullTree  (15/25)
+Why it failed:
+  - Output added single-root connectedness fact absent in original.
+  - Original allows balanced forest; output requires one connected tree.
+Classification:
+  - ENGLISH ISSUE
+
+8) hc4  (76/79)
+Why it failed:
+  - Reachability weakened:
+    a) equality (=) changed to subset (in)
+    b) pure-direction paths (^left + ^right) changed to mixed paths ^(left+right)
+Classification:
+  - ENGLISH ISSUE
+
+9) marksweepgc  (0/64)
+Why it failed:
+  - Filename pairing bug in benchmark:
+    reference is marksweepgc, output basename is marksweep, so scorer treated it as missing.
+  - Minor semantic looseness exists too (h/hsn not declared one sig).
+Classification:
+  - ARTIFACT (primary) + minor ENGLISH ISSUE
+
+10) niveaux_franchises  (119/131)
+Why it failed:
+  - Quantifier domain weakened.
+  - Output quantified risk types per coverage (restricted set) instead of all RiskType.
+Classification:
+  - ENGLISH ISSUE
+
+11) no_transitivity_redundancy  (71/91)
+Why it failed:
+  - Off-by-one in shortcut prohibition.
+  - Output forbids redundancy at >=3 steps; original forbids at >=2 steps.
+Classification:
+  - ENGLISH ISSUE
+
+================================================================================
+Count by cause (primary):
+  - ENGLISH ISSUE: 8
+  - MODEL ISSUE: 0 pure (COFFEE is mixed)
+  - ARTIFACT: 2 (fruitbowl, marksweepgc)
+  - MIXED: 1 (COFFEE)
+================================================================================
