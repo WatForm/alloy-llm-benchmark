@@ -19,9 +19,9 @@ from pathlib import Path
 from syntax_utils import check_syntax, require_java_for_version
 
 
-TIMEOUT_SECONDS = 300
-COMPOSAT_TIMEOUT_SECONDS = 300
-GENERAL_INSTANCE_TIMEOUT_SECONDS = 300
+TIMEOUT_SECONDS = 900
+COMPOSAT_TIMEOUT_SECONDS = 900
+GENERAL_INSTANCE_TIMEOUT_SECONDS = 900
 DEFAULT_GENERAL_OUTPUT_INSTANCE_COUNT = 10
 SOLVER = "sat4j"
 
@@ -363,7 +363,7 @@ def score_output_instances_against_reference(
             progress(f"[{model_name}] output=>original: CompoSAT scope_{scope}/{max_scope} starting")
 
             scope_model = temp_path / f"{model_name}_scope_{scope}.als"
-            scope_model.write_text(base_model_text + f"run {{}} for {scope}\n", encoding="utf-8")
+            scope_model.write_text(base_model_text + f"run {{}} for {scope} but 4 int\n", encoding="utf-8")
 
             scope_out = temp_path / "instances" / f"scope_{scope}"
             scope_out.mkdir(parents=True, exist_ok=True)

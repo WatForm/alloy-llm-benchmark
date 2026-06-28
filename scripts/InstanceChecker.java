@@ -361,7 +361,7 @@ public class InstanceChecker {
             System.out.println("FAIL: Could not parse scope from XML command: " + cmd);
             System.exit(1);
         }
-        checkerModel.append("\nrun {} for " + scope + "\n");
+        checkerModel.append("\nrun {} for " + scope + " but 4 int\n");
         System.out.println(checkerModel.toString());
         A4Solution sol = null;
         try {

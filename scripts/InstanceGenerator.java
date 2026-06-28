@@ -52,7 +52,7 @@ public class InstanceGenerator {
             return "\nrun {} for "+ sc + " but " +
                     topLevelSigs.stream()
                         .map(s -> "exactly "+sc+" " + s)
-                        .collect(Collectors.joining(", ")) +"\n\n";
+                        .collect(Collectors.joining(", ")) +", 4 int\n\n";
         }
 
     }

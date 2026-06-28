@@ -1,0 +1,276 @@
+Benchmark4-3 LLM Output Analysis
+================================================================================
+Goal: For every model that did NOT receive a full score in scores.txt, analyze
+  (a) WHICH part of the LLM-generated output diverges from the original model, and
+  (b) whether the divergence was caused by an INACCURATE english description, was a
+      plain LLM MISTAKE (description adequate but the model got it wrong), or is a
+      SCORING ARTIFACT (the models actually agree but the harness mis-scores them).
+
+Context for this run:
+  benchmark4-3 is a fresh scoring run that incorporates the english-description
+  fixes applied earlier (the ones validated against benchmark4-2), plus two models
+  that now score for the first time (ThreeOfAKind, and a now-parsing marksweepgc).
+  OVERALL TOTAL: 2277/2809.
+
+Method:
+  - scores.txt gives the failing direction(s). SemDiff convention:
+      "ModuleDiff <left> <right> SemDiff reports equivalent when right => left."
+    * original=>output failing  => OUTPUT is too RESTRICTIVE (rejects an original
+                                    instance; output is stronger somewhere).
+    * output=>original failing  => OUTPUT is too PERMISSIVE (dropped a constraint).
+    * both failing              => the two models are INCOMPARABLE.
+  - Concrete distinguishing instances were generated with the project's own
+    ModuleDiff tool (scoring/alloy-diff.jar) to ground each conclusion.
+
+================================================================================
+HEADLINE FINDINGS
+================================================================================
+
+1. THE ENGLISH FIXES WORKED. Six models that were imperfect in benchmark4-2 now
+   score a PERFECT result in benchmark4-3, confirming the description edits:
+     addressBook2d            115/115   (was 117/124 - "reach"/transitive wording)
+     all_isas                 101/101   (was  68/102 - wrong gloss of "tree")
+     fullTree                  31/31    (fixed)
+     hc4                       79/79    (fixed)
+     niveaux_franchises       131/131   (fixed)
+     no_transitivity_redundancy 91/91   (fixed)
+
+2. NEW, DOMINANT FINDING - A HARNESS BUG, NOT AN LLM FAILURE.
+   The scoring harness cannot handle SUBSET signatures (`sig X in Y`) when the
+   reference uses an EXTENDS signature (`sig X extends Y`) for the same name, and
+   the instance checker cannot reconstruct instances of subset signatures at all.
+   Two independent defects:
+     (a) ModuleDiff / SemDiff THROWS:
+           java.lang.RuntimeException: Cannot merge PrimSig and SubsetSig with
+           same name: this/<Sig>
+         whenever one model declares <Sig> with `extends` and the other with `in`.
+         The pair is scored 0/N on Ringert in BOTH directions even when the two
+         models are provably equivalent.
+     (b) InstanceChecker.java rebuilds every instance by emitting
+           one sig <atom> extends <SigLabel> {}
+         for each atom and wiring a TREE (extends) parent/child hierarchy. A subset
+         signature shares its atoms with its parent, so the same atom would be
+         declared to extend two different sigs -> the reconstructed model fails to
+         parse/solve -> ALL CompoSAT and General instance checks score 0.
+   This single root cause is responsible for the lost points on ThreeOfAKind,
+   fruitbowl, FileSystem-software_abstractions, marksweepgc, and the instance
+   portion of alloy4fun_SPL_1_2_3_4 - all of which are semantically correct (or
+   nearly so) but are mis-scored by the harness.
+
+3. Remaining genuine model errors are few:
+     ex_Arity   - clear LLM MISTAKE (dropped an explicitly-described fact),
+                  compounded by a 900s CompoSAT timeout.
+     alloy4fun  - mostly resolved by the english fix; a residual subtle
+                  over-restriction (partly english-induced) remains.
+     COFFEE     - carryover adversarial / self-inconsistent reference.
+
+Models that received a FULL score (not analyzed): Avenant, FieldComplex-static,
+  Museum, Puzzle, addr, addressBook2d, all_isas, ctree, ex_ColorState,
+  ex_FileSystem, ex_Host, file_system, fullTree, grade, handshake, hc4,
+  modelling systems chap2 - alarm v0.1.0, niveaux_franchises,
+  no_transitivity_redundancy, phones_c, sets1, singlyLinkedList.
+
+Models analyzed below (imperfect): COFFEE, FileSystem-software_abstractions,
+  ThreeOfAKind, alloy4fun_SPL_1_2_3_4, ex_Arity, fruitbowl, marksweepgc.
+
+================================================================================
+
+MODEL: ThreeOfAKind          score 21/53   (instances 0 in both directions)
+--------------------------------------------------------------------------------
+Classification: SCORING ARTIFACT (subset-signature instance reconstruction).
+
+Score shape: Ringert 9/9 in BOTH directions (the two models imply each other at
+  every scope) but EVERY instance check is 0 (CompoSAT 0/8 + 0/8, General
+  0/8 + 0/8). A model that is equivalent under SemDiff yet scores 0 on every
+  instance check is the signature of a harness reconstruction failure.
+
+Tool ground-truth: ModuleDiff in both directions at scope 3 reports
+  "The two modules are equivalent for the given scope." The output is textually
+  almost identical to the reference (`suit: Suit` vs `suit: one Suit` are the same
+  multiplicity; identical facts; both declare `sig hand in Card`).
+
+Root cause: the output (and reference) use the SUBSET signature `sig hand in Card`.
+  InstanceChecker reconstructs instances with `one sig <atom> extends <SigLabel>`,
+  which cannot represent an atom that is simultaneously a Card and a hand. The
+  reconstruction fails and the instance checks all score 0. There is NO model
+  defect here - the LLM output is correct.
+
+================================================================================
+
+MODEL: FileSystem-software_abstractions   score 21/115   (both directions fail)
+--------------------------------------------------------------------------------
+Classification: SCORING ARTIFACT (the earlier english fix succeeded).
+
+Score shape: Ringert 0/5 in BOTH directions; instance checks fail asymmetrically.
+
+What the LLM produced: the description was fixed earlier to say Alias is a SUBSET
+  of File, and the LLM correctly wrote
+     output:    sig Alias in File      { to: ... }
+  whereas the reference uses
+     reference: sig Alias extends File  { to: ... }
+  Both make Alias a subset of File; in benchmark4-2 the LLM had mis-modelled Alias
+  as a sibling of File under Object, so the fix did exactly its job.
+
+Tool ground-truth: ModuleDiff crashes on this pair with
+     Cannot merge PrimSig and SubsetSig with same name: this/Alias
+  (PrimSig `Alias extends File` vs SubsetSig `Alias in File`). That crash - not a
+  counterexample - is why Ringert is 0/5 both ways. To verify true semantics, the
+  output's `sig Alias in File` was rewritten to `sig Alias extends File` and
+  re-run: ModuleDiff then reports the two modules EQUIVALENT in BOTH directions at
+  scope 4. So the models genuinely agree; only the extends-vs-`in` keyword differs.
+  The instance checks fail for the same subset-signature reconstruction reason as
+  ThreeOfAKind (output=>original instances 0/11 + 0/37).
+
+Verdict: no model defect. The english fix worked; the loss is entirely the
+  harness's inability to compare/reconstruct an `extends` sig against an `in` sig.
+
+================================================================================
+
+MODEL: marksweepgc           score 3/119   (both directions fail)
+--------------------------------------------------------------------------------
+Classification: SCORING ARTIFACT (dominant) + minor residual over-restriction.
+
+Score shape: Ringert 0/5 both directions; all instance checks 0.
+
+What the LLM produced: a faithful encoding. The only structural difference is
+     reference: one sig root extends Node
+     output:    one sig root in Node
+  (the auxiliary `one sig h, hsn in HeapState` are subset sigs in BOTH models, and
+  the `reachable` helper `start.*(left+right)` equals the reference
+  `n + n.^(left+right)`).
+
+Tool ground-truth: ModuleDiff crashes with
+     Cannot merge PrimSig and SubsetSig with same name: this/root
+  (PrimSig `root extends Node` vs SubsetSig `root in Node`), which is why Ringert
+  is 0/5 both ways. Reconciling the keyword (output `root extends Node`) and
+  re-running: ref=>output is EQUIVALENT; output=>ref is also equivalent, but
+  ref-subset-of-output produces one small counterexample (a HeapState GC scenario)
+  - i.e. after removing the harness crash the output is at most marginally too
+  restrictive in one corner. The instance checks fail for the subset-signature
+  reconstruction reason (`h`, `hsn` are `in HeapState`).
+
+Verdict: the 0/5-both-ways score is a harness crash artifact; the model is a
+  faithful encoding with at most a tiny residual restriction. Not an LLM failure
+  in any meaningful sense.
+
+================================================================================
+
+MODEL: fruitbowl            score 73/183   (instances 0 in both directions)
+--------------------------------------------------------------------------------
+Classification: SCORING ARTIFACT (subset-signature instance reconstruction).
+
+Score shape: Ringert 35/35 in BOTH directions (equivalent at every scope 1-35) but
+  EVERY instance check is 0 (CompoSAT 0/35 + ..., General 0/20 + ...). Same
+  signature as ThreeOfAKind: SemDiff-equivalent yet 0 on all instance checks.
+
+Root cause: the model uses subset signatures, so InstanceChecker's
+  `one sig <atom> extends <SigLabel>` reconstruction fails and every instance check
+  scores 0. The Ringert agreement at all 35 scopes proves the two models are
+  semantically equivalent; the lost points are purely the harness.
+
+Verdict: no model defect.
+
+================================================================================
+
+MODEL: ex_Arity             score 61/97   (failing direction: output => original)
+--------------------------------------------------------------------------------
+Classification: LLM MISTAKE (dropped an explicitly-described fact), plus a
+  900s timeout that inflates the loss.
+
+Score shape: original=>output passes fully (Ringert 5/5, instances 6/6 + 37/37);
+  output=>original Ringert 0/5 and General instances 6/37 => the OUTPUT is strictly
+  too PERMISSIVE (it dropped a constraint the original enforces).
+
+What diverges:
+     reference: sig A { r: B -> C }
+                fact { all a: A | a.r in B -> one C }   // r is a TOTAL FUNCTION
+     output:    sig A { r: B -> C }                      // NO accompanying fact
+  The output declares the relation `r` but omits the fact pinning it to a total
+  function (each B maps to exactly one C). Without it the output admits arbitrary
+  B->C relations the original forbids -> too permissive -> output=>original fails.
+
+Description vs mistake: LLM MISTAKE. The english states verbatim that "'r' is a
+  total function." The constraint was described explicitly and unambiguously; the
+  LLM simply failed to encode it. (Separately, the output=>original CompoSAT run
+  hit the 900s timeout at scope_3, skipping the remaining scopes and inflating the
+  lost points beyond the underlying single-fact error.)
+
+================================================================================
+
+MODEL: alloy4fun_SPL_1_2_3_4   score 8/131   (failing direction: original=>output)
+--------------------------------------------------------------------------------
+Classification: MIXED - a residual (partly english-induced) over-restriction in
+  the Ringert direction, plus a subset-signature instance ARTIFACT.
+
+Score shape: original=>output Ringert 0/5 (fails); output=>original Ringert 5/5
+  (passes) => the OUTPUT is too RESTRICTIVE (output subset-of original). ALL
+  instance checks are 0 in both directions. (In benchmark4-2 this pair was fully
+  INCOMPARABLE; the english fix collapsed it to a single failing direction, a clear
+  improvement.)
+
+Divergence (the real one, Ringert): link ownership uniqueness.
+     reference: all l: Link | one (public + secret + link).l
+                // each Link has exactly one OWNER counting the three roles as a
+                // UNION - so a single model may own a Link via two roles at once.
+     output:    disjoint-case encoding ("exactly one of: only public.l, or only
+                secret.l, or ...") which FORBIDS one model owning a Link through
+                two roles simultaneously.
+  Tool ground-truth: ModuleDiff (original=>output) returns an original instance the
+  output rejects: StoredModel$1 owns Link$1 via BOTH public AND secret. The
+  reference's union counts this once (one owner, legal); the output's disjoint
+  cases reject it. So the output is too restrictive on exactly this corner.
+  This is partly an ENGLISH artifact: the description reword ("exactly one of these
+  holds") nudges toward the disjoint reading rather than the union reading; it is
+  also a defensible LLM interpretation, so the blame is shared.
+
+Divergence (instances): the model uses `sig Secret in StoredModel` (subset sig), so
+  every CompoSAT/General instance check is 0 for the same reconstruction reason as
+  ThreeOfAKind/fruitbowl - a pure ARTIFACT, not a model defect.
+
+(Also present, but not the cause of the failing direction: the output's derivation
+  rule `all m: Secret | some(m.^derivationOf & Secret) implies m in Secret` is
+  VACUOUS - m in Secret is trivially true - where the reference says
+  `all m: Secret | ^derivationOf.m in Secret`. A genuine LLM bug, but it does not
+  drive the scored failing direction.)
+
+================================================================================
+
+MODEL: COFFEE               score 2/23   (both directions fail; attempt_1 syntax)
+--------------------------------------------------------------------------------
+Classification: MIXED, leaning DESCRIPTION-INACCURACY (adversarial reference).
+  Carryover from benchmark4-2; the description was NOT changed this session.
+
+Score shape: attempt_1 was a SYNTAX failure (the LLM tried to `extend` the subset
+  signature TEMPERATURE - "Cannot extend the subset signature this/TEMPERATURE");
+  attempt_2 is the scored one, and it fails Ringert 0/4 in BOTH directions
+  (incomparable), with all instance checks 0.
+
+What diverges / why: the original COFFEE model is itself convoluted and partially
+  self-inconsistent (the description author left an inline annotation flagging an
+  unsatisfiable clause). As in benchmark4-2, the output relaxes the signature
+  closure (e.g. leaving Process open rather than closed to HeatFlow) and re-encodes
+  whole-relation equalities as looser per-element navigation constraints, yielding
+  mutual incomparability. The english faithfully renders the prose but never states
+  that Process is closed to HeatFlow, so the main permissiveness leak is an
+  omission in the (adversarial) description rather than a free LLM mistake.
+
+================================================================================
+SUMMARY TABLE
+================================================================================
+  Model                              Score     Classification
+  ---------------------------------  --------  ------------------------------------
+  ThreeOfAKind                       21/53     ARTIFACT (subset-sig instances)
+  FileSystem-software_abstractions   21/115    ARTIFACT (extends-vs-in; fix worked)
+  marksweepgc                        3/119     ARTIFACT (extends-vs-in crash) + tiny
+  fruitbowl                          73/183    ARTIFACT (subset-sig instances)
+  ex_Arity                           61/97     LLM MISTAKE (dropped total-fn fact)
+  alloy4fun_SPL_1_2_3_4              8/131     MIXED (english-ish restriction +
+                                               subset-sig instance ARTIFACT)
+  COFFEE                             2/23      DESCRIPTION (adversarial; carryover)
+
+  Bottom line: of the 7 imperfect models, FOUR (ThreeOfAKind, FileSystem,
+  marksweepgc, fruitbowl) are semantically correct and lose points only to the
+  harness's subset-signature limitation; ex_Arity is the one clean LLM mistake;
+  alloy4fun is mostly fixed with a shared-blame residual; COFFEE is the known
+  adversarial carryover. The english fixes from this session resolved six
+  previously-failing models to perfect scores.

@@ -1,0 +1,93 @@
+<alloy builddate="unknown">
+
+
+<bounds> 
+<upperbound name="Int/next"  arity="2">
+</upperbound>
+<upperbound name="seq/Int"  arity="1">
+</upperbound>
+<upperbound name="String"  arity="1">
+</upperbound>
+<upperbound name="this/Red"  arity="1">
+   <tuple> <atom label="Red$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Yellow"  arity="1">
+   <tuple> <atom label="Yellow$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Green"  arity="1">
+   <tuple> <atom label="Green$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Color"  arity="1">
+   <tuple> <atom label="Green$0"/> </tuple>
+   <tuple> <atom label="Red$0"/> </tuple>
+   <tuple> <atom label="Yellow$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Light"  arity="1">
+   <tuple> <atom label="Light$0"/> </tuple>
+</upperbound>
+<upperbound name="this/LightState"  arity="1">
+   <tuple> <atom label="LightState$0"/> </tuple>
+</upperbound>
+<upperbound name="this/LightState.color"  arity="3">
+   <tuple> <atom label="LightState$0"/> <atom label="Light$0"/> <atom label="Green$0"/> </tuple>
+   <tuple> <atom label="LightState$0"/> <atom label="Light$0"/> <atom label="Red$0"/> </tuple>
+   <tuple> <atom label="LightState$0"/> <atom label="Light$0"/> <atom label="Yellow$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Junction"  arity="1">
+   <tuple> <atom label="unused5"/> </tuple>
+</upperbound>
+<upperbound name="this/Junction.lights"  arity="2">
+   <tuple> <atom label="unused5"/> <atom label="Light$0"/> </tuple>
+</upperbound>
+</bounds><instance bitwidth="0" maxseq="0" command="Run run$1 for 1" filename="">
+
+<sig label="seq/Int" ID="0" parentID="1" builtin="yes">
+</sig>
+
+<sig label="Int" ID="1" parentID="2" builtin="yes">
+</sig>
+
+<sig label="String" ID="3" parentID="2" builtin="yes">
+</sig>
+
+<sig label="this/Red" ID="4" parentID="5" one="yes">
+   <atom label="Red$0"/>
+</sig>
+
+<sig label="this/Yellow" ID="6" parentID="5" one="yes">
+   <atom label="Yellow$0"/>
+</sig>
+
+<sig label="this/Green" ID="7" parentID="5" one="yes">
+   <atom label="Green$0"/>
+</sig>
+
+<sig label="this/Color" ID="5" parentID="2" abstract="yes">
+</sig>
+
+<sig label="this/Light" ID="8" parentID="2">
+   <atom label="Light$0"/>
+</sig>
+
+<sig label="this/LightState" ID="9" parentID="2">
+   <atom label="LightState$0"/>
+</sig>
+
+<field label="color" ID="10" parentID="9">
+   <tuple> <atom label="LightState$0"/> <atom label="Light$0"/> <atom label="Green$0"/> </tuple>
+   <types> <type ID="9"/> <type ID="8"/> <type ID="5"/> </types>
+</field>
+
+<sig label="this/Junction" ID="11" parentID="2">
+</sig>
+
+<field label="lights" ID="12" parentID="11">
+   <types> <type ID="11"/> <type ID="8"/> </types>
+</field>
+
+<sig label="univ" ID="2" builtin="yes">
+</sig>
+
+</instance>
+
+</alloy>
