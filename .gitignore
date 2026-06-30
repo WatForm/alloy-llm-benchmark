@@ -6,6 +6,8 @@ __pycache__/
 # Compiled class files
 *.class 
 
+*.java-version
+
 .DS_Store
 
 # C extensions
