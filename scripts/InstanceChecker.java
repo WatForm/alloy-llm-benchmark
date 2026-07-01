@@ -14,19 +14,18 @@
         sig<:field = atom1 -> atom2 -> ... + atom3 -> atom3 -> ...   for every field of sig 
         run {} for X Int              where X is the bitwidth used in the instance
 
-    Scopes of sigs other than Int are not needed because they are set exactly in the facts
-
-    Supported
-    - overloading of fields within the model (because sig<:field is used above)
-    - atoms are stored in their unique signature (thus they may be in an extends child and not the parent), 
+    - Scopes of sigs other than Int are not needed because they are set exactly in the facts
+    - Overloading of fields within the model (because sig<:field is used above) is supported.
+    - Atoms are stored in their unique signature (thus they may be in an extends child and not the parent), 
     thus to find all atoms in a sig, we have to traverse the sig hierarchy created by the parent ids
     
     Unsupported:
-    - A/Ord or Ord/Ord
+    - A/Ord or Ord/Ord (sigs arising from open statements)
 
     Assumptions:
     - the top-level sigs have univ as their parent  (seems to be true in all instances)
-    - ignores the upperbound tags in the XML
+    - subset sigs ('in') have no parent in the XML (seems to be true in all instances)
+    - ignores the upperbound tags in the XML (from old versions of AA)
     - seq/Int is never used so its scope doesn't matter (not sure how to check this one)
 */
 
@@ -73,7 +72,10 @@ import kodkod.ast.Relation;
 public class InstanceChecker {
 
     private static Map<String,SigInfo> idToSigInfo;
-    private static String SUBSET = "SUBSET";
+
+    private static String SUBSET = "SUBSET"; // my choice of name
+    private static String UNIV = "univ"; // AA's choice of name
+    
     // turn a name in the XML into one that Alloy will 
     // accept in a model
     private static String alloyName(String name) {
@@ -195,7 +197,7 @@ public class InstanceChecker {
             
             for (int i = 0; i < sigs.getLength(); i++) {
                 Element sig = (Element) sigs.item(i);
-                if (sig.getAttribute("label").equals("univ")) {
+                if (sig.getAttribute("label").equals(UNIV)) {
                         // top-level sigs have univ as parent in XML
                         // so we need to get the id of univ
                         univId = sig.getAttribute("ID");
@@ -238,13 +240,7 @@ public class InstanceChecker {
             for (String id: idToSigInfo.keySet()) {
                 if (!idToSigInfo.get(id).parentId.equals(univId) && !idToSigInfo.get(id).parentId.equals(SUBSET)) {
                     idOfParent = idToSigInfo.get(id).parentId;
-                        while (!idOfParent.equals(univId)) {
-                            idOfParent = 
-                                idToSigInfo.get(id).parentId;
-                            // none of these will be SUBSET b/c subsets aren't allowed to have extends children
-                        }
-                        // won't be any duplicates b/c all atoms are unique
-                        idToSigInfo.get(idOfParent).addChild(id);
+                    idToSigInfo.get(idOfParent).addChild(id);
                 }
             }
 
@@ -293,15 +289,15 @@ public class InstanceChecker {
         for (String id:idToSigInfo.keySet()) {
             // no builtins will be in this map
             // produce nothing if it is an abstract sig
-            if (!idToSigInfo.get(id).isAbstract) {
+            if (!idToSigInfo.get(id).isAbstract ) {
                 
                 String sigLabel = idToSigInfo.get(id).label;
                 
                 List<String> atomsUniqueToSig = idToSigInfo.get(id).atoms;
                 
-                // could be none                
+                // could be none 
                 for (String a: atomsUniqueToSig) {
-                    // one sig atom_name extends sig name {}
+                    // one sig atom_name extends immediateParentSig name {}
                     newSigs.append("\none sig "+ a + " extends "+ sigLabel + " {}");
                 }
                 
@@ -387,6 +383,7 @@ public class InstanceChecker {
             // check if checkerModel is Sat
             // parsing or solve will fail if xml has names that model does not
             CompModule checkerModelWorld = CompUtil.parseEverything_fromString(rep, checkerModel.toString());
+            // the following will be the run cmd that we just added (so an earlier cmd in the model is irrelevant)
             int satCmdNum = checkerModelWorld.getAllCommands().size() - 1;
             // this is the only place we do solving
             // hopefully it is quick because the instance is specific
