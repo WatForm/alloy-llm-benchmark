@@ -1,0 +1,123 @@
+InstanceChecker PR Review - Did it fix the subset-signature scoring problem?
+================================================================================
+Scope: recent InstanceChecker.java changes (git commits 80f19cb "revised, more
+  robust instance checker" and 731551a "revisions to InstanceChecker"), evaluated
+  against the benchmark4-4 scoring run.
+
+SHORT ANSWER
+------------
+No - not fully. The rewrite improved several things, but the core subset-signature
+(`sig X in Y`) problem is NOT fixed, and the rewrite additionally introduced a
+second, independent failure mode (field placement across an extends hierarchy).
+Together these are why the following models still lose all/most instance points in
+benchmark4-4:
+
+  ThreeOfAKind   21/53    instances 0/8 + 0/8   (bug #1: subset-sig collision)
+  fruitbowl      73/183   instances 0/35 + 0/20 (bug #2: field placement)
+  marksweepgc     9/119   instances 0 both dirs (bug #1: subset-sig collision)
+  FileSystem     45/115   instances PARTIAL     (bug #1: only empty-subset pass)
+  alloy4fun      40/131   instances PARTIAL     (bug #1: only empty-subset pass)
+
+(Ringert/SemDiff scores for FileSystem and marksweepgc DID improve - but that is
+from the separate scripts/extends_to_in.py normalization added to score.py, not
+from the InstanceChecker PR.)
+
+WHAT THE PR CHANGED (relevant parts)
+------------------------------------
+- Subset sigs (`in`) are detected: an XML sig with no parentID is tagged
+  parentId = SUBSET and is NOT wired into the parent->child hierarchy, so
+  collectAtoms() no longer double-counts their atoms in the `Sig = a1 + a2 + ...`
+  membership facts. (This part is correct and is an improvement.)
+- Fields are now identified as "<fieldLabel> of <owningSigLabel>" (instead of just
+  <fieldLabel>) to support field-name overloading.
+- The scope is taken from the reconstructed facts rather than the XML run command;
+  various exit codes changed to 2.
+
+REMAINING BUG #1 - subset-signature atom collision (NOT fixed)
+--------------------------------------------------------------
+The instance is rebuilt by emitting, for every non-abstract sig, one
+`one sig <atom> extends <thatSig> {}` per atom listed under that sig in the XML
+(InstanceChecker.java ~line 298):
+
+    for (String a: atomsUniqueToSig)
+        newSigs.append("\none sig " + a + " extends " + sigLabel + " {}");
+
+For a subset signature `X in Y`, the XML lists X's member atoms, but those SAME
+atoms are also listed under their primary signature Y. So the reconstruction emits
+the atom twice - once extending Y and once extending X - which Alloy rejects:
+
+  ThreeOfAKind (`sig hand in Card`), models/ThreeOfAKind.als vs its own instance:
+    one sig Cardʃ1 extends Card {}
+    one sig Cardʃ1 extends hand {}      <-- duplicate declaration
+    ...
+    FAIL: Solving checker model failed with
+    "Cardʃ0" is already the name of a sig/parameter in this module.
+
+  marksweepgc (`one sig h, hsn in HeapState`):
+    FAIL: "HeapStateʃ0" is already the name of a sig/parameter in this module.
+
+The collision only occurs when the subset sig is NON-EMPTY. Empty subset sigs emit
+no atoms and so reconstruct fine. This exactly explains the PARTIAL scores:
+
+  alloy4fun (`sig Secret in StoredModel`), checked against its own model:
+    secretAtoms=2  =>  FAIL "StoredModelʃ0" is already the name of a sig...
+    secretAtoms=1  =>  FAIL "StoredModelʃ1" is already the name of a sig...
+    secretAtoms=1  =>  FAIL "StoredModelʃ1" is already the name of a sig...
+    secretAtoms=0  =>  PASS: xml is instance of model
+    secretAtoms=0  =>  PASS: xml is instance of model
+    secretAtoms=2  =>  FAIL "StoredModelʃ0" is already the name of a sig...
+
+So models whose subset sig is always populated (ThreeOfAKind's `hand`,
+marksweepgc's `one sig h, hsn`) score 0 on every instance, while models whose
+subset sig is sometimes empty (FileSystem's `Alias`, alloy4fun's `Secret`) get
+partial credit from exactly the empty-subset instances.
+
+Fix direction (for whoever owns InstanceChecker): for a subset sig
+(parentId == SUBSET) do NOT emit `one sig <atom> extends <X>`; the atoms are
+already declared under their primary sig. Emitting only the membership fact
+`X = a1 + a2 + ...` (which the code already does) is sufficient and correct.
+
+REMAINING BUG #2 - field placement across an extends hierarchy (newly exposed)
+------------------------------------------------------------------------------
+The PR keys fields by "<field> of <owningSig>". This breaks when two
+semantically-equivalent models declare the same field at different levels of the
+signature hierarchy. fruitbowl is the clearest case:
+
+  reference: fields live on the individual fruit sigs
+      abstract sig Fruit {}
+      one sig apple extends Fruit { color:..., quality:..., size:... }
+      one sig orange extends Fruit { ... }
+  output:    the same fields live once on the abstract parent
+      abstract sig Fruit { color:..., quality:..., size:... }
+      one sig apple, orange extends Fruit {}
+
+The XML (generated from the reference) yields field names "color of apple",
+"color of orange", ...; the output model contributes "color of Fruit". The
+containment check then fails:
+
+  InstanceChecker(outputs/fruitbowl.attempt1.als, <reference instance>):
+    FAIL: Model has fields not in XML:
+    [color of Fruit, quality of Fruit, size of Fruit]
+
+This is a false negative: the models are equivalent (Ringert 35/35 both
+directions), and the reconstruction of the instance ALONE succeeds
+(InstanceChecker(models/fruitbowl.als, <same instance>) => PASS). It fails only
+because the "of <sig>" qualifier is compared literally and a field on a parent is
+not recognised as the same field distributed over its children (and vice versa).
+
+Fix direction: when checking field-name containment, either match on the bare
+field label, or normalise the owning sig to the top of its extends hierarchy, so
+that a field declared on a parent matches the same field appearing on the
+children in the instance.
+
+BOTTOM LINE
+-----------
+- The subset-signature handling was PARTIALLY addressed (membership facts fixed)
+  but the `one sig <atom> extends <subsetSig>` duplicate-declaration crash was NOT
+  fixed; any instance with a non-empty subset sig still fails to reconstruct.
+- A new field-placement brittleness ("field of Sig" name matching) now blocks
+  fruitbowl even though its instances reconstruct fine and the models are
+  equivalent.
+- The instance-based points for ThreeOfAKind, fruitbowl, marksweepgc, and the
+  output-direction of FileSystem/alloy4fun therefore remain lost for harness
+  reasons, not because of any defect in the generated models.

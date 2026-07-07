@@ -1,0 +1,63 @@
+benchmark4-4 vs benchmark4-3 - What got fixed, what remains
+================================================================================
+OVERALL: 4-3 = 2277/2809  ->  4-4 = 2362/2816
+(Denominators differ slightly because instance counts are nondeterministic per
+run, e.g. COFFEE max 23->31, sets1 100->99. The +85 gain is concentrated in the
+four models below. No previously-perfect model regressed.)
+
+Two independent fixes landed between the runs:
+  (A) extends->in Ringert normalization (scripts/extends_to_in.py + score.py):
+      fixes the ModuleDiff "Cannot merge PrimSig and SubsetSig" crash.
+  (B) the InstanceChecker PR: partially reworked subset-sig / field handling.
+
+PREVIOUSLY-IMPERFECT MODELS
+--------------------------------------------------------------------------------
+  Model            4-3      4-4     Change
+  ThreeOfAKind     21/53    21/53   unchanged - still broken
+  fruitbowl        73/183   73/183  unchanged - still broken
+  ex_Arity         61/97    61/97   unchanged - genuine LLM mistake
+  COFFEE           2/23     26/31   largely fixed
+  FileSystem       21/115   45/115  Ringert fixed; instances partial
+  alloy4fun        8/131    40/131  instances partial; real issue remains
+  marksweepgc      3/119    9/119   Ringert crash fixed; instances still 0
+
+FIXED
+--------------------------------------------------------------------------------
+- FileSystem   Ringert 0/5 -> 5/5 BOTH directions (fix A).
+- marksweepgc  crash gone (fix A); Ringert now output=>original 5/5,
+               original=>output 1/5 (the 1/5 is a real, small over-restriction).
+- COFFEE       original=>output Ringert 0/4 -> 4/4 (fix A unmasked a comparable
+               direction) and its instance checks 0 -> 8/8 + 2/2 (fix B).
+- Instance checks that only needed empty-subset reconstruction now pass:
+  FileSystem output=>original 0 -> 6/11 + 8/37; alloy4fun 0 -> partial.
+
+STILL EXISTS
+--------------------------------------------------------------------------------
+Genuine model/description issues (correctly still failing - not artifacts):
+- COFFEE     output=>original Ringert 0/4  (output too permissive; Process-closure
+             omission).
+- alloy4fun  original=>output Ringert 0/5  (Link union-vs-disjoint over-restriction).
+- ex_Arity   output=>original Ringert 0/5 + 900s CompoSAT timeout (dropped the
+             "r is a total function" fact). Untouched by either fix.
+- marksweepgc original=>output Ringert 1/5 (small real over-restriction, now
+             visible thanks to the crash fix).
+
+Harness artifacts the InstanceChecker PR did NOT fix (see
+instance_checker_findings.txt for detail):
+- Subset-sig collision (`one sig atom extends X` emitted twice) still crashes
+  reconstruction whenever a subset sig is non-empty:
+    ThreeOfAKind  (hand in Card)          -> instances 0/8 + 0/8
+    marksweepgc   (one sig h, hsn in ...)  -> instances 0 both directions
+    FileSystem / alloy4fun                 -> only empty-subset instances pass
+- Field placement across an extends hierarchy ("field of Sig" name match) now
+  blocks fruitbowl (color/quality/size on Fruit vs on apple/orange) -> 0 instances
+  despite Ringert 35/35.
+
+BOTTOM LINE
+--------------------------------------------------------------------------------
+The extends-vs-in Ringert crash is resolved across the board (FileSystem,
+marksweepgc, COFFEE). The InstanceChecker PR cleared some subset-sig instance
+artifacts but not the non-empty-subset collision, and introduced a field-placement
+false negative (fruitbowl). Remaining point losses are now mostly REAL semantic
+differences (COFFEE, alloy4fun, ex_Arity, marksweepgc residual) plus the two
+still-unfixed harness artifacts (ThreeOfAKind, fruitbowl).

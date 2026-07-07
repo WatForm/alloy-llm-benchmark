@@ -1,0 +1,1545 @@
+Alloy Benchmark Scoring Report
+================================================================================
+SemDiff direction note: ModuleDiff <left> <right> SemDiff reports equivalent when right => left.
+CompoSAT timeout per scope: 900s
+General instance generation timeout per scope: 900s
+Model scoring parallelism: 4 worker(s)
+
+Model: Avenant
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/Avenant.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/models/Avenant.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/Avenant.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 2/2
+      scope_1: 1/1
+      scope_2: 1/1
+    General instances from original model checked on output model: 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 2/2
+      scope_1: 1/1
+      scope_2: 1/1
+    General instances from output model checked on original model: 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+  TOTAL: 27/27
+
+Model: COFFEE
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/COFFEE.attempt2.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/models/COFFEE.als
+  Syntax attempts score: 2/3 (first valid attempt: 2)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: INVALID (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/COFFEE.attempt1.als)
+      detail: Exception in thread "main" java.lang.RuntimeException: Alloy failed to parse module.
+	at org.alloytools.alloy.diff.ModuleDiff.diff(ModuleDiff.java:177)
+	at org.alloytools.alloy.diff.ModuleDiff.main(ModuleDiff.java:71)
+Caused by: Syntax error in /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/COFFEE.attempt1.als at line 12 column 18:
+Cannot extend the subset signature "this/ThermalProperty".
+A signature can only extend a toplevel signature or a subsignature.
+	at edu.mit.csail.sdg.parser.CompModule.resolveSig(CompModule.java:1512)
+	at edu.mit.csail.sdg.parser.CompModule.resolveAll(CompModule.java:2125)
+	at edu.mit.csail.sdg.parser.CompUtil.parseEverything_fromFile(CompUtil.java:360)
+	at org.alloytools.alloy.diff.ModuleDiff.diff(ModuleDiff.java:174)
+	... 1 more
+    attempt_2: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/COFFEE.attempt2.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 4/4
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+    CompoSAT instances from original model checked on output model: 8/8
+      scope_1: 2/2
+      scope_2: 2/2
+      scope_3: 2/2
+      scope_4: 2/2
+    General instances from original model checked on output model: 2/2
+      scope_1: 2/2
+  Direction: output => original
+    Ringert (SemDiff implication): 0/4
+      scope_1: 0/1
+      scope_2: 0/1
+      scope_3: 0/1
+      scope_4: 0/1
+    CompoSAT instances from output model checked on original model: 8/8
+      scope_1: 2/2
+      scope_2: 2/2
+      scope_3: 2/2
+      scope_4: 2/2
+    General instances from output model checked on original model: 2/2
+      scope_1: 2/2
+  TOTAL: 26/31
+
+Model: FieldComplex-static
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/FieldComplex-static.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/models/FieldComplex-static.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/FieldComplex-static.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 4/4
+      scope_2: 2/2
+      scope_3: 1/1
+      scope_4: 1/1
+    General instances from original model checked on output model: 40/40
+      scope_2: 10/10
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 4/4
+      scope_1: 0/0
+      scope_2: 2/2
+      scope_3: 1/1
+      scope_4: 1/1
+    General instances from output model checked on original model: 36/36
+      scope_1: 0/0
+      scope_2: 6/6
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  TOTAL: 97/97
+
+Model: FileSystem-software_abstractions
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/FileSystem-software_abstractions.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/models/FileSystem-software_abstractions.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/FileSystem-software_abstractions.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 10/15
+      scope_1: 1/1
+      scope_2: 3/4
+      scope_3: 4/6
+      scope_4: 1/2
+      scope_5: 1/2
+    General instances from original model checked on output model: 8/39
+      scope_1: 1/1
+      scope_2: 4/8
+      scope_3: 3/10
+      scope_4: 0/10
+      scope_5: 0/10
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 6/11
+      scope_1: 1/1
+      scope_2: 2/3
+      scope_3: 2/4
+      scope_4: 1/2
+      scope_5: 0/1
+    General instances from output model checked on original model: 8/37
+      scope_1: 1/1
+      scope_2: 4/6
+      scope_3: 2/10
+      scope_4: 1/10
+      scope_5: 0/10
+  TOTAL: 45/115
+
+Model: Museum
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/Museum.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/models/Museum.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/Museum.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 8/8
+      scope_1: 1/1
+      scope_2: 3/3
+      scope_3: 2/2
+      scope_4: 2/2
+    General instances from original model checked on output model: 36/36
+      scope_1: 1/1
+      scope_2: 5/5
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 8/8
+      scope_1: 1/1
+      scope_2: 3/3
+      scope_3: 2/2
+      scope_4: 2/2
+    General instances from output model checked on original model: 36/36
+      scope_1: 1/1
+      scope_2: 5/5
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  TOTAL: 101/101
+
+Model: Puzzle
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/Puzzle.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/models/Puzzle.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/Puzzle.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 44/44
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+      scope_6: 1/1
+      scope_7: 1/1
+      scope_8: 1/1
+      scope_9: 1/1
+      scope_10: 1/1
+      scope_11: 1/1
+      scope_12: 1/1
+      scope_13: 1/1
+      scope_14: 1/1
+      scope_15: 1/1
+      scope_16: 1/1
+      scope_17: 1/1
+      scope_18: 1/1
+      scope_19: 1/1
+      scope_20: 1/1
+      scope_21: 1/1
+      scope_22: 1/1
+      scope_23: 1/1
+      scope_24: 1/1
+      scope_25: 1/1
+      scope_26: 1/1
+      scope_27: 1/1
+      scope_28: 1/1
+      scope_29: 1/1
+      scope_30: 1/1
+      scope_31: 1/1
+      scope_32: 1/1
+      scope_33: 1/1
+      scope_34: 1/1
+      scope_35: 1/1
+      scope_36: 1/1
+      scope_37: 1/1
+      scope_38: 1/1
+      scope_39: 1/1
+      scope_40: 1/1
+      scope_41: 1/1
+      scope_42: 1/1
+      scope_43: 1/1
+      scope_44: 1/1
+    CompoSAT instances from original model checked on output model: 44/44
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+      scope_6: 1/1
+      scope_7: 1/1
+      scope_8: 1/1
+      scope_9: 1/1
+      scope_10: 1/1
+      scope_11: 1/1
+      scope_12: 1/1
+      scope_13: 1/1
+      scope_14: 1/1
+      scope_15: 1/1
+      scope_16: 1/1
+      scope_17: 1/1
+      scope_18: 1/1
+      scope_19: 1/1
+      scope_20: 1/1
+      scope_21: 1/1
+      scope_22: 1/1
+      scope_23: 1/1
+      scope_24: 1/1
+      scope_25: 1/1
+      scope_26: 1/1
+      scope_27: 1/1
+      scope_28: 1/1
+      scope_29: 1/1
+      scope_30: 1/1
+      scope_31: 1/1
+      scope_32: 1/1
+      scope_33: 1/1
+      scope_34: 1/1
+      scope_35: 1/1
+      scope_36: 1/1
+      scope_37: 1/1
+      scope_38: 1/1
+      scope_39: 1/1
+      scope_40: 1/1
+      scope_41: 1/1
+      scope_42: 1/1
+      scope_43: 1/1
+      scope_44: 1/1
+    General instances from original model checked on output model: 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+  Direction: output => original
+    Ringert (SemDiff implication): 44/44
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+      scope_6: 1/1
+      scope_7: 1/1
+      scope_8: 1/1
+      scope_9: 1/1
+      scope_10: 1/1
+      scope_11: 1/1
+      scope_12: 1/1
+      scope_13: 1/1
+      scope_14: 1/1
+      scope_15: 1/1
+      scope_16: 1/1
+      scope_17: 1/1
+      scope_18: 1/1
+      scope_19: 1/1
+      scope_20: 1/1
+      scope_21: 1/1
+      scope_22: 1/1
+      scope_23: 1/1
+      scope_24: 1/1
+      scope_25: 1/1
+      scope_26: 1/1
+      scope_27: 1/1
+      scope_28: 1/1
+      scope_29: 1/1
+      scope_30: 1/1
+      scope_31: 1/1
+      scope_32: 1/1
+      scope_33: 1/1
+      scope_34: 1/1
+      scope_35: 1/1
+      scope_36: 1/1
+      scope_37: 1/1
+      scope_38: 1/1
+      scope_39: 1/1
+      scope_40: 1/1
+      scope_41: 1/1
+      scope_42: 1/1
+      scope_43: 1/1
+      scope_44: 1/1
+    CompoSAT instances from output model checked on original model: 44/44
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+      scope_6: 1/1
+      scope_7: 1/1
+      scope_8: 1/1
+      scope_9: 1/1
+      scope_10: 1/1
+      scope_11: 1/1
+      scope_12: 1/1
+      scope_13: 1/1
+      scope_14: 1/1
+      scope_15: 1/1
+      scope_16: 1/1
+      scope_17: 1/1
+      scope_18: 1/1
+      scope_19: 1/1
+      scope_20: 1/1
+      scope_21: 1/1
+      scope_22: 1/1
+      scope_23: 1/1
+      scope_24: 1/1
+      scope_25: 1/1
+      scope_26: 1/1
+      scope_27: 1/1
+      scope_28: 1/1
+      scope_29: 1/1
+      scope_30: 1/1
+      scope_31: 1/1
+      scope_32: 1/1
+      scope_33: 1/1
+      scope_34: 1/1
+      scope_35: 1/1
+      scope_36: 1/1
+      scope_37: 1/1
+      scope_38: 1/1
+      scope_39: 1/1
+      scope_40: 1/1
+      scope_41: 1/1
+      scope_42: 1/1
+      scope_43: 1/1
+      scope_44: 1/1
+    General instances from output model checked on original model: 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+  TOTAL: 189/189
+
+Model: ThreeOfAKind
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/ThreeOfAKind.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/models/ThreeOfAKind.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/ThreeOfAKind.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 9/9
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+      scope_6: 1/1
+      scope_7: 1/1
+      scope_8: 1/1
+      scope_9: 1/1
+    CompoSAT instances from original model checked on output model: 0/8
+      scope_3: 0/1
+      scope_4: 0/2
+      scope_5: 0/1
+      scope_6: 0/1
+      scope_7: 0/1
+      scope_8: 0/1
+      scope_9: 0/1
+    General instances from original model checked on output model: 0/8
+      scope_3: 0/1
+      scope_4: 0/2
+      scope_5: 0/5
+  Direction: output => original
+    Ringert (SemDiff implication): 9/9
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+      scope_6: 1/1
+      scope_7: 1/1
+      scope_8: 1/1
+      scope_9: 1/1
+    CompoSAT instances from output model checked on original model: 0/8
+      scope_1: 0/0
+      scope_2: 0/0
+      scope_3: 0/1
+      scope_4: 0/2
+      scope_5: 0/1
+      scope_6: 0/1
+      scope_7: 0/1
+      scope_8: 0/1
+      scope_9: 0/1
+    General instances from output model checked on original model: 0/8
+      scope_1: 0/0
+      scope_2: 0/0
+      scope_3: 0/1
+      scope_4: 0/2
+      scope_5: 0/5
+  TOTAL: 21/53
+
+Model: addr
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/addr.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/models/addr.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/addr.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 10/10
+      scope_1: 4/4
+      scope_2: 3/3
+      scope_3: 3/3
+    General instances from original model checked on output model: 43/43
+      scope_1: 3/3
+      scope_2: 10/10
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 10/10
+      scope_1: 4/4
+      scope_2: 3/3
+      scope_3: 3/3
+    General instances from output model checked on original model: 43/43
+      scope_1: 3/3
+      scope_2: 10/10
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  TOTAL: 119/119
+
+Model: addressBook2d
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/addressBook2d.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/models/addressBook2d.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/addressBook2d.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 8/8
+      scope_1: 4/4
+      scope_2: 2/2
+      scope_3: 2/2
+    General instances from original model checked on output model: 43/43
+      scope_1: 3/3
+      scope_2: 10/10
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 8/8
+      scope_1: 4/4
+      scope_2: 2/2
+      scope_3: 2/2
+    General instances from output model checked on original model: 43/43
+      scope_1: 3/3
+      scope_2: 10/10
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  TOTAL: 115/115
+
+Model: all_isas
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/all_isas.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/models/all_isas.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/all_isas.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 10/10
+      scope_1: 2/2
+      scope_2: 2/2
+      scope_3: 3/3
+      scope_4: 3/3
+    General instances from original model checked on output model: 34/34
+      scope_1: 1/1
+      scope_2: 3/3
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 10/10
+      scope_1: 2/2
+      scope_2: 2/2
+      scope_3: 3/3
+      scope_4: 3/3
+    General instances from output model checked on original model: 34/34
+      scope_1: 1/1
+      scope_2: 3/3
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  TOTAL: 101/101
+
+Model: alloy4fun_SPL_1_2_3_4
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/alloy4fun_SPL_1_2_3_4.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/models/alloy4fun_SPL_1_2_3_4.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/alloy4fun_SPL_1_2_3_4.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 0/5
+      scope_1: 0/1
+      scope_2: 0/1
+      scope_3: 0/1
+      scope_4: 0/1
+      scope_5: 0/1
+    CompoSAT instances from original model checked on output model: 5/19
+      scope_1: 3/5
+      scope_2: 1/6
+      scope_3: 1/8
+    General instances from original model checked on output model: 10/42
+      scope_1: 1/2
+      scope_2: 3/10
+      scope_3: 2/10
+      scope_4: 2/10
+      scope_5: 2/10
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 6/15
+      scope_1: 3/4
+      scope_2: 1/4
+      scope_3: 2/7
+    General instances from output model checked on original model: 11/42
+      scope_1: 1/2
+      scope_2: 3/10
+      scope_3: 2/10
+      scope_4: 3/10
+      scope_5: 2/10
+  TOTAL: 40/131
+
+Model: ctree
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/ctree.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/models/ctree.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/ctree.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 6/6
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+      scope_6: 1/1
+    CompoSAT instances from original model checked on output model: 9/9
+      scope_1: 2/2
+      scope_2: 2/2
+      scope_3: 2/2
+      scope_4: 1/1
+      scope_5: 1/1
+      scope_6: 1/1
+    General instances from original model checked on output model: 5/5
+      scope_1: 2/2
+      scope_2: 3/3
+  Direction: output => original
+    Ringert (SemDiff implication): 6/6
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+      scope_6: 1/1
+    CompoSAT instances from output model checked on original model: 9/9
+      scope_1: 2/2
+      scope_2: 2/2
+      scope_3: 2/2
+      scope_4: 1/1
+      scope_5: 1/1
+      scope_6: 1/1
+    General instances from output model checked on original model: 5/5
+      scope_1: 2/2
+      scope_2: 3/3
+  TOTAL: 43/43
+
+Model: ex_Arity
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/ex_Arity.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/models/ex_Arity.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/ex_Arity.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 6/6
+      scope_1: 4/4
+      scope_2: 1/1
+      scope_3: 1/1
+    General instances from original model checked on output model: 37/37
+      scope_1: 1/1
+      scope_2: 6/6
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  Direction: output => original
+    Ringert (SemDiff implication): 0/5
+      scope_1: 0/1
+      scope_2: 0/1
+      scope_3: 0/1
+      scope_4: 0/1
+      scope_5: 0/1
+    CompoSAT instances from output model checked on original model: 4/4
+      scope_1: 3/3
+      scope_2: 1/1
+    TIMEOUT: CompoSAT hit the 900s limit at scope_3.
+    Note: scope_3: CompoSAT timed out after 900s; remaining scopes skipped.
+    General instances from output model checked on original model: 6/37
+      scope_1: 1/1
+      scope_2: 2/6
+      scope_3: 1/10
+      scope_4: 1/10
+      scope_5: 1/10
+  TOTAL: 61/97
+
+Model: ex_ColorState
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/ex_ColorState.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/models/ex_ColorState.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/ex_ColorState.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 3/3
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+    CompoSAT instances from original model checked on output model: 8/8
+      scope_1: 5/5
+      scope_2: 3/3
+    General instances from original model checked on output model: 26/26
+      scope_1: 6/6
+      scope_2: 10/10
+      scope_3: 10/10
+  Direction: output => original
+    Ringert (SemDiff implication): 3/3
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+    CompoSAT instances from output model checked on original model: 9/9
+      scope_1: 5/5
+      scope_2: 4/4
+    General instances from output model checked on original model: 26/26
+      scope_1: 6/6
+      scope_2: 10/10
+      scope_3: 10/10
+  TOTAL: 78/78
+
+Model: ex_FileSystem
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/ex_FileSystem.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/models/ex_FileSystem.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/ex_FileSystem.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 6/6
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+      scope_6: 1/1
+    CompoSAT instances from original model checked on output model: 12/12
+      scope_1: 1/1
+      scope_2: 3/3
+      scope_3: 4/4
+      scope_4: 2/2
+      scope_5: 1/1
+      scope_6: 1/1
+    General instances from original model checked on output model: 35/35
+      scope_1: 1/1
+      scope_2: 4/4
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  Direction: output => original
+    Ringert (SemDiff implication): 6/6
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+      scope_6: 1/1
+    CompoSAT instances from output model checked on original model: 12/12
+      scope_1: 1/1
+      scope_2: 3/3
+      scope_3: 4/4
+      scope_4: 2/2
+      scope_5: 1/1
+      scope_6: 1/1
+    General instances from output model checked on original model: 35/35
+      scope_1: 1/1
+      scope_2: 4/4
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  TOTAL: 109/109
+
+Model: ex_Host
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/ex_Host.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/models/ex_Host.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/ex_Host.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 5/5
+      scope_1: 2/2
+      scope_2: 3/3
+    General instances from original model checked on output model: 34/34
+      scope_1: 1/1
+      scope_2: 3/3
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 5/5
+      scope_1: 2/2
+      scope_2: 3/3
+    General instances from output model checked on original model: 34/34
+      scope_1: 1/1
+      scope_2: 3/3
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  TOTAL: 91/91
+
+Model: file_system
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/file_system.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/models/file_system.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/file_system.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 11/11
+      scope_1: 1/1
+      scope_2: 4/4
+      scope_3: 4/4
+      scope_4: 2/2
+    General instances from original model checked on output model: 32/32
+      scope_2: 2/2
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 14/14
+      scope_1: 1/1
+      scope_2: 4/4
+      scope_3: 6/6
+      scope_4: 3/3
+    General instances from output model checked on original model: 32/32
+      scope_1: 0/0
+      scope_2: 2/2
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  TOTAL: 102/102
+
+Model: fruitbowl
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/fruitbowl.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/models/fruitbowl.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/fruitbowl.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 35/35
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+      scope_6: 1/1
+      scope_7: 1/1
+      scope_8: 1/1
+      scope_9: 1/1
+      scope_10: 1/1
+      scope_11: 1/1
+      scope_12: 1/1
+      scope_13: 1/1
+      scope_14: 1/1
+      scope_15: 1/1
+      scope_16: 1/1
+      scope_17: 1/1
+      scope_18: 1/1
+      scope_19: 1/1
+      scope_20: 1/1
+      scope_21: 1/1
+      scope_22: 1/1
+      scope_23: 1/1
+      scope_24: 1/1
+      scope_25: 1/1
+      scope_26: 1/1
+      scope_27: 1/1
+      scope_28: 1/1
+      scope_29: 1/1
+      scope_30: 1/1
+      scope_31: 1/1
+      scope_32: 1/1
+      scope_33: 1/1
+      scope_34: 1/1
+      scope_35: 1/1
+    CompoSAT instances from original model checked on output model: 0/35
+      scope_1: 0/1
+      scope_2: 0/1
+      scope_3: 0/1
+      scope_4: 0/1
+      scope_5: 0/1
+      scope_6: 0/1
+      scope_7: 0/1
+      scope_8: 0/1
+      scope_9: 0/1
+      scope_10: 0/1
+      scope_11: 0/1
+      scope_12: 0/1
+      scope_13: 0/1
+      scope_14: 0/1
+      scope_15: 0/1
+      scope_16: 0/1
+      scope_17: 0/1
+      scope_18: 0/1
+      scope_19: 0/1
+      scope_20: 0/1
+      scope_21: 0/1
+      scope_22: 0/1
+      scope_23: 0/1
+      scope_24: 0/1
+      scope_25: 0/1
+      scope_26: 0/1
+      scope_27: 0/1
+      scope_28: 0/1
+      scope_29: 0/1
+      scope_30: 0/1
+      scope_31: 0/1
+      scope_32: 0/1
+      scope_33: 0/1
+      scope_34: 0/1
+      scope_35: 0/1
+    General instances from original model checked on output model: 0/20
+      scope_1: 0/10
+      scope_2: 0/10
+  Direction: output => original
+    Ringert (SemDiff implication): 35/35
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+      scope_6: 1/1
+      scope_7: 1/1
+      scope_8: 1/1
+      scope_9: 1/1
+      scope_10: 1/1
+      scope_11: 1/1
+      scope_12: 1/1
+      scope_13: 1/1
+      scope_14: 1/1
+      scope_15: 1/1
+      scope_16: 1/1
+      scope_17: 1/1
+      scope_18: 1/1
+      scope_19: 1/1
+      scope_20: 1/1
+      scope_21: 1/1
+      scope_22: 1/1
+      scope_23: 1/1
+      scope_24: 1/1
+      scope_25: 1/1
+      scope_26: 1/1
+      scope_27: 1/1
+      scope_28: 1/1
+      scope_29: 1/1
+      scope_30: 1/1
+      scope_31: 1/1
+      scope_32: 1/1
+      scope_33: 1/1
+      scope_34: 1/1
+      scope_35: 1/1
+    CompoSAT instances from output model checked on original model: 0/35
+      scope_1: 0/1
+      scope_2: 0/1
+      scope_3: 0/1
+      scope_4: 0/1
+      scope_5: 0/1
+      scope_6: 0/1
+      scope_7: 0/1
+      scope_8: 0/1
+      scope_9: 0/1
+      scope_10: 0/1
+      scope_11: 0/1
+      scope_12: 0/1
+      scope_13: 0/1
+      scope_14: 0/1
+      scope_15: 0/1
+      scope_16: 0/1
+      scope_17: 0/1
+      scope_18: 0/1
+      scope_19: 0/1
+      scope_20: 0/1
+      scope_21: 0/1
+      scope_22: 0/1
+      scope_23: 0/1
+      scope_24: 0/1
+      scope_25: 0/1
+      scope_26: 0/1
+      scope_27: 0/1
+      scope_28: 0/1
+      scope_29: 0/1
+      scope_30: 0/1
+      scope_31: 0/1
+      scope_32: 0/1
+      scope_33: 0/1
+      scope_34: 0/1
+      scope_35: 0/1
+    General instances from output model checked on original model: 0/20
+      scope_1: 0/10
+      scope_2: 0/10
+  TOTAL: 73/183
+
+Model: fullTree
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/fullTree.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/models/fullTree.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/fullTree.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 1/1
+      scope_1: 1/1
+    General instances from original model checked on output model: 8/8
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 2/2
+      scope_4: 2/2
+      scope_5: 2/2
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 1/1
+      scope_1: 1/1
+    General instances from output model checked on original model: 8/8
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 2/2
+      scope_4: 2/2
+      scope_5: 2/2
+  TOTAL: 31/31
+
+Model: grade
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/grade.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/models/grade.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/grade.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 5/5
+      scope_1: 2/2
+      scope_2: 2/2
+      scope_3: 1/1
+    General instances from original model checked on output model: 36/36
+      scope_2: 6/6
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 5/5
+      scope_1: 2/2
+      scope_2: 2/2
+      scope_3: 1/1
+    General instances from output model checked on original model: 36/36
+      scope_1: 0/0
+      scope_2: 6/6
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  TOTAL: 95/95
+
+Model: handshake
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/handshake.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/models/handshake.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/handshake.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 4/4
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+    CompoSAT instances from original model checked on output model: 3/3
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+    General instances from original model checked on output model: 3/3
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_4: 1/1
+  Direction: output => original
+    Ringert (SemDiff implication): 4/4
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+    CompoSAT instances from output model checked on original model: 3/3
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+    General instances from output model checked on original model: 3/3
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 0/0
+      scope_4: 1/1
+  TOTAL: 23/23
+
+Model: hc4
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/hc4.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/models/hc4.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/hc4.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 5/5
+      scope_1: 1/1
+      scope_2: 2/2
+      scope_3: 2/2
+    General instances from original model checked on output model: 28/28
+      scope_2: 2/2
+      scope_3: 6/6
+      scope_4: 10/10
+      scope_5: 10/10
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 5/5
+      scope_1: 1/1
+      scope_2: 2/2
+      scope_3: 2/2
+    General instances from output model checked on original model: 28/28
+      scope_1: 0/0
+      scope_2: 2/2
+      scope_3: 6/6
+      scope_4: 10/10
+      scope_5: 10/10
+  TOTAL: 79/79
+
+Model: marksweepgc
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/marksweepgc.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/models/marksweepgc.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/marksweepgc.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 1/5
+      scope_1: 1/1
+      scope_2: 0/1
+      scope_3: 0/1
+      scope_4: 0/1
+      scope_5: 0/1
+    CompoSAT instances from original model checked on output model: 0/11
+      scope_2: 0/11
+    General instances from original model checked on output model: 0/40
+      scope_2: 0/10
+      scope_3: 0/10
+      scope_4: 0/10
+      scope_5: 0/10
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 0/15
+      scope_1: 0/0
+      scope_2: 0/15
+    General instances from output model checked on original model: 0/40
+      scope_1: 0/0
+      scope_2: 0/10
+      scope_3: 0/10
+      scope_4: 0/10
+      scope_5: 0/10
+  TOTAL: 9/119
+
+Model: modelling systems chap2 - alarm v0.1.0
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/modelling systems chap2 - alarm v0.1.0.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/models/modelling systems chap2 - alarm v0.1.0.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/modelling systems chap2 - alarm v0.1.0.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 9/9
+      scope_1: 6/6
+      scope_2: 3/3
+    General instances from original model checked on output model: 48/48
+      scope_1: 8/8
+      scope_2: 10/10
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 9/9
+      scope_1: 6/6
+      scope_2: 3/3
+    General instances from output model checked on original model: 48/48
+      scope_1: 8/8
+      scope_2: 10/10
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  TOTAL: 127/127
+
+Model: niveaux_franchises
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/niveaux_franchises.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/models/niveaux_franchises.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/niveaux_franchises.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 8/8
+      scope_1: 8/8
+    General instances from original model checked on output model: 50/50
+      scope_1: 10/10
+      scope_2: 10/10
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 10/10
+      scope_1: 10/10
+    General instances from output model checked on original model: 50/50
+      scope_1: 10/10
+      scope_2: 10/10
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  TOTAL: 131/131
+
+Model: no_transitivity_redundancy
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/no_transitivity_redundancy.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/models/no_transitivity_redundancy.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/no_transitivity_redundancy.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 9/9
+      scope_1: 1/1
+      scope_2: 2/2
+      scope_3: 2/2
+      scope_4: 2/2
+      scope_5: 2/2
+    General instances from original model checked on output model: 30/30
+      scope_1: 1/1
+      scope_2: 2/2
+      scope_3: 7/7
+      scope_4: 10/10
+      scope_5: 10/10
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 9/9
+      scope_1: 1/1
+      scope_2: 2/2
+      scope_3: 2/2
+      scope_4: 2/2
+      scope_5: 2/2
+    General instances from output model checked on original model: 30/30
+      scope_1: 1/1
+      scope_2: 2/2
+      scope_3: 7/7
+      scope_4: 10/10
+      scope_5: 10/10
+  TOTAL: 91/91
+
+Model: phones_c
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/phones_c.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/models/phones_c.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/phones_c.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 8/8
+      scope_1: 3/3
+      scope_2: 2/2
+      scope_3: 3/3
+    General instances from original model checked on output model: 45/45
+      scope_1: 5/5
+      scope_2: 10/10
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 9/9
+      scope_1: 3/3
+      scope_2: 3/3
+      scope_3: 3/3
+    General instances from output model checked on original model: 45/45
+      scope_1: 5/5
+      scope_2: 10/10
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  TOTAL: 120/120
+
+Model: sets1
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/sets1.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/models/sets1.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/sets1.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 13/13
+      scope_2: 1/1
+      scope_3: 4/4
+      scope_4: 8/8
+    General instances from original model checked on output model: 31/31
+      scope_2: 1/1
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 11/11
+      scope_1: 0/0
+      scope_2: 1/1
+      scope_3: 3/3
+      scope_4: 7/7
+    General instances from output model checked on original model: 31/31
+      scope_1: 0/0
+      scope_2: 1/1
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  TOTAL: 99/99
+
+Model: singlyLinkedList
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/singlyLinkedList.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/models/singlyLinkedList.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark4-4/outputs/singlyLinkedList.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 10/10
+      scope_1: 4/4
+      scope_2: 4/4
+      scope_3: 1/1
+      scope_4: 1/1
+    General instances from original model checked on output model: 43/43
+      scope_1: 3/3
+      scope_2: 10/10
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 10/10
+      scope_1: 4/4
+      scope_2: 4/4
+      scope_3: 1/1
+      scope_4: 1/1
+    General instances from output model checked on original model: 43/43
+      scope_1: 3/3
+      scope_2: 10/10
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  TOTAL: 119/119
+
+================================================================================
+OVERALL TOTAL: 2362/2816
