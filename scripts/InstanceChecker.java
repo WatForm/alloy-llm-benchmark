@@ -170,7 +170,7 @@ public class InstanceChecker {
             if (!s.builtin)
                 modelSigNames.add(alloyName(s.label));
             for (Sig.Field f : s.getFields()) {
-                modelFieldNames.add(alloyName(f.label) + " of " + alloyName(s.label));
+                modelFieldNames.add(alloyName(f.label)); // + " of " + alloyName(s.label));
             }   
         }
         
@@ -256,7 +256,7 @@ public class InstanceChecker {
                 Element field = (Element) fields.item(i);
                 String label = field.getAttribute("label");
                 String parentId = field.getAttribute("parentID");
-                xmlFieldNames.add(alloyName(label)+" of " + idToSigInfo.get(parentId).label);
+                xmlFieldNames.add(alloyName(label)); //+" of " + idToSigInfo.get(parentId).label);
             }
 
         } catch (Exception e) {
@@ -265,6 +265,8 @@ public class InstanceChecker {
             System.exit(2);
         }
 
+        System.out.println(modelFieldNames);
+        System.out.println(xmlFieldNames);
         // check the modelNames subseteq of xmlNames
         // the problem of names used in the XML that are not used in the model
         // will be caught in the Alloy solving below
