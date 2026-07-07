@@ -1,0 +1,142 @@
+<alloy builddate="unknown">
+
+
+<bounds> 
+<upperbound name="Int/next"  arity="2">
+</upperbound>
+<upperbound name="seq/Int"  arity="1">
+</upperbound>
+<upperbound name="String"  arity="1">
+</upperbound>
+<upperbound name="this/StoredModel"  arity="1">
+   <tuple> <atom label="StoredModel$0"/> </tuple>
+   <tuple> <atom label="unused4"/> </tuple>
+</upperbound>
+<upperbound name="this/StoredModel.derivationOf"  arity="2">
+   <tuple> <atom label="StoredModel$0"/> <atom label="StoredModel$0"/> </tuple>
+   <tuple> <atom label="StoredModel$0"/> <atom label="unused4"/> </tuple>
+   <tuple> <atom label="unused4"/> <atom label="StoredModel$0"/> </tuple>
+   <tuple> <atom label="unused4"/> <atom label="unused4"/> </tuple>
+</upperbound>
+<upperbound name="this/StoredModel.public"  arity="2">
+   <tuple> <atom label="StoredModel$0"/> <atom label="Link$0"/> </tuple>
+   <tuple> <atom label="StoredModel$0"/> <atom label="unused5"/> </tuple>
+   <tuple> <atom label="unused4"/> <atom label="Link$0"/> </tuple>
+   <tuple> <atom label="unused4"/> <atom label="unused5"/> </tuple>
+</upperbound>
+<upperbound name="this/StoredModel.secret"  arity="2">
+   <tuple> <atom label="StoredModel$0"/> <atom label="Link$0"/> </tuple>
+   <tuple> <atom label="StoredModel$0"/> <atom label="unused5"/> </tuple>
+   <tuple> <atom label="unused4"/> <atom label="Link$0"/> </tuple>
+   <tuple> <atom label="unused4"/> <atom label="unused5"/> </tuple>
+</upperbound>
+<upperbound name="this/StoredModel.command"  arity="2">
+   <tuple> <atom label="StoredModel$0"/> <atom label="Command$0"/> </tuple>
+   <tuple> <atom label="StoredModel$0"/> <atom label="unused6"/> </tuple>
+   <tuple> <atom label="unused4"/> <atom label="Command$0"/> </tuple>
+   <tuple> <atom label="unused4"/> <atom label="unused6"/> </tuple>
+</upperbound>
+<upperbound name="this/Link"  arity="1">
+   <tuple> <atom label="Link$0"/> </tuple>
+   <tuple> <atom label="unused5"/> </tuple>
+</upperbound>
+<upperbound name="this/Command"  arity="1">
+   <tuple> <atom label="Command$0"/> </tuple>
+   <tuple> <atom label="unused6"/> </tuple>
+</upperbound>
+<upperbound name="this/Instance"  arity="1">
+   <tuple> <atom label="Instance$0"/> </tuple>
+   <tuple> <atom label="unused7"/> </tuple>
+</upperbound>
+<upperbound name="this/Instance.instanceOf"  arity="2">
+   <tuple> <atom label="Instance$0"/> <atom label="Command$0"/> </tuple>
+   <tuple> <atom label="Instance$0"/> <atom label="unused6"/> </tuple>
+   <tuple> <atom label="unused7"/> <atom label="Command$0"/> </tuple>
+   <tuple> <atom label="unused7"/> <atom label="unused6"/> </tuple>
+</upperbound>
+<upperbound name="this/Instance.model"  arity="2">
+   <tuple> <atom label="Instance$0"/> <atom label="StoredModel$0"/> </tuple>
+   <tuple> <atom label="Instance$0"/> <atom label="unused4"/> </tuple>
+   <tuple> <atom label="unused7"/> <atom label="StoredModel$0"/> </tuple>
+   <tuple> <atom label="unused7"/> <atom label="unused4"/> </tuple>
+</upperbound>
+<upperbound name="this/Instance.link"  arity="2">
+   <tuple> <atom label="Instance$0"/> <atom label="Link$0"/> </tuple>
+   <tuple> <atom label="Instance$0"/> <atom label="unused5"/> </tuple>
+   <tuple> <atom label="unused7"/> <atom label="Link$0"/> </tuple>
+   <tuple> <atom label="unused7"/> <atom label="unused5"/> </tuple>
+</upperbound>
+<upperbound name="this/Secret"  arity="1">
+   <tuple> <atom label="StoredModel$0"/> </tuple>
+   <tuple> <atom label="unused4"/> </tuple>
+</upperbound>
+</bounds><instance bitwidth="0" maxseq="0" command="Run run$1 for 2" filename="">
+
+<sig label="seq/Int" ID="0" parentID="1" builtin="yes">
+</sig>
+
+<sig label="Int" ID="1" parentID="2" builtin="yes">
+</sig>
+
+<sig label="String" ID="3" parentID="2" builtin="yes">
+</sig>
+
+<sig label="this/StoredModel" ID="4" parentID="2">
+   <atom label="StoredModel$0"/>
+</sig>
+
+<field label="derivationOf" ID="5" parentID="4">
+   <types> <type ID="4"/> <type ID="4"/> </types>
+</field>
+
+<field label="public" ID="6" parentID="4">
+   <types> <type ID="4"/> <type ID="7"/> </types>
+</field>
+
+<field label="secret" ID="8" parentID="4">
+   <types> <type ID="4"/> <type ID="7"/> </types>
+</field>
+
+<field label="command" ID="9" parentID="4">
+   <tuple> <atom label="StoredModel$0"/> <atom label="Command$0"/> </tuple>
+   <types> <type ID="4"/> <type ID="10"/> </types>
+</field>
+
+<sig label="this/Link" ID="7" parentID="2">
+   <atom label="Link$0"/>
+</sig>
+
+<sig label="this/Command" ID="10" parentID="2">
+   <atom label="Command$0"/>
+</sig>
+
+<sig label="this/Instance" ID="11" parentID="2">
+   <atom label="Instance$0"/>
+</sig>
+
+<field label="instanceOf" ID="12" parentID="11">
+   <tuple> <atom label="Instance$0"/> <atom label="Command$0"/> </tuple>
+   <types> <type ID="11"/> <type ID="10"/> </types>
+</field>
+
+<field label="model" ID="13" parentID="11">
+   <tuple> <atom label="Instance$0"/> <atom label="StoredModel$0"/> </tuple>
+   <types> <type ID="11"/> <type ID="4"/> </types>
+</field>
+
+<field label="link" ID="14" parentID="11">
+   <tuple> <atom label="Instance$0"/> <atom label="Link$0"/> </tuple>
+   <types> <type ID="11"/> <type ID="7"/> </types>
+</field>
+
+<sig label="univ" ID="2" builtin="yes">
+</sig>
+
+<sig label="this/Secret" ID="15">
+   <atom label="StoredModel$0"/>
+   <type ID="4"/>
+</sig>
+
+</instance>
+
+</alloy>

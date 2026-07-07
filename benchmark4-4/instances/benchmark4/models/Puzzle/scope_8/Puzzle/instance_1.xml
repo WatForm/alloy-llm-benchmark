@@ -1,0 +1,234 @@
+<alloy builddate="unknown">
+
+
+<bounds> 
+<upperbound name="Int/next"  arity="2">
+</upperbound>
+<upperbound name="seq/Int"  arity="1">
+</upperbound>
+<upperbound name="String"  arity="1">
+</upperbound>
+<upperbound name="this/GraduationCeremony"  arity="1">
+   <tuple> <atom label="GraduationCeremony$0"/> </tuple>
+</upperbound>
+<upperbound name="this/TravelingAbroad"  arity="1">
+   <tuple> <atom label="TravelingAbroad$0"/> </tuple>
+</upperbound>
+<upperbound name="this/InitiationCeremony"  arity="1">
+   <tuple> <atom label="InitiationCeremony$0"/> </tuple>
+</upperbound>
+<upperbound name="this/FlowerViewing"  arity="1">
+   <tuple> <atom label="FlowerViewing$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Hiking"  arity="1">
+   <tuple> <atom label="Hiking$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Event"  arity="1">
+   <tuple> <atom label="FlowerViewing$0"/> </tuple>
+   <tuple> <atom label="GraduationCeremony$0"/> </tuple>
+   <tuple> <atom label="Hiking$0"/> </tuple>
+   <tuple> <atom label="InitiationCeremony$0"/> </tuple>
+   <tuple> <atom label="TravelingAbroad$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Shoes"  arity="1">
+   <tuple> <atom label="Shoes$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Handkerchief"  arity="1">
+   <tuple> <atom label="Handkerchief$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Shirt"  arity="1">
+   <tuple> <atom label="Shirt$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Slacks"  arity="1">
+   <tuple> <atom label="Slacks$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Camera"  arity="1">
+   <tuple> <atom label="Camera$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Item"  arity="1">
+   <tuple> <atom label="Camera$0"/> </tuple>
+   <tuple> <atom label="Handkerchief$0"/> </tuple>
+   <tuple> <atom label="Shirt$0"/> </tuple>
+   <tuple> <atom label="Shoes$0"/> </tuple>
+   <tuple> <atom label="Slacks$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Tanaka"  arity="1">
+   <tuple> <atom label="Tanaka$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Takeuchi"  arity="1">
+   <tuple> <atom label="Takeuchi$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Ishida"  arity="1">
+   <tuple> <atom label="Ishida$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Kasai"  arity="1">
+   <tuple> <atom label="Kasai$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Aoyama"  arity="1">
+   <tuple> <atom label="Aoyama$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Person"  arity="1">
+   <tuple> <atom label="Aoyama$0"/> </tuple>
+   <tuple> <atom label="Ishida$0"/> </tuple>
+   <tuple> <atom label="Kasai$0"/> </tuple>
+   <tuple> <atom label="Takeuchi$0"/> </tuple>
+   <tuple> <atom label="Tanaka$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Person.event"  arity="2">
+   <tuple> <atom label="Aoyama$0"/> <atom label="FlowerViewing$0"/> </tuple>
+   <tuple> <atom label="Aoyama$0"/> <atom label="GraduationCeremony$0"/> </tuple>
+   <tuple> <atom label="Aoyama$0"/> <atom label="Hiking$0"/> </tuple>
+   <tuple> <atom label="Aoyama$0"/> <atom label="InitiationCeremony$0"/> </tuple>
+   <tuple> <atom label="Aoyama$0"/> <atom label="TravelingAbroad$0"/> </tuple>
+   <tuple> <atom label="Ishida$0"/> <atom label="FlowerViewing$0"/> </tuple>
+   <tuple> <atom label="Ishida$0"/> <atom label="GraduationCeremony$0"/> </tuple>
+   <tuple> <atom label="Ishida$0"/> <atom label="Hiking$0"/> </tuple>
+   <tuple> <atom label="Ishida$0"/> <atom label="InitiationCeremony$0"/> </tuple>
+   <tuple> <atom label="Ishida$0"/> <atom label="TravelingAbroad$0"/> </tuple>
+   <tuple> <atom label="Kasai$0"/> <atom label="FlowerViewing$0"/> </tuple>
+   <tuple> <atom label="Kasai$0"/> <atom label="GraduationCeremony$0"/> </tuple>
+   <tuple> <atom label="Kasai$0"/> <atom label="Hiking$0"/> </tuple>
+   <tuple> <atom label="Kasai$0"/> <atom label="InitiationCeremony$0"/> </tuple>
+   <tuple> <atom label="Kasai$0"/> <atom label="TravelingAbroad$0"/> </tuple>
+   <tuple> <atom label="Takeuchi$0"/> <atom label="FlowerViewing$0"/> </tuple>
+   <tuple> <atom label="Takeuchi$0"/> <atom label="GraduationCeremony$0"/> </tuple>
+   <tuple> <atom label="Takeuchi$0"/> <atom label="Hiking$0"/> </tuple>
+   <tuple> <atom label="Takeuchi$0"/> <atom label="InitiationCeremony$0"/> </tuple>
+   <tuple> <atom label="Takeuchi$0"/> <atom label="TravelingAbroad$0"/> </tuple>
+   <tuple> <atom label="Tanaka$0"/> <atom label="FlowerViewing$0"/> </tuple>
+   <tuple> <atom label="Tanaka$0"/> <atom label="GraduationCeremony$0"/> </tuple>
+   <tuple> <atom label="Tanaka$0"/> <atom label="Hiking$0"/> </tuple>
+   <tuple> <atom label="Tanaka$0"/> <atom label="InitiationCeremony$0"/> </tuple>
+   <tuple> <atom label="Tanaka$0"/> <atom label="TravelingAbroad$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Person.item"  arity="2">
+   <tuple> <atom label="Aoyama$0"/> <atom label="Camera$0"/> </tuple>
+   <tuple> <atom label="Aoyama$0"/> <atom label="Handkerchief$0"/> </tuple>
+   <tuple> <atom label="Aoyama$0"/> <atom label="Shirt$0"/> </tuple>
+   <tuple> <atom label="Aoyama$0"/> <atom label="Shoes$0"/> </tuple>
+   <tuple> <atom label="Aoyama$0"/> <atom label="Slacks$0"/> </tuple>
+   <tuple> <atom label="Ishida$0"/> <atom label="Camera$0"/> </tuple>
+   <tuple> <atom label="Ishida$0"/> <atom label="Handkerchief$0"/> </tuple>
+   <tuple> <atom label="Ishida$0"/> <atom label="Shirt$0"/> </tuple>
+   <tuple> <atom label="Ishida$0"/> <atom label="Shoes$0"/> </tuple>
+   <tuple> <atom label="Ishida$0"/> <atom label="Slacks$0"/> </tuple>
+   <tuple> <atom label="Kasai$0"/> <atom label="Camera$0"/> </tuple>
+   <tuple> <atom label="Kasai$0"/> <atom label="Handkerchief$0"/> </tuple>
+   <tuple> <atom label="Kasai$0"/> <atom label="Shirt$0"/> </tuple>
+   <tuple> <atom label="Kasai$0"/> <atom label="Shoes$0"/> </tuple>
+   <tuple> <atom label="Kasai$0"/> <atom label="Slacks$0"/> </tuple>
+   <tuple> <atom label="Takeuchi$0"/> <atom label="Camera$0"/> </tuple>
+   <tuple> <atom label="Takeuchi$0"/> <atom label="Handkerchief$0"/> </tuple>
+   <tuple> <atom label="Takeuchi$0"/> <atom label="Shirt$0"/> </tuple>
+   <tuple> <atom label="Takeuchi$0"/> <atom label="Shoes$0"/> </tuple>
+   <tuple> <atom label="Takeuchi$0"/> <atom label="Slacks$0"/> </tuple>
+   <tuple> <atom label="Tanaka$0"/> <atom label="Camera$0"/> </tuple>
+   <tuple> <atom label="Tanaka$0"/> <atom label="Handkerchief$0"/> </tuple>
+   <tuple> <atom label="Tanaka$0"/> <atom label="Shirt$0"/> </tuple>
+   <tuple> <atom label="Tanaka$0"/> <atom label="Shoes$0"/> </tuple>
+   <tuple> <atom label="Tanaka$0"/> <atom label="Slacks$0"/> </tuple>
+</upperbound>
+</bounds><instance bitwidth="0" maxseq="0" command="Run run$1 for 8" filename="">
+
+<sig label="seq/Int" ID="0" parentID="1" builtin="yes">
+</sig>
+
+<sig label="Int" ID="1" parentID="2" builtin="yes">
+</sig>
+
+<sig label="String" ID="3" parentID="2" builtin="yes">
+</sig>
+
+<sig label="this/GraduationCeremony" ID="4" parentID="5" one="yes">
+   <atom label="GraduationCeremony$0"/>
+</sig>
+
+<sig label="this/TravelingAbroad" ID="6" parentID="5" one="yes">
+   <atom label="TravelingAbroad$0"/>
+</sig>
+
+<sig label="this/InitiationCeremony" ID="7" parentID="5" one="yes">
+   <atom label="InitiationCeremony$0"/>
+</sig>
+
+<sig label="this/FlowerViewing" ID="8" parentID="5" one="yes">
+   <atom label="FlowerViewing$0"/>
+</sig>
+
+<sig label="this/Hiking" ID="9" parentID="5" one="yes">
+   <atom label="Hiking$0"/>
+</sig>
+
+<sig label="this/Event" ID="5" parentID="2" abstract="yes">
+</sig>
+
+<sig label="this/Shoes" ID="10" parentID="11" one="yes">
+   <atom label="Shoes$0"/>
+</sig>
+
+<sig label="this/Handkerchief" ID="12" parentID="11" one="yes">
+   <atom label="Handkerchief$0"/>
+</sig>
+
+<sig label="this/Shirt" ID="13" parentID="11" one="yes">
+   <atom label="Shirt$0"/>
+</sig>
+
+<sig label="this/Slacks" ID="14" parentID="11" one="yes">
+   <atom label="Slacks$0"/>
+</sig>
+
+<sig label="this/Camera" ID="15" parentID="11" one="yes">
+   <atom label="Camera$0"/>
+</sig>
+
+<sig label="this/Item" ID="11" parentID="2" abstract="yes">
+</sig>
+
+<sig label="this/Tanaka" ID="16" parentID="17" one="yes">
+   <atom label="Tanaka$0"/>
+</sig>
+
+<sig label="this/Takeuchi" ID="18" parentID="17" one="yes">
+   <atom label="Takeuchi$0"/>
+</sig>
+
+<sig label="this/Ishida" ID="19" parentID="17" one="yes">
+   <atom label="Ishida$0"/>
+</sig>
+
+<sig label="this/Kasai" ID="20" parentID="17" one="yes">
+   <atom label="Kasai$0"/>
+</sig>
+
+<sig label="this/Aoyama" ID="21" parentID="17" one="yes">
+   <atom label="Aoyama$0"/>
+</sig>
+
+<sig label="this/Person" ID="17" parentID="2" abstract="yes">
+</sig>
+
+<field label="event" ID="22" parentID="17">
+   <tuple> <atom label="Aoyama$0"/> <atom label="TravelingAbroad$0"/> </tuple>
+   <tuple> <atom label="Ishida$0"/> <atom label="GraduationCeremony$0"/> </tuple>
+   <tuple> <atom label="Kasai$0"/> <atom label="InitiationCeremony$0"/> </tuple>
+   <tuple> <atom label="Takeuchi$0"/> <atom label="FlowerViewing$0"/> </tuple>
+   <tuple> <atom label="Tanaka$0"/> <atom label="Hiking$0"/> </tuple>
+   <types> <type ID="17"/> <type ID="5"/> </types>
+</field>
+
+<field label="item" ID="23" parentID="17">
+   <tuple> <atom label="Aoyama$0"/> <atom label="Handkerchief$0"/> </tuple>
+   <tuple> <atom label="Ishida$0"/> <atom label="Camera$0"/> </tuple>
+   <tuple> <atom label="Kasai$0"/> <atom label="Shoes$0"/> </tuple>
+   <tuple> <atom label="Takeuchi$0"/> <atom label="Slacks$0"/> </tuple>
+   <tuple> <atom label="Tanaka$0"/> <atom label="Shirt$0"/> </tuple>
+   <types> <type ID="17"/> <type ID="11"/> </types>
+</field>
+
+<sig label="univ" ID="2" builtin="yes">
+</sig>
+
+</instance>
+
+</alloy>

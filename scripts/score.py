@@ -100,7 +100,30 @@ def semdiff_implication_holds(
     output = (result.stdout or "") + (result.stderr or "")
     output = output.strip()
     equivalent = "The two modules are equivalent for the given scope." in output
-    return equivalent, output.splitlines()[-1] if output else "No output"
+    return equivalent, output
+
+
+# ModuleDiff raises this when the two modules declare a same-named signature one
+# way with ``extends`` (a PrimSig) and the other way with ``in`` (a SubsetSig).
+PRIMSIG_SUBSETSIG_MERGE_ERROR = "Cannot merge PrimSig and SubsetSig with same name"
+
+
+def normalize_extends_to_in(source_model: Path, dest_model: Path, scripts_dir: Path) -> bool:
+    """Rewrite ``extends`` subsignatures as equivalent ``in`` subsets for SemDiff.
+
+    Runs scripts/extends_to_in.py so that a model whose reference/output disagree
+    on ``extends`` vs ``in`` can still be compared by ModuleDiff (which otherwise
+    crashes merging a PrimSig against a same-named SubsetSig). Returns True when
+    the transformed file was written.
+    """
+    cmd = [sys.executable, str(scripts_dir / "extends_to_in.py"), str(source_model), str(dest_model)]
+    try:
+        result = run_command(cmd)
+    except subprocess.TimeoutExpired:
+        return False
+    except Exception:
+        return False
+    return result.returncode == 0 and dest_model.exists()
 
 
 def compile_instance_checker(scripts_dir: Path, alloy_jar_620: Path, javac17_bin: Path) -> tuple[bool, str]:
@@ -672,22 +695,52 @@ def score_one_model(
     ringert_output_to_original_score = 0
 
     if final_syntax_valid:
+        # When ModuleDiff crashes trying to merge a PrimSig against a same-named
+        # SubsetSig (an ``extends`` vs ``in`` mismatch between the two models), we
+        # retry the comparison on ``extends``->``in`` normalized copies of both
+        # models. The copies are built lazily on the first crash and reused for
+        # every scope.
+        normalization = {"tried": False, "dir": None, "map": {}}
+
+        def ringert_implies(left: Path, right: Path, scope: int) -> bool:
+            if normalization["tried"]:
+                left = normalization["map"].get(left, left)
+                right = normalization["map"].get(right, right)
+                equivalent, _ = semdiff_implication_holds(left, right, scope, diff_jar, java17_bin)
+                return equivalent
+
+            equivalent, output = semdiff_implication_holds(left, right, scope, diff_jar, java17_bin)
+            if PRIMSIG_SUBSETSIG_MERGE_ERROR not in output:
+                return equivalent
+
+            # First PrimSig/SubsetSig crash: build normalized copies once.
+            normalization["tried"] = True
+            tmp = tempfile.TemporaryDirectory(prefix=f"extends2in_{model_name}_")
+            normalization["dir"] = tmp
+            tmp_path = Path(tmp.name)
+            mapping: dict[Path, Path] = {}
+            for tag, original in (("reference", reference_model), ("generated", generated_model)):
+                dest = tmp_path / f"{tag}_{original.name}"
+                if normalize_extends_to_in(original, dest, scripts_dir):
+                    mapping[original] = dest
+            normalization["map"] = mapping
+            progress(
+                f"[{model_name}] Ringert: PrimSig/SubsetSig merge error; "
+                f"retrying on extends->in normalized models"
+            )
+
+            left_n = mapping.get(left, left)
+            right_n = mapping.get(right, right)
+            if left_n is left and right_n is right:
+                # Normalization unavailable; keep the (crash) result.
+                return equivalent
+            equivalent, _ = semdiff_implication_holds(left_n, right_n, scope, diff_jar, java17_bin)
+            return equivalent
+
         for scope in ringert_scopes:
             progress(f"[{model_name}] Ringert scope_{scope}/{ringert_max_scope}: checking implications")
-            output_implies_original_ok, _ = semdiff_implication_holds(
-                reference_model,
-                generated_model,
-                scope,
-                diff_jar,
-                java17_bin,
-            )
-            original_implies_output_ok, _ = semdiff_implication_holds(
-                generated_model,
-                reference_model,
-                scope,
-                diff_jar,
-                java17_bin,
-            )
+            output_implies_original_ok = ringert_implies(reference_model, generated_model, scope)
+            original_implies_output_ok = ringert_implies(generated_model, reference_model, scope)
 
             ringert_output_to_original_score += int(output_implies_original_ok)
             ringert_original_to_output_score += int(original_implies_output_ok)
@@ -702,6 +755,9 @@ def score_one_model(
                 f"[{model_name}] Ringert scope_{scope}: original=>output={int(original_implies_output_ok)}/1, "
                 f"output=>original={int(output_implies_original_ok)}/1"
             )
+
+        if normalization["dir"] is not None:
+            normalization["dir"].cleanup()
     else:
         progress(f"[{model_name}] final attempt syntax invalid; Ringert and instance checks will score 0 where applicable")
         for scope in ringert_scopes:
