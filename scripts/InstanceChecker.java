@@ -9,7 +9,7 @@
     java -cp .:../scoring/org.alloytools.alloy.dist-6.2.0.jar InstanceChecker modelfileName xmlFileName 
 
     This script adds to the model:
-        one sig atom1 extends A       for every atom of every top-level sig
+        one sig atom1 extends A       for every atom in its immediate parent sig
         sig = atom1 + atom2 + atom2   for every sig (top-level, subset sig, subsig)
         sig<:field = atom1 -> atom2 -> ... + atom3 -> atom3 -> ...   for every field of sig 
         run {} for X Int              where X is the bitwidth used in the instance
@@ -17,7 +17,7 @@
     - Scopes of sigs other than Int are not needed because they are set exactly in the facts
     - Overloading of fields within the model (because sig<:field is used above) is supported.
     - Atoms are stored in their unique signature (thus they may be in an extends child and not the parent), 
-    thus to find all atoms in a sig, we have to traverse the sig hierarchy created by the parent ids
+    thus to find all atoms in a sig (for equality), we have to traverse the sig hierarchy created by the parent ids
     
     Unsupported:
     - A/Ord or Ord/Ord (sigs arising from open statements)
@@ -27,6 +27,8 @@
     - subset sigs ('in') have no parent in the XML (seems to be true in all instances)
     - ignores the upperbound tags in the XML (from old versions of AA)
     - seq/Int is never used so its scope doesn't matter (not sure how to check this one)
+    - abstract sig gets all of its elements from its children, but that does not require
+    any special handling in this algorithm
 */
 
 import java.io.File;
@@ -288,30 +290,28 @@ public class InstanceChecker {
         
         for (String id:idToSigInfo.keySet()) {
             // no builtins will be in this map
-            // produce nothing if it is an abstract sig
-            if (!idToSigInfo.get(id).isAbstract ) {
-                
-                String sigLabel = idToSigInfo.get(id).label;
-                
-                List<String> atomsUniqueToSig = idToSigInfo.get(id).atoms;
-                
+            
+            String sigLabel = idToSigInfo.get(id).label;
+            List<String> atomsOfSig = idToSigInfo.get(id).atoms;
+            
+            if (!idToSigInfo.get(id).parentId.equals(SUBSET)) {
                 // could be none 
-                for (String a: atomsUniqueToSig) {
+                for (String a: atomsOfSig) {
                     // one sig atom_name extends immediateParentSig name {}
                     newSigs.append("\none sig "+ a + " extends "+ sigLabel + " {}");
                 }
-                
-                List<String> allAtoms = collectAtoms(id); 
-                // sig = a$1 + a$2 + ... 
-                newFacts.append("\n    "+ sigLabel + " = "); 
-                if (allAtoms.size() == 0) 
-                    // sigs are always of unary arity
-                    newFacts.append("none");
-                else { 
-                    newFacts.append(String.join("\n      + ", allAtoms) );
-                }
-                
             }
+                       
+            // now we need all parent atoms
+            List<String> allAtoms = collectAtoms(id); 
+            // sig = a$1 + a$2 + ... 
+            newFacts.append("\n    "+ sigLabel + " = "); 
+            if (allAtoms.size() == 0) 
+                // sigs are always of unary arity
+                newFacts.append("none");
+            else { 
+                newFacts.append(String.join("\n      + ", allAtoms) );
+            }  
         }
 
         // add facts for the fields
@@ -410,7 +410,7 @@ public class InstanceChecker {
         String label;
         String myId;
         String parentId;
-        boolean isAbstract;
+        boolean isAbstract; // not needed 
         List<String> atoms;
         List<String> children = new ArrayList<String>();
 
