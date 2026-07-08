@@ -1,0 +1,64 @@
+InstanceChecker update - scores.txt vs scores2.txt (benchmark4-4)
+================================================================================
+scores.txt  = first InstanceChecker (PR reviewed in instance_checker_findings.txt)
+scores2.txt = InstanceChecker updated again
+
+OVERALL: 2362/2816  ->  2526/2816   (+164)
+
+The update FIXED the within-instance subset-signature collision (the
+`one sig <atom> extends <subsetSig>` duplicate-declaration crash). Verified: both
+ThreeOfAKind and marksweepgc instances now reconstruct against their own model.
+
+MODELS THAT CHANGED
+--------------------------------------------------------------------------------
+  Model         scores.txt  scores2.txt  Note
+  ThreeOfAKind   21/53       53/53       FIXED - instances now 8/8 both dirs
+  alloy4fun      40/131      117/131     instances now score; residual = real issue
+  fruitbowl      73/183      128/183     one direction fixed; other still fails
+  ex_Host        91/91       90/90       full (max differs; nondeterministic count)
+(All other models unchanged, incl. COFFEE 26/31, FileSystem 45/115,
+ marksweepgc 9/119, ex_Arity 61/97.)
+
+WHAT GOT FIXED
+--------------------------------------------------------------------------------
+- ThreeOfAKind (`hand in Card`): subset collision gone -> 21/53 to 53/53 (perfect).
+- alloy4fun (`Secret in StoredModel`): instance checks 0 -> full in most cells
+  (orig=>out general 42/42, out=>orig CompoSAT 15/15 + general 42/42). The only
+  remaining loss is the GENUINE semantic difference: orig=>out Ringert 0/5 and
+  orig=>out CompoSAT 10/19 (the Link union-vs-disjoint over-restriction).
+- fruitbowl: the original=>output direction now passes (~+55 pts) once the field
+  is recognised across the extends hierarchy.
+
+WHAT STILL REMAINS
+--------------------------------------------------------------------------------
+- fruitbowl output=>original still 0/35 + 0/20. The field-placement mismatch is
+  only resolved in one orientation: when the instance (from the output) declares
+  color/quality/size on the parent Fruit but the reference model declares them on
+  the children apple/orange, the "field of Sig" containment check still rejects it.
+
+- marksweepgc still 9/119, all instances 0. Root cause is now DIFFERENT from the
+  old subset collision: it is the cross-model extends-vs-`in` mismatch. The
+  reference has `one sig root extends Node` (primary) while the output has
+  `one sig root in Node` (subset). Reconstructing one model's instance emits
+  `one sig <atom> extends root`, which is illegal against the other model where
+  `root` is a subset sig:
+      FAIL: Cannot extend the subset signature "this/root".
+  (This is the same extends-vs-`in` class that scripts/extends_to_in.py normalizes
+  for Ringert, but the InstanceChecker does not apply that normalization.)
+
+- FileSystem unchanged at 45/115: same cross-model extends-vs-`in` situation on
+  `Alias` (ref `Alias extends File` vs output `Alias in File`); instance checks
+  stay partial. Ringert is 5/5 both ways (from the extends_to_in fix).
+
+- Genuine, non-artifact losses are untouched (as expected): COFFEE out=>orig
+  Ringert 0/4 (too permissive), ex_Arity out=>orig Ringert 0/5 + 900s timeout
+  (dropped total-function fact), alloy4fun orig=>out over-restriction.
+
+BOTTOM LINE
+--------------------------------------------------------------------------------
+The update resolved the non-empty-subset reconstruction crash, giving big gains
+(ThreeOfAKind perfect, alloy4fun +77, fruitbowl +55). Two harness gaps remain:
+(1) field placement is only matched in one direction across an extends hierarchy
+(fruitbowl), and (2) the checker still cannot compare instances when the two
+models disagree on extends vs `in` for the same sig (marksweepgc, FileSystem) -
+it needs the same extends->in normalization already used for Ringert.
