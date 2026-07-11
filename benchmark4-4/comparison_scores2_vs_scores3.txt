@@ -1,0 +1,99 @@
+Comparison of benchmark4-4 scores2.txt vs scores3.txt
+=====================================================
+
+Summary
+-------
+The targeted extends-vs-in harness issue is fixed in scores3.txt.
+
+Overall score changed from 2526/2816 in scores2.txt to 2647/2798 in scores3.txt.
+This is +121 passed checks overall
+
+Changed model totals
+--------------------
+FileSystem-software_abstractions: 45/115 -> 95/95
+ex_Host: 90/90 -> 91/91
+marksweepgc: 9/119 -> 80/121
+sets1: 100/100 -> 99/99
+
+The ex_Host and sets1 changes are only denominator/count shifts; both remain
+perfect. They do not indicate regressions.
+
+Fixed issue: FileSystem-software_abstractions
+---------------------------------------------
+FileSystem-software_abstractions is the cleanest confirmation that the fix works.
+
+In scores2.txt:
+- Ringert was already perfect in both directions: 5/5 and 5/5.
+- Instance checks failed badly:
+  - original => output CompoSAT: 10/15
+  - original => output general: 8/39
+  - output => original CompoSAT: 6/11
+  - output => original general: 8/37
+- Total: 45/115
+
+In scores3.txt:
+- Ringert is still perfect in both directions: 5/5 and 5/5.
+- Regenerated normalized instance checks are now all perfect:
+  - original => output CompoSAT: 7/7
+  - original => output general: 34/34
+  - output => original CompoSAT: 7/7
+  - output => original general: 34/34
+- Total: 95/95
+
+Conclusion: the old FileSystem losses were harness artifacts caused by comparing
+models with extends-vs-in signature encodings. Applying extends_to_in.py after
+Ringert detects the PrimSig/SubsetSig merge problem, then regenerating and
+checking instances against the normalized models, fixes this case.
+
+Partially fixed issue: marksweepgc
+----------------------------------
+marksweepgc improved substantially, but it is not fully fixed because it also has
+a real semantic mismatch.
+
+In scores2.txt:
+- original => output Ringert: 1/5
+- output => original Ringert: 5/5
+- all instance checks were 0 in both directions:
+  - original => output CompoSAT: 0/11
+  - original => output general: 0/40
+  - output => original CompoSAT: 0/15
+  - output => original general: 0/40
+- Total: 9/119
+
+In scores3.txt:
+- original => output Ringert is unchanged: 1/5
+- output => original Ringert is unchanged and perfect: 5/5
+- output => original instance checks are now perfect:
+  - CompoSAT: 15/15
+  - general: 40/40
+- original => output instance checks improved but still show failures:
+  - CompoSAT: 12/13
+  - general: 4/40
+- Total: 80/121
+
+Conclusion: the normalization fix repaired the false instance-check failures in
+the output => original direction. The remaining original => output failures are
+real model issues, not just the extends-vs-in harness bug. Ringert still reports
+only 1/5 for original => output, so the generated model is too restrictive
+relative to the reference.
+
+Remaining non-harness issues
+----------------------------
+The following models still have the same non-perfect totals as before, so they
+were not fixed by the extends-vs-in normalization change:
+
+COFFEE: 26/31
+alloy4fun_SPL_1_2_3_4: 117/131
+ex_Arity: 61/97, still includes the CompoSAT timeout at scope_3
+fruitbowl: 128/183
+marksweepgc: 80/121, improved but still semantically wrong in original => output
+
+Bottom line
+-----------
+The scores3.txt run confirms that the intended harness fix worked. The scoring
+script now applies the Python extends-to-in normalization beyond Ringert when
+Ringert detects the PrimSig/SubsetSig merge error, and it regenerates/rechecks
+CompoSAT and general instances on the normalized models.
+
+The FileSystem artifact is fixed completely. marksweepgc confirms the same
+harness fix helps, but it also reveals a genuine semantic failure that remains.

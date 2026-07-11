@@ -694,6 +694,16 @@ def score_one_model(
     ringert_original_to_output_score = 0
     ringert_output_to_original_score = 0
 
+    # If Ringert triggers extends->in normalization, subsequent instance-check
+    # passes must use the normalized model files too (otherwise they still trip
+    # the same PrimSig/SubsetSig mismatch). The reference-side (original=>output)
+    # pass would also need to re-generate its instances from the normalized
+    # reference. `normalization_dir_holder` keeps the TemporaryDirectory alive
+    # past the Ringert block so those later passes can read the files.
+    normalization_dir_holder: list = []
+    normalized_reference: Path | None = None
+    normalized_generated: Path | None = None
+
     if final_syntax_valid:
         # When ModuleDiff crashes trying to merge a PrimSig against a same-named
         # SubsetSig (an ``extends`` vs ``in`` mismatch between the two models), we
@@ -757,7 +767,9 @@ def score_one_model(
             )
 
         if normalization["dir"] is not None:
-            normalization["dir"].cleanup()
+            normalization_dir_holder.append(normalization["dir"])
+            normalized_reference = normalization["map"].get(reference_model)
+            normalized_generated = normalization["map"].get(generated_model)
     else:
         progress(f"[{model_name}] final attempt syntax invalid; Ringert and instance checks will score 0 where applicable")
         for scope in ringert_scopes:
@@ -767,59 +779,99 @@ def score_one_model(
     original_composat_instance_score = 0
     original_composat_instance_max = 0
 
-    for scope, xml_files in composat_instances_by_scope.items():
-        scope_valid = 0
-        scope_max = len(xml_files)
+    if final_syntax_valid and normalized_reference is not None and normalized_generated is not None:
         progress(
-            f"[{model_name}] original=>output (CompoSAT): scope_{scope} validating {scope_max} instance(s)"
+            f"[{model_name}] original=>output (CompoSAT): regenerating instances from normalized reference"
         )
-        for idx, xml in enumerate(xml_files, start=1):
-            if final_syntax_valid:
-                valid, _ = check_instance_valid(generated_model, xml, scripts_dir, alloy_jar_620, java17_bin)
-                if valid:
-                    scope_valid += 1
-            if idx % 25 == 0 or idx == scope_max:
-                progress(
-                    f"[{model_name}] original=>output (CompoSAT): scope_{scope} validated {idx}/{scope_max} instance(s)"
-                )
-            # Invalid syntax means all instances count as invalid (score remains 0).
-        original_composat_instance_score += scope_valid
-        original_composat_instance_max += scope_max
-        original_composat_instance_by_scope.append({"scope": scope, "score": scope_valid, "max": scope_max})
-        progress(
-            f"[{model_name}] original=>output (CompoSAT): scope_{scope} complete with {scope_valid}/{scope_max} valid"
+        original_composat_result = score_output_instances_against_reference(
+            model_name=model_name,
+            generated_model=normalized_reference,
+            reference_model=normalized_generated,
+            max_scope=composat_max_scope,
+            scripts_dir=scripts_dir,
+            alloy_jar_620=alloy_jar_620,
+            composat_jar=composat_jar,
+            java8_bin=java8_bin,
+            java17_bin=java17_bin,
+            composat_tmpdir=composat_tmpdir,
         )
+        original_composat_instance_score = original_composat_result["score"]
+        original_composat_instance_max = original_composat_result["max"]
+        original_composat_instance_by_scope = original_composat_result["by_scope"]
+    else:
+        for scope, xml_files in composat_instances_by_scope.items():
+            scope_valid = 0
+            scope_max = len(xml_files)
+            progress(
+                f"[{model_name}] original=>output (CompoSAT): scope_{scope} validating {scope_max} instance(s)"
+            )
+            for idx, xml in enumerate(xml_files, start=1):
+                if final_syntax_valid:
+                    valid, _ = check_instance_valid(generated_model, xml, scripts_dir, alloy_jar_620, java17_bin)
+                    if valid:
+                        scope_valid += 1
+                if idx % 25 == 0 or idx == scope_max:
+                    progress(
+                        f"[{model_name}] original=>output (CompoSAT): scope_{scope} validated {idx}/{scope_max} instance(s)"
+                    )
+                # Invalid syntax means all instances count as invalid (score remains 0).
+            original_composat_instance_score += scope_valid
+            original_composat_instance_max += scope_max
+            original_composat_instance_by_scope.append({"scope": scope, "score": scope_valid, "max": scope_max})
+            progress(
+                f"[{model_name}] original=>output (CompoSAT): scope_{scope} complete with {scope_valid}/{scope_max} valid"
+            )
 
     original_general_instance_score = 0
     original_general_instance_max = 0
 
-    for scope, xml_files in general_instances_by_scope.items():
-        scope_valid = 0
-        scope_max = len(xml_files)
+    if final_syntax_valid and normalized_reference is not None and normalized_generated is not None:
         progress(
-            f"[{model_name}] original=>output (general): scope_{scope} validating {scope_max} instance(s)"
+            f"[{model_name}] original=>output (general): regenerating instances from normalized reference"
         )
-        for idx, xml in enumerate(xml_files, start=1):
-            if final_syntax_valid:
-                valid, _ = check_instance_valid(generated_model, xml, scripts_dir, alloy_jar_620, java17_bin)
-                if valid:
-                    scope_valid += 1
-            if idx % 25 == 0 or idx == scope_max:
-                progress(
-                    f"[{model_name}] original=>output (general): scope_{scope} validated {idx}/{scope_max} instance(s)"
-                )
+        original_general_result = score_output_general_instances_against_reference(
+            model_name=model_name,
+            generated_model=normalized_reference,
+            reference_model=normalized_generated,
+            max_scope=general_max_scope,
+            reference_general_counts_by_scope={
+                scope: len(xml_files) for scope, xml_files in general_instances_by_scope.items()
+            },
+            scripts_dir=scripts_dir,
+            alloy_jar_620=alloy_jar_620,
+            java17_bin=java17_bin,
+        )
+        original_general_instance_score = original_general_result["score"]
+        original_general_instance_max = original_general_result["max"]
+        original_general_instance_by_scope = original_general_result["by_scope"]
+    else:
+        for scope, xml_files in general_instances_by_scope.items():
+            scope_valid = 0
+            scope_max = len(xml_files)
+            progress(
+                f"[{model_name}] original=>output (general): scope_{scope} validating {scope_max} instance(s)"
+            )
+            for idx, xml in enumerate(xml_files, start=1):
+                if final_syntax_valid:
+                    valid, _ = check_instance_valid(generated_model, xml, scripts_dir, alloy_jar_620, java17_bin)
+                    if valid:
+                        scope_valid += 1
+                if idx % 25 == 0 or idx == scope_max:
+                    progress(
+                        f"[{model_name}] original=>output (general): scope_{scope} validated {idx}/{scope_max}"
+                    )
 
-        original_general_instance_score += scope_valid
-        original_general_instance_max += scope_max
-        original_general_instance_by_scope.append({"scope": scope, "score": scope_valid, "max": scope_max})
-        progress(
-            f"[{model_name}] original=>output (general): scope_{scope} complete with {scope_valid}/{scope_max} valid"
-        )
+            original_general_instance_score += scope_valid
+            original_general_instance_max += scope_max
+            original_general_instance_by_scope.append({"scope": scope, "score": scope_valid, "max": scope_max})
+            progress(
+                f"[{model_name}] original=>output (general): scope_{scope} complete with {scope_valid}/{scope_max} valid"
+            )
 
     output_composat_instance_result = score_output_instances_against_reference(
         model_name=model_name,
-        generated_model=generated_model,
-        reference_model=reference_model,
+        generated_model=normalized_generated if normalized_generated is not None else generated_model,
+        reference_model=normalized_reference if normalized_reference is not None else reference_model,
         max_scope=composat_max_scope,
         scripts_dir=scripts_dir,
         alloy_jar_620=alloy_jar_620,
@@ -835,8 +887,8 @@ def score_one_model(
 
     output_general_instance_result = score_output_general_instances_against_reference(
         model_name=model_name,
-        generated_model=generated_model,
-        reference_model=reference_model,
+        generated_model=normalized_generated if normalized_generated is not None else generated_model,
+        reference_model=normalized_reference if normalized_reference is not None else reference_model,
         max_scope=general_max_scope,
         reference_general_counts_by_scope={
             scope: len(xml_files) for scope, xml_files in general_instances_by_scope.items()
@@ -871,6 +923,9 @@ def score_one_model(
         + output_composat_instance_result["max"]
         + output_general_instance_result["max"]
     )
+
+    for tmp in normalization_dir_holder:
+        tmp.cleanup()
 
     progress(f"[{model_name}] finished with total {total_score}/{total_max}")
 
