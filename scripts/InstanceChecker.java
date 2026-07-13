@@ -32,15 +32,10 @@
 */
 
 import java.io.File;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+import java.util.stream.Collectors;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
@@ -165,13 +160,20 @@ public class InstanceChecker {
         // these names include seq/Int, and other builtins
         // as well as this/E, etc.
         Set<String> modelSigNames = new HashSet<String>();
-        Set<String> modelFieldNames = new HashSet<String>();
+        HashMap<String,List<String>> modelFields = new HashMap<>();
         for (Sig s : modelWorld.getAllReachableSigs()) {
             if (!s.builtin)
                 modelSigNames.add(alloyName(s.label));
             for (Sig.Field f : s.getFields()) {
-                modelFieldNames.add(alloyName(f.label)); // + " of " + alloyName(s.label));
-            }   
+                if (!modelFields.containsKey(f.label)) {
+                    modelFields.put(alloyName(f.label), List.of(s.label)); 
+                } else {
+                    List<String> tmp = new ArrayList<> (modelFields.get(alloyName(f.label)));
+                    tmp.add(s.label);
+                    modelFields.put(alloyName(f.label), tmp); 
+                } 
+            }  
+             
         }
         
         // read the XML file
@@ -265,8 +267,8 @@ public class InstanceChecker {
             System.exit(2);
         }
 
-        System.out.println(modelFieldNames);
-        System.out.println(xmlFieldNames);
+        //System.out.println(modelFieldNames);
+        //System.out.println(xmlFieldNames);
         // check the modelNames subseteq of xmlNames
         // the problem of names used in the XML that are not used in the model
         // will be caught in the Alloy solving below
@@ -278,10 +280,11 @@ public class InstanceChecker {
             System.out.println(modelSigNames);   
             System.exit(2);
         }
-        if (!xmlFieldNames.containsAll(modelFieldNames)) {
+        if (!xmlFieldNames.containsAll(modelFields.keySet())) {
             System.out.println("FAIL: Model has fields not in XML:");
-            modelFieldNames.removeAll(xmlFieldNames);
-            System.out.println(modelFieldNames);   
+            List<String> tmp = new ArrayList<>(modelFields.keySet());
+            tmp.removeAll(xmlFieldNames);
+            System.out.println(tmp);   
             System.exit(2);
         }
 
@@ -319,17 +322,21 @@ public class InstanceChecker {
         // add facts for the fields
         // we get this info straight from the XML
         Element field;
-        String fieldLabel;
+        //String fieldLabel;
         String parentId;
         Integer arity;
         NodeList tuples;
         List<String> arrows;
         List<String> arrow;
         Element tuple;
+        
+        Map<String, List<String>> sigsOfField = new HashMap<>();
+        Map<String, Integer> sizeOfField = new HashMap<>();
+
         for (int i = 0; i < fields.getLength(); i++) {
 
             field = (Element) fields.item(i);
-            fieldLabel = field.getAttribute("label");
+            String fieldLabel = field.getAttribute("label");
             arity = getFieldArity(field);
             parentId = field.getAttribute("parentID");
             tuples = field.getElementsByTagName("tuple");
@@ -353,11 +360,42 @@ public class InstanceChecker {
                     arrows.add(String.join(" -> ", arrow));
                 }
 
-                // f_name = a$1 -> b$2 + a$2 -> b$3 + ...
-                newFacts.append("\n    "+idToSigInfo.get(parentId).label+"<:"+alloyName(fieldLabel) +" = ");
+                
+                if (modelFields.get(fieldLabel).size() == 1) {
+                    // in this case there could be child sigs that each have their
+                    // own copy of fieldLabel
+                    // "A" below is from the XML
+                    // A <: f_name = a$1 -> b$2 + a$2 -> b$3 + ...
+                    // could be multiple of these in XML
+                    newFacts.append("\n    "+idToSigInfo.get(parentId).label+"<:"+alloyName(fieldLabel) +" = ");
+                    // we have to make sure there is nothing else in "f" from another sig
+                    sigsOfField.computeIfAbsent(fieldLabel, k -> new ArrayList<>()).add(idToSigInfo.get(parentId).label);
+                    sizeOfField.put(fieldLabel, arrows.size());
+                } else {
+                    // in this case the model has only one copy of "f"
+                    // but the instance could have multiple f's associated with child sigs of
+                    // sig that has f in model
+                    // this/B <: f + this/C <: f = Bʃ0 -> Sʃ0 + Cʃ0 -> Sʃ0
+                    // cannot do A <:f = ... because "f" is ambiguous
+                    String lhs = modelFields.get(fieldLabel).stream()
+                        .map(parent -> parent + " <: " + alloyName(fieldLabel))
+                        .collect(Collectors.joining(" + "));
+                    newFacts.append("\n    "+ lhs +" = ");
+                }
                 newFacts.append(String.join("\n       + ", arrows));
             }        
         }
+        for (String fieldName: sigsOfField.keySet()) {
+            // (univ - C - B) <: f = none -> none
+            newFacts.append("\n    (univ - ");
+            newFacts.append(String.join(" - ", sigsOfField.get(fieldName))+") <: " + fieldName);
+            newFacts.append(" = ");
+            newFacts.append(String.join(" -> ", Collections.nCopies(sizeOfField.get(fieldName)+1, "none")));
+            // this causes the instance to fail if there is anything in f beyond the instance f's
+            // might not strictly be necessary ??
+        }
+        
+
 
         // create a string that is the model plus the sigs and facts representing the instance
         StringBuilder checkerModel =  new StringBuilder(modelString); 
