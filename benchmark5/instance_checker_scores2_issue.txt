@@ -1,0 +1,120 @@
+Benchmark5 scores2 InstanceChecker issue
+========================================
+
+Summary
+-------
+
+scores2.txt is an InstanceChecker regression, not a new LLM/model regression.
+
+- scores.txt: 2270/2336, 3 imperfect models
+- scores2.txt: 641/2336, 27 imperfect models
+- Syntax and Ringert/SemDiff totals are unchanged.
+- The extra losses are almost entirely from CompoSAT/general XML instance checks.
+
+What the recent commit tried to fix
+-----------------------------------
+
+The recent InstanceChecker commit tried to fix the fruitbowl-style field placement
+issue: one model declares a field on a parent sig, while the other declares the
+same field on child sigs.
+
+Example:
+
+  reference: apple.color, orange.color
+  output:    Fruit.color, with facts apple.color = RED and orange.color = ORANGE
+
+Older checker versions treated field ownership too literally and could reject this
+with `Model has fields not in XML`, even though Ringert says the models are
+equivalent.
+
+Did that fix work?
+------------------
+
+Partly. The current checker now gets past the old field-name containment failure
+for fruitbowl. It emits reconstruction facts such as:
+
+  apple<:color = apple$0 -> RED$0
+  orange<:color = orange$0 -> ORANGE$0
+
+and, in the reverse direction:
+
+  this/apple <: color + this/orange <: color = ...
+
+So the parent/child field-placement logic appears to be present.
+
+But scores2.txt still fails because the same change introduced a new arity bug in
+the extra "no other owners of this field" fact.
+
+Actual scores2 bug
+------------------
+
+For fruitbowl, the checker generates this invalid fact:
+
+  (univ - FruitBowl) <: contains = none -> none -> none
+
+`contains` is binary (`FruitBowl -> Fruit`), so the right side should also be
+binary (`none -> none`). The right side is ternary because the checker uses the
+number of XML tuples as if it were the field arity.
+
+Likely bad code shape in scripts/InstanceChecker.java:
+
+  arity = getFieldArity(field);
+  ...
+  sizeOfField.put(fieldLabel, arrows.size());
+  ...
+  Collections.nCopies(sizeOfField.get(fieldName)+1, "none")
+
+`arrows.size()` is the number of tuples in this XML field, not the field arity.
+For fruitbowl, `FruitBowl.contains` has two tuples, so the checker builds
+`none -> none -> none` for a binary field.
+
+Reproduce the scores2 failure
+-----------------------------
+
+Run from the repository root with Java 17 on PATH:
+
+  javac -cp scoring/org.alloytools.alloy.dist-6.2.0.jar scripts/InstanceChecker.java
+  java -cp "scripts:scoring/org.alloytools.alloy.dist-6.2.0.jar" InstanceChecker benchmark5/models/fruitbowl.als benchmark5/generalInstances/fruitbowl/scope_1/fruitbowl-instance-1-1.xml
+
+Expected current result:
+
+  FAIL: Solving checker model failed with
+  = can be used only between 2 expressions of the same arity...
+  Left type = {this/FruitBowl->this/Fruit}
+  Right type = {none->none->none}
+
+Test the intended field-placement fix
+-------------------------------------
+
+This checks a reference XML instance, whose fields are on apple/orange, against
+the generated model, whose fields are on Fruit:
+
+  java -cp "scripts:scoring/org.alloytools.alloy.dist-6.2.0.jar" InstanceChecker benchmark5/outputs/fruitbowl.attempt1.als benchmark5/generalInstances/fruitbowl/scope_1/fruitbowl-instance-1-1.xml
+
+Current expected result: it should not fail with `Model has fields not in XML`.
+It should reach the later `contains` arity error. After the arity bug is fixed,
+this should pass.
+
+For the reverse direction, generate one XML instance from the output model and
+check it against the reference:
+
+  javac -cp scoring/org.alloytools.alloy.dist-6.2.0.jar scripts/InstanceGenerator.java
+  tmpdir=$(mktemp -d /tmp/fruitbowl_output_instance_XXXXXX)
+  cp benchmark5/outputs/fruitbowl.attempt1.als "$tmpdir/fruitbowl.als"
+  java -cp "scripts:scoring/org.alloytools.alloy.dist-6.2.0.jar" InstanceGenerator "$tmpdir/fruitbowl.als" 1 1
+  xml=$(find "$tmpdir" -name '*.xml' | head -1)
+  java -cp "scripts:scoring/org.alloytools.alloy.dist-6.2.0.jar" InstanceChecker benchmark5/models/fruitbowl.als "$xml"
+  rm -rf "$tmpdir"
+
+Current expected result: it should emit a combined field fact like
+`this/apple <: color + this/orange <: color = ...`, then fail later on the same
+`contains` arity issue. After the arity bug is fixed, this should pass too.
+
+Minimal fix direction
+---------------------
+
+Store and use field arity for the complement fact, not tuple count. For a field of
+arity N, the empty relation should contain N `none` columns:
+
+- binary field: none -> none
+- ternary field: none -> none -> none
