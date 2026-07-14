@@ -118,11 +118,13 @@ What this does for each model:
 7. runs `InstanceGenerator` on the output model for scopes `1..general_max_scope`, then checks those instances against the original model (`output => original`).
 
 Notes:
-1. CompoSAT runs in scoring have a `300s` timeout per scope.
-2. `InstanceGenerator` runs in scoring also have a `300s` timeout per scope.
-3. If a timeout occurs, `scores.txt` includes a clear `TIMEOUT` line listing the timed-out scope(s).
-4. Multiple models can be scored in parallel. Control it with `SCORE_MODEL_WORKERS` (default: up to `4`, capped by model count).
-5. CompoSAT scopes and general-instance scopes for a single model are each processed sequentially.
+1. CompoSAT runs in scoring have a `900s` timeout per scope.
+2. `InstanceGenerator` runs in scoring also has a `900s` timeout per scope.
+3. Regenerated output-side XML instances are deduplicated across scopes for each model before scoring. Duplicate detection compares XML instance content after stripping run metadata such as `command`, `filename`, and `maxseq`.
+4. For regenerated general instances, scoring asks for the same per-scope count as the reference corpus. It starts with `2*x` candidates, then retries with `3*x`, `4*x`, and so on until it either keeps `x` unique new instances, reaches the `10*x` candidate limit, or `InstanceGenerator` exhausts the scope.
+5. If a timeout occurs, `scores.txt` includes a clear `TIMEOUT` line listing the timed-out scope(s).
+6. Multiple models can be scored in parallel. Control it with `SCORE_MODEL_WORKERS` (default: up to `4`, capped by model count).
+7. CompoSAT scopes and general-instance scopes for a single model are each processed sequentially.
 
 Example:
 

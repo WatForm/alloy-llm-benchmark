@@ -1,0 +1,73 @@
+<alloy builddate="unknown">
+
+
+<bounds> 
+<upperbound name="Int/min"  arity="1">
+   <tuple> <atom label="-8"/> </tuple>
+</upperbound>
+<upperbound name="Int/zero"  arity="1">
+   <tuple> <atom label="0"/> </tuple>
+</upperbound>
+<upperbound name="Int/max"  arity="1">
+   <tuple> <atom label="7"/> </tuple>
+</upperbound>
+<upperbound name="Int/next"  arity="2">
+   <tuple> <atom label="-1"/> <atom label="0"/> </tuple>
+   <tuple> <atom label="-2"/> <atom label="-1"/> </tuple>
+   <tuple> <atom label="-3"/> <atom label="-2"/> </tuple>
+   <tuple> <atom label="-4"/> <atom label="-3"/> </tuple>
+   <tuple> <atom label="-5"/> <atom label="-4"/> </tuple>
+   <tuple> <atom label="-6"/> <atom label="-5"/> </tuple>
+   <tuple> <atom label="-7"/> <atom label="-6"/> </tuple>
+   <tuple> <atom label="-8"/> <atom label="-7"/> </tuple>
+   <tuple> <atom label="0"/> <atom label="1"/> </tuple>
+   <tuple> <atom label="1"/> <atom label="2"/> </tuple>
+   <tuple> <atom label="2"/> <atom label="3"/> </tuple>
+   <tuple> <atom label="3"/> <atom label="4"/> </tuple>
+   <tuple> <atom label="4"/> <atom label="5"/> </tuple>
+   <tuple> <atom label="5"/> <atom label="6"/> </tuple>
+   <tuple> <atom label="6"/> <atom label="7"/> </tuple>
+</upperbound>
+<upperbound name="seq/Int"  arity="1">
+   <tuple> <atom label="0"/> </tuple>
+</upperbound>
+<upperbound name="String"  arity="1">
+</upperbound>
+<upperbound name="this/Node"  arity="1">
+   <tuple> <atom label="Node$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Node.left"  arity="2">
+   <tuple> <atom label="Node$0"/> <atom label="Node$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Node.right"  arity="2">
+   <tuple> <atom label="Node$0"/> <atom label="Node$0"/> </tuple>
+</upperbound>
+</bounds><instance bitwidth="4" maxseq="1" command="Run run$1 for 1 but 4 int" filename="">
+
+<sig label="seq/Int" ID="0" parentID="1" builtin="yes">
+</sig>
+
+<sig label="Int" ID="1" parentID="2" builtin="yes">
+</sig>
+
+<sig label="String" ID="3" parentID="2" builtin="yes">
+</sig>
+
+<sig label="this/Node" ID="4" parentID="2">
+   <atom label="Node$0"/>
+</sig>
+
+<field label="left" ID="5" parentID="4">
+   <types> <type ID="4"/> <type ID="4"/> </types>
+</field>
+
+<field label="right" ID="6" parentID="4">
+   <types> <type ID="4"/> <type ID="4"/> </types>
+</field>
+
+<sig label="univ" ID="2" builtin="yes">
+</sig>
+
+</instance>
+
+</alloy>

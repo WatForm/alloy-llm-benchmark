@@ -16,6 +16,7 @@ from datetime import datetime
 from collections import defaultdict
 from pathlib import Path
 
+from instance_dedup import select_unique_instance_files
 from syntax_utils import check_syntax, require_java_for_version
 
 
@@ -23,6 +24,7 @@ TIMEOUT_SECONDS = 900
 COMPOSAT_TIMEOUT_SECONDS = 900
 GENERAL_INSTANCE_TIMEOUT_SECONDS = 900
 DEFAULT_GENERAL_OUTPUT_INSTANCE_COUNT = 10
+MAX_GENERAL_CANDIDATE_MULTIPLIER = 10
 SOLVER = "sat4j"
 
 
@@ -191,9 +193,11 @@ def check_instance_valid(
 
 def discover_instances_by_scope(instances_root: Path, model_name: str) -> dict[int, list[Path]]:
     grouped: dict[int, list[Path]] = defaultdict(list)
-    pattern = f"**/{model_name}/scope_*/{model_name}/instance_*.xml"
+    direct_model_root = instances_root / model_name
+    search_root = direct_model_root if direct_model_root.exists() else instances_root
+    pattern = f"scope_*/{model_name}/instance_*.xml" if direct_model_root.exists() else f"**/{model_name}/scope_*/{model_name}/instance_*.xml"
 
-    for xml_path in sorted(instances_root.glob(pattern)):
+    for xml_path in sorted(search_root.glob(pattern)):
         scope_folder = xml_path.parent.parent.name
         match = re.fullmatch(r"scope_(\d+)", scope_folder)
         if not match:
@@ -206,9 +210,11 @@ def discover_instances_by_scope(instances_root: Path, model_name: str) -> dict[i
 
 def discover_general_instances_by_scope(general_instances_root: Path, model_name: str) -> dict[int, list[Path]]:
     grouped: dict[int, list[Path]] = defaultdict(list)
-    pattern = f"**/{model_name}/scope_*/*.xml"
+    direct_model_root = general_instances_root / model_name
+    search_root = direct_model_root if direct_model_root.exists() else general_instances_root
+    pattern = "scope_*/*.xml" if direct_model_root.exists() else f"**/{model_name}/scope_*/*.xml"
 
-    for xml_path in sorted(general_instances_root.glob(pattern)):
+    for xml_path in sorted(search_root.glob(pattern)):
         scope_folder = xml_path.parent.name
         match = re.fullmatch(r"scope_(\d+)", scope_folder)
         if not match:
@@ -321,6 +327,15 @@ def strip_run_and_check_commands(model_text: str) -> str:
     return "\n".join(filtered).rstrip() + "\n"
 
 
+def select_unique_generated_instances(
+    xml_files: list[Path],
+    seen_hashes: set[str],
+    limit: int | None = None,
+) -> tuple[list[Path], list[str], int]:
+    selected, selected_hashes, duplicate_count = select_unique_instance_files(xml_files, seen_hashes, limit)
+    return selected, selected_hashes, duplicate_count
+
+
 def score_output_instances_against_reference(
     model_name: str,
     generated_model: Path,
@@ -375,6 +390,7 @@ def score_output_instances_against_reference(
     timed_out = False
     timeout_scope = None
     timeout_scopes: list[int] = []
+    seen_instance_hashes: set[str] = set()
 
     with tempfile.TemporaryDirectory(prefix=f"composat_score_{model_name}_") as temp_dir:
         temp_path = Path(temp_dir)
@@ -441,13 +457,21 @@ def score_output_instances_against_reference(
                 f"[{model_name}] output=>original: CompoSAT scope_{scope} done; generated {len(xml_files)} instance(s)"
             )
 
-            scope_max = len(xml_files)
+            selected_xml_files, selected_hashes, duplicate_count = select_unique_generated_instances(
+                xml_files,
+                seen_instance_hashes,
+            )
+            seen_instance_hashes.update(selected_hashes)
+            if duplicate_count:
+                notes.append(f"scope_{scope}: discarded {duplicate_count} duplicate CompoSAT instance(s).")
+            scope_max = len(selected_xml_files)
             scope_valid = 0
             progress(
-                f"[{model_name}] output=>original: scope_{scope} generated {scope_max} instance(s); validating against reference"
+                f"[{model_name}] output=>original: scope_{scope} kept {scope_max}/{len(xml_files)} "
+                "unique instance(s); validating against reference"
             )
 
-            for idx, xml_file in enumerate(xml_files, start=1):
+            for idx, xml_file in enumerate(selected_xml_files, start=1):
                 valid, _ = check_instance_valid(
                     reference_model,
                     xml_file,
@@ -521,6 +545,7 @@ def score_output_general_instances_against_reference(
     timed_out = False
     timeout_scope = None
     timeout_scopes: list[int] = []
+    seen_instance_hashes: set[str] = set()
 
     with tempfile.TemporaryDirectory(prefix=f"general_score_{model_name}_") as temp_dir:
         temp_path = Path(temp_dir)
@@ -554,53 +579,109 @@ def score_output_general_instances_against_reference(
                 f"(requesting up to {requested_instances})"
             )
 
-            cmd = [
-                str(java17_bin),
-                "-cp",
-                f"{scripts_dir}{os.pathsep}{alloy_jar_620}",
-                "InstanceGenerator",
-                str(temp_model),
-                str(scope),
-                str(requested_instances),
-            ]
+            selected_xml_files: list[Path] = []
+            selected_hashes: list[str] = []
+            xml_files: list[Path] = []
+            duplicate_count = 0
+            exhausted = False
+            generation_failed = False
+            multiplier = 2
 
-            try:
-                result = run_command(cmd, cwd=scripts_dir, timeout=GENERAL_INSTANCE_TIMEOUT_SECONDS)
-            except subprocess.TimeoutExpired:
-                timed_out = True
-                timeout_scope = scope
-                timeout_scopes = [scope]
-                timeout_note = (
-                    f"scope_{scope}: InstanceGenerator timed out after {GENERAL_INSTANCE_TIMEOUT_SECONDS}s; "
-                    "remaining scopes skipped."
+            while True:
+                candidate_limit = requested_instances * multiplier
+                progress(
+                    f"[{model_name}] output=>original (general): scope_{scope} generating up to "
+                    f"{candidate_limit} candidates ({multiplier}x)"
                 )
-                notes.append(timeout_note)
-                progress(f"[{model_name}] output=>original (general): {timeout_note}")
+
                 for stale in temp_path.glob(f"{model_name}-instance-{scope}-*.xml"):
                     stale.unlink(missing_ok=True)
-                break
-            except Exception as exc:
-                err_note = f"scope_{scope}: InstanceGenerator invocation failed: {exc}"
-                notes.append(err_note)
-                progress(f"[{model_name}] output=>original (general): {err_note}")
-                by_scope.append({"scope": scope, "score": 0, "max": 0})
+
+                cmd = [
+                    str(java17_bin),
+                    "-cp",
+                    f"{scripts_dir}{os.pathsep}{alloy_jar_620}",
+                    "InstanceGenerator",
+                    str(temp_model),
+                    str(scope),
+                    str(candidate_limit),
+                ]
+
+                try:
+                    result = run_command(cmd, cwd=scripts_dir, timeout=GENERAL_INSTANCE_TIMEOUT_SECONDS)
+                except subprocess.TimeoutExpired:
+                    timed_out = True
+                    timeout_scope = scope
+                    timeout_scopes = [scope]
+                    timeout_note = (
+                        f"scope_{scope}: InstanceGenerator timed out after {GENERAL_INSTANCE_TIMEOUT_SECONDS}s; "
+                        "remaining scopes skipped."
+                    )
+                    notes.append(timeout_note)
+                    progress(f"[{model_name}] output=>original (general): {timeout_note}")
+                    for stale in temp_path.glob(f"{model_name}-instance-{scope}-*.xml"):
+                        stale.unlink(missing_ok=True)
+                    generation_failed = True
+                    break
+                except Exception as exc:
+                    err_note = f"scope_{scope}: InstanceGenerator invocation failed: {exc}"
+                    notes.append(err_note)
+                    progress(f"[{model_name}] output=>original (general): {err_note}")
+                    by_scope.append({"scope": scope, "score": 0, "max": 0})
+                    generation_failed = True
+                    break
+
+                output = ((result.stdout or "") + (result.stderr or "")).strip()
+                if result.returncode != 0:
+                    detail = output.splitlines()[-1] if output else "No output"
+                    exit_note = f"scope_{scope}: InstanceGenerator exited with code {result.returncode} ({detail})"
+                    notes.append(exit_note)
+                    progress(f"[{model_name}] output=>original (general): {exit_note}")
+
+                xml_files = sorted(temp_path.glob(f"{model_name}-instance-{scope}-*.xml"))
+                selected_xml_files, selected_hashes, duplicate_count = select_unique_generated_instances(
+                    xml_files,
+                    seen_instance_hashes,
+                    requested_instances,
+                )
+                progress(
+                    f"[{model_name}] output=>original (general): scope_{scope} generated {len(xml_files)} "
+                    f"instance(s), kept {len(selected_xml_files)} unique new instance(s)"
+                )
+
+                if len(selected_xml_files) >= requested_instances:
+                    break
+                if len(xml_files) < candidate_limit:
+                    exhausted = True
+                    break
+                if multiplier >= MAX_GENERAL_CANDIDATE_MULTIPLIER:
+                    exhausted = True
+                    notes.append(
+                        f"scope_{scope}: stopped after reaching {MAX_GENERAL_CANDIDATE_MULTIPLIER}x "
+                        "general instance candidate limit."
+                    )
+                    break
+
+                multiplier += 1
+
+            if generation_failed:
+                if timed_out:
+                    break
                 continue
 
-            output = ((result.stdout or "") + (result.stderr or "")).strip()
-            if result.returncode != 0:
-                detail = output.splitlines()[-1] if output else "No output"
-                exit_note = f"scope_{scope}: InstanceGenerator exited with code {result.returncode} ({detail})"
-                notes.append(exit_note)
-                progress(f"[{model_name}] output=>original (general): {exit_note}")
+            seen_instance_hashes.update(selected_hashes)
 
-            xml_files = sorted(temp_path.glob(f"{model_name}-instance-{scope}-*.xml"))
-            progress(
-                f"[{model_name}] output=>original (general): scope_{scope} generated {len(xml_files)} instance(s)"
-            )
+            if duplicate_count:
+                notes.append(f"scope_{scope}: discarded {duplicate_count} duplicate general instance(s).")
+            if exhausted and len(selected_xml_files) < requested_instances:
+                notes.append(
+                    f"scope_{scope}: InstanceGenerator exhausted after {len(xml_files)} candidate(s); "
+                    f"kept {len(selected_xml_files)} unique new instance(s)."
+                )
 
-            scope_max = len(xml_files)
+            scope_max = len(selected_xml_files)
             scope_valid = 0
-            for idx, xml_file in enumerate(xml_files, start=1):
+            for idx, xml_file in enumerate(selected_xml_files, start=1):
                 valid, _ = check_instance_valid(
                     reference_model,
                     xml_file,
@@ -622,7 +703,7 @@ def score_output_general_instances_against_reference(
                 f"[{model_name}] output=>original (general): scope_{scope} complete with {scope_valid}/{scope_max} valid"
             )
 
-            for stale in xml_files:
+            for stale in temp_path.glob(f"{model_name}-instance-{scope}-*.xml"):
                 stale.unlink(missing_ok=True)
 
     return {
