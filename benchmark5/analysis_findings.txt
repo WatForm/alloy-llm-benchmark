@@ -1,0 +1,175 @@
+Benchmark5 scores.txt loss analysis
+===================================
+
+Source: benchmark5/scores.txt
+
+Overall
+-------
+
+Overall score: 2270/2336, so 66 points were lost.
+Only 3 of 29 models lost points:
+
+- alloy4fun_SPL_1_2_3_4: 116/130, lost 14
+- fruitbowl: 28/49, lost 21
+- marksweepgc: 94/125, lost 31
+
+There were no syntax losses in these three cases. Each had a valid first attempt.
+There were also no timeout losses visible in these score blocks.
+
+Direction note: in this scorer, original => output failures mean the generated model
+is too restrictive. Output => original failures mean the generated model is too
+permissive, unless the instance checker itself fails to reconstruct the instance
+as a well-typed Alloy model.
+
+alloy4fun_SPL_1_2_3_4
+---------------------
+
+Score loss: 14 points.
+
+Lost points:
+
+- original => output Ringert: 0/5, lost 5
+  - scopes 1, 2, 3, 4, and 5 all failed.
+- original => output CompoSAT instances: 9/18, lost 9
+  - scope 1: 4/5
+  - scope 2: 3/6
+  - scope 3: 2/7
+
+Everything in the reverse direction passed:
+
+- output => original Ringert: 5/5
+- output => original CompoSAT instances: 15/15
+- output => original general instances: 42/42
+
+The generated model is too restrictive. This is a real semantic issue in the
+Alloy translation, not a syntax issue and not an English ambiguity issue.
+
+The key mismatch is in the Links fact. The reference says:
+
+  all l : Link | one (public+secret+link).l
+
+The generated model rewrites this as mutually exclusive cases: a link must be
+used by exactly one of public, secret, or instance link. That is stronger than the
+reference. In Alloy, relation union collapses duplicate owner atoms, so the
+reference allows the same StoredModel to use the same Link as both public and
+secret: (public+secret).l still contains one owner. The generated model rejects
+that case because both public.l and secret.l are nonempty.
+
+A failing original instance showed exactly this shape: one StoredModel in Secret
+with the same Link assigned to both public and secret. The reference accepts it;
+the generated model rejects it. This explains why original => output fails while
+output => original passes.
+
+fruitbowl
+---------
+
+Score loss: 21 points.
+
+Lost points:
+
+- output => original CompoSAT instances: 0/1, lost 1
+- output => original general instances: 0/20, lost 20
+  - scope 1: 0/10
+  - scope 2: 0/10
+
+Ringert passed both directions:
+
+- original => output Ringert: 2/2
+- output => original Ringert: 2/2
+
+This looks like an InstanceChecker/scoring artifact, not an LLM semantic error.
+The generated model is structurally different from the reference, but Ringert
+finds it equivalent at the scored scopes. The reference declares color, quality,
+and size separately on apple and orange; the generated model lifts those fields
+to the abstract Fruit signature and then constrains apple.color = RED and
+orange.color = ORANGE. Semantically, that is fine for this model.
+
+The instance losses come from checking XML instances generated from the output
+model against the reference model. A direct checker run failed before producing a
+normal satisfiability result because the reconstructed checker model was
+ill-typed, with an error of this form:
+
+  = can be used only between 2 expressions of the same arity
+  Left type = {this/FruitBowl->this/Fruit}
+  Right type = {none->none->none}
+
+So the lost 21 points should not be interpreted as the generated fruitbowl model
+being too permissive. The semantic checker says equivalent; the XML instance
+checker is mishandling the reconstruction for this shape of model/instance.
+
+marksweepgc
+-----------
+
+Score loss: 31 points.
+
+Lost points:
+
+- original => output Ringert: 1/5, lost 4
+  - scope 1 passed
+  - scopes 2, 3, 4, and 5 failed
+- original => output CompoSAT instances: 10/11, lost 1
+- original => output general instances: 14/40, lost 26
+  - scope 2: 10/10
+  - scope 3: 1/10
+  - scope 4: 2/10
+  - scope 5: 1/10
+
+Everything in the reverse direction passed:
+
+- output => original Ringert: 5/5
+- output => original CompoSAT instances: 21/21
+- output => original general instances: 40/40
+
+The generated model is too restrictive. This is a real semantic mismatch in the
+source-level Alloy, although some of the instance-level losses are also muddied
+by InstanceChecker reconstruction errors.
+
+The source-level mismatch is in setFreeList. The reference has an unbraced
+expression of this form:
+
+  all n: Node |
+    (n !in hs.marked) => (...)
+    &&
+    (n in hs.marked) => (...)
+
+The generated model rewrites this into two explicit quantified cases: one for
+Node - beforeState.marked, and one for beforeState.marked. That is the natural
+intended GC rule, but it is not equivalent to the reference Alloy expression as
+parsed by Alloy.
+
+I checked this directly with a temporary reference variant where only setFreeList
+was rewritten into the explicit marked/unmarked cases. It reproduced the same
+Ringert direction pattern:
+
+- original => braced variant passed at scope 1 and failed at scopes 2, 3, 4, 5
+- braced variant => original passed at scopes 1, 2, 3, 4, 5
+
+So the generated model strengthens the original from scope 2 onward. If the goal
+is to preserve the exact Alloy source semantics, this is an LLM issue. If the goal
+is to recover the likely intended GC invariant, the generated version is arguably
+more explicit, but the benchmark scores exact semantic equivalence to the source.
+
+Instance-scoring caveat: direct checker probes for some marksweepgc XML instances
+failed with arity errors in the reconstructed checker model, for example:
+
+  = can be used only between 2 expressions of the same arity
+  Left type = {this/HeapState->this/Node}
+  Right type = {none->none->none->none->none}
+
+That means the 27 instance-side lost points should not all be treated as clean,
+independent semantic counterexamples. The Ringert loss is enough to establish the
+real directional semantic problem; the instance losses partly reflect the same
+problem and partly expose checker fragility around empty field complements.
+
+Summary classification
+----------------------
+
+- alloy4fun_SPL_1_2_3_4: real LLM semantic issue. The output over-strengthens the
+  Link ownership fact by making public, secret, and instance-link uses mutually
+  exclusive.
+- fruitbowl: likely scoring/InstanceChecker artifact. Ringert says the models are
+  equivalent, and the instance checker fails with an ill-typed reconstruction.
+- marksweepgc: real LLM/source-semantics issue. The output rewrites an unbraced
+  implication/conjunction expression into explicit cases, which strengthens the
+  model. Some instance losses are additionally contaminated by InstanceChecker
+  arity errors.
