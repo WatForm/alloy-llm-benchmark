@@ -165,13 +165,7 @@ public class InstanceChecker {
             if (!s.builtin)
                 modelSigNames.add(alloyName(s.label));
             for (Sig.Field f : s.getFields()) {
-                if (!modelFields.containsKey(f.label)) {
-                    modelFields.put(alloyName(f.label), List.of(s.label)); 
-                } else {
-                    List<String> tmp = new ArrayList<> (modelFields.get(alloyName(f.label)));
-                    tmp.add(s.label);
-                    modelFields.put(alloyName(f.label), tmp); 
-                } 
+                modelFields.computeIfAbsent(f.label, k -> new ArrayList<>()).add(alloyName(s.label));
             }  
              
         }
@@ -331,19 +325,23 @@ public class InstanceChecker {
         Element tuple;
         
         Map<String, List<String>> sigsOfField = new HashMap<>();
-        Map<String, Integer> sizeOfField = new HashMap<>();
+        Map<String, Integer> arityOfField = new HashMap<>();
 
         for (int i = 0; i < fields.getLength(); i++) {
 
             field = (Element) fields.item(i);
-            String fieldLabel = field.getAttribute("label");
+            String fieldLabel = alloyName(field.getAttribute("label"));
             arity = getFieldArity(field);
             parentId = field.getAttribute("parentID");
             tuples = field.getElementsByTagName("tuple");
             arrows = new ArrayList<String>();
             
+            String noneArrow = String.join(" -> ", Collections.nCopies(arity, "none"));
+            
             if (tuples.getLength() == 0) {
-                continue;
+                arrows.add(noneArrow);
+                newFacts.append("\n    "+ idToSigInfo.get(parentId).label +" <: " +fieldLabel+ " = ");
+                newFacts.append(String.join("\n       + ", arrows));
             } else {
                 arrows = new ArrayList<String>();
 
@@ -360,37 +358,57 @@ public class InstanceChecker {
                     arrows.add(String.join(" -> ", arrow));
                 }
 
-                
-                if (modelFields.get(fieldLabel).size() == 1) {
-                    // in this case there could be child sigs that each have their
-                    // own copy of fieldLabel
-                    // "A" below is from the XML
-                    // A <: f_name = a$1 -> b$2 + a$2 -> b$3 + ...
-                    // could be multiple of these in XML
+                //System.out.println(fieldLabel);
+                //System.out.println(modelFields.get(fieldLabel));
+                //System.out.println(idToSigInfo.get(parentId).label);
+                if (modelFields.get(fieldLabel).contains(idToSigInfo.get(parentId).label)) {
+                    // easy case
+                    // one of the sigs of this field exactly matches the XML
                     newFacts.append("\n    "+idToSigInfo.get(parentId).label+"<:"+alloyName(fieldLabel) +" = ");
-                    // we have to make sure there is nothing else in "f" from another sig
-                    sigsOfField.computeIfAbsent(fieldLabel, k -> new ArrayList<>()).add(idToSigInfo.get(parentId).label);
-                    sizeOfField.put(fieldLabel, arrows.size());
+                    newFacts.append(String.join("\n       + ", arrows));
                 } else {
-                    // in this case the model has only one copy of "f"
-                    // but the instance could have multiple f's associated with child sigs of
-                    // sig that has f in model
-                    // this/B <: f + this/C <: f = Bʃ0 -> Sʃ0 + Cʃ0 -> Sʃ0
-                    // cannot do A <:f = ... because "f" is ambiguous
-                    String lhs = modelFields.get(fieldLabel).stream()
-                        .map(parent -> parent + " <: " + alloyName(fieldLabel))
-                        .collect(Collectors.joining(" + "));
-                    newFacts.append("\n    "+ lhs +" = ");
+                    // otherwise, there could be a parent-child equivalence
+                    if (modelFields.get(fieldLabel).size() == 1) {
+                        // in model field in parent
+                        // in XML could be multiple child sigs in XML that each have their
+                        // own copy of fieldLabel
+                        newFacts.append("\n    "+idToSigInfo.get(parentId).label+"<:"+alloyName(fieldLabel) +" = ");
+                        newFacts.append(String.join("\n       + ", arrows));
+                        // we have to make sure there is nothing else in "f" from another sig
+                        // so we will add a fact at the end about them all
+                        sigsOfField.computeIfAbsent(fieldLabel, k -> new ArrayList<>()).add(idToSigInfo.get(parentId).label);
+                        arityOfField.put(fieldLabel,arity);        
+                    } else {
+                        // in this case the model has more than one copy of "f"
+                        // but the XML could have moved f into a parent
+                        
+                        // this/B <: f = this/B <: (Bʃ0 -> Sʃ0 + Cʃ0 -> Sʃ0)
+                        // this/C <: f = this/C <: (Bʃ0 -> Sʃ0 + Cʃ0 -> Sʃ0)
+                        //
+                        // cannot do A <:f = ... because "f" of f in XML is ambiguous in model with two f's
+                        //
+                        // if we do: this/B <: f + this/C <: f = Bʃ0 -> Sʃ0 + Cʃ0 -> Sʃ0
+                        // we get a typechecking error b/c the rhs is A -> S
+                        // and the lhs is [B -> S, C -> S], which causes a typechecking bug (weird)
+                        String rhsPart = "(" + String.join("\n       + ", arrows) + ")";
+                        for (String subSig: modelFields.get(fieldLabel)) {
+                            newFacts.append("\n    "+ subSig +" <: " +fieldLabel+ " = " +subSig + "<:" + rhsPart);
+                            //sigsOfField.computeIfAbsent(fieldLabel, k -> new ArrayList<>()).add(subSig);
+                            //arityOfField.put(fieldLabel,arity);   
+                        }
+                        
+                    }
                 }
-                newFacts.append(String.join("\n       + ", arrows));
+                
             }        
         }
+        // for any of the possible splits above, make sure nothing else
         for (String fieldName: sigsOfField.keySet()) {
             // (univ - C - B) <: f = none -> none
             newFacts.append("\n    (univ - ");
             newFacts.append(String.join(" - ", sigsOfField.get(fieldName))+") <: " + fieldName);
             newFacts.append(" = ");
-            newFacts.append(String.join(" -> ", Collections.nCopies(sizeOfField.get(fieldName)+1, "none")));
+            newFacts.append(String.join (" -> ", Collections.nCopies(arityOfField.get(fieldName), "none")));
             // this causes the instance to fail if there is anything in f beyond the instance f's
             // might not strictly be necessary ??
         }
