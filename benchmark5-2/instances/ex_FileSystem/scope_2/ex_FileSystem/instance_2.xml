@@ -1,0 +1,92 @@
+<alloy builddate="unknown">
+
+
+<bounds> 
+<upperbound name="Int/min"  arity="1">
+   <tuple> <atom label="-8"/> </tuple>
+</upperbound>
+<upperbound name="Int/zero"  arity="1">
+   <tuple> <atom label="0"/> </tuple>
+</upperbound>
+<upperbound name="Int/max"  arity="1">
+   <tuple> <atom label="7"/> </tuple>
+</upperbound>
+<upperbound name="Int/next"  arity="2">
+   <tuple> <atom label="-1"/> <atom label="0"/> </tuple>
+   <tuple> <atom label="-2"/> <atom label="-1"/> </tuple>
+   <tuple> <atom label="-3"/> <atom label="-2"/> </tuple>
+   <tuple> <atom label="-4"/> <atom label="-3"/> </tuple>
+   <tuple> <atom label="-5"/> <atom label="-4"/> </tuple>
+   <tuple> <atom label="-6"/> <atom label="-5"/> </tuple>
+   <tuple> <atom label="-7"/> <atom label="-6"/> </tuple>
+   <tuple> <atom label="-8"/> <atom label="-7"/> </tuple>
+   <tuple> <atom label="0"/> <atom label="1"/> </tuple>
+   <tuple> <atom label="1"/> <atom label="2"/> </tuple>
+   <tuple> <atom label="2"/> <atom label="3"/> </tuple>
+   <tuple> <atom label="3"/> <atom label="4"/> </tuple>
+   <tuple> <atom label="4"/> <atom label="5"/> </tuple>
+   <tuple> <atom label="5"/> <atom label="6"/> </tuple>
+   <tuple> <atom label="6"/> <atom label="7"/> </tuple>
+</upperbound>
+<upperbound name="seq/Int"  arity="1">
+   <tuple> <atom label="0"/> </tuple>
+   <tuple> <atom label="1"/> </tuple>
+</upperbound>
+<upperbound name="String"  arity="1">
+</upperbound>
+<upperbound name="this/Root"  arity="1">
+   <tuple> <atom label="Root$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Directory"  arity="1">
+   <tuple> <atom label="File$0"/> </tuple>
+   <tuple> <atom label="Root$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Directory.contents"  arity="2">
+   <tuple> <atom label="File$0"/> <atom label="File$0"/> </tuple>
+   <tuple> <atom label="File$0"/> <atom label="Root$0"/> </tuple>
+   <tuple> <atom label="Root$0"/> <atom label="File$0"/> </tuple>
+   <tuple> <atom label="Root$0"/> <atom label="Root$0"/> </tuple>
+</upperbound>
+<upperbound name="this/File"  arity="1">
+   <tuple> <atom label="File$0"/> </tuple>
+</upperbound>
+<upperbound name="this/Object"  arity="1">
+   <tuple> <atom label="File$0"/> </tuple>
+   <tuple> <atom label="Root$0"/> </tuple>
+</upperbound>
+</bounds><instance bitwidth="4" maxseq="2" command="Run run$1 for 2 but 4 int" filename="">
+
+<sig label="seq/Int" ID="0" parentID="1" builtin="yes">
+</sig>
+
+<sig label="Int" ID="1" parentID="2" builtin="yes">
+</sig>
+
+<sig label="String" ID="3" parentID="2" builtin="yes">
+</sig>
+
+<sig label="this/Root" ID="4" parentID="5" one="yes">
+   <atom label="Root$0"/>
+</sig>
+
+<sig label="this/Directory" ID="5" parentID="6">
+</sig>
+
+<field label="contents" ID="7" parentID="5">
+   <tuple> <atom label="Root$0"/> <atom label="File$0"/> </tuple>
+   <types> <type ID="5"/> <type ID="6"/> </types>
+</field>
+
+<sig label="this/File" ID="8" parentID="6">
+   <atom label="File$0"/>
+</sig>
+
+<sig label="this/Object" ID="6" parentID="2" abstract="yes">
+</sig>
+
+<sig label="univ" ID="2" builtin="yes">
+</sig>
+
+</instance>
+
+</alloy>
