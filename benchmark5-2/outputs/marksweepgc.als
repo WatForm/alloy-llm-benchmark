@@ -11,43 +11,43 @@ one sig h, hsn in HeapState {}
 
 one sig root in Node {}
 
-pred clearMarks[before, after: HeapState] {
-  no after.marked
-  after.left = before.left
-  after.right = before.right
+pred clearMarks[pre, post: HeapState] {
+  no post.marked
+  post.left = pre.left
+  post.right = pre.right
 }
 
-fun reachable[hs: HeapState, start: Node]: set Node {
-  start.*(hs.left + hs.right)
+fun reachable[state: HeapState, from: Node]: set Node {
+  from.*(state.left + state.right)
 }
 
-pred mark[before: HeapState, from: Node, after: HeapState] {
-  after.marked = reachable[before, from]
-  after.left = before.left
-  after.right = before.right
+pred mark[pre: HeapState, from: Node, post: HeapState] {
+  post.marked = reachable[pre, from]
+  post.left = pre.left
+  post.right = pre.right
 }
 
-pred setFreeList[before, after: HeapState] {
-  after.freeList.*(after.left) in Node - before.marked
+pred setFreeList[pre, post: HeapState] {
+  post.freeList.*(post.left) in Node - pre.marked
 
-  all n: Node - before.marked {
-    no n.(after.right)
-    n.(after.left) in after.freeList.*(after.left)
-    n in after.freeList.*(after.left)
+  all node: Node - pre.marked | {
+    no node.(post.right)
+    node.(post.left) in post.freeList.*(post.left)
+    node in post.freeList.*(post.left)
   }
 
-  all n: before.marked {
-    n.(after.left) = n.(before.left)
-    n.(after.right) = n.(before.right)
+  all node: pre.marked | {
+    node.(post.left) = node.(pre.left)
+    node.(post.right) = node.(pre.right)
   }
 
-  after.marked = before.marked
+  post.marked = pre.marked
 }
 
 fact {
-  some hs1, hs2: HeapState {
-    clearMarks[h, hs1]
-    mark[hs1, root, hs2]
-    setFreeList[hs2, hsn]
+  some firstState, secondState: HeapState | {
+    clearMarks[h, firstState]
+    mark[firstState, root, secondState]
+    setFreeList[secondState, hsn]
   }
 }

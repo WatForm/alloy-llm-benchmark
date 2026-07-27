@@ -24,8 +24,9 @@ def call_openai_with_retries(
     for attempt in range(1, max_attempts + 1):
         try:
             response = client.chat.completions.create(
-                model="gpt-5.5",
+                model="gpt-5.6-sol",
                 messages=[{"role": "user", "content": prompt}],
+                reasoning_effort="xhigh"
             )
             return response.choices[0].message.content
         except Exception as error:
