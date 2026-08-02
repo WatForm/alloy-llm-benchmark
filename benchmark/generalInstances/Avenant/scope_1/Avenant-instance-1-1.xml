@@ -1,6 +1,6 @@
 <alloy builddate="2025-03-10T15:06:21.150Z">
 
-<instance bitwidth="4" maxseq="1" mintrace="-1" maxtrace="-1" command="Run run$3 for 1 but exactly 1 Avenant, exactly 1 Modification, exactly 1 ModifiedEntity, exactly 1 Date" filename="" tracelength="1" looplength="1">
+<instance bitwidth="4" maxseq="1" mintrace="-1" maxtrace="-1" command="Run run$1 for 1 but 4 int, exactly 1 Modification, exactly 1 ModifiedEntity, exactly 1 Date" filename="" tracelength="1" looplength="1">
 
 <sig label="seq/Int" ID="0" parentID="1" builtin="yes">
 </sig>
@@ -11,12 +11,12 @@
 <sig label="String" ID="3" parentID="2" builtin="yes">
 </sig>
 
-<sig label="this/Avenant" ID="4" parentID="2" one="yes">
-   <atom label="Avenant$0"/>
+<sig label="this/Amendment" ID="4" parentID="2" one="yes">
+   <atom label="Amendment$0"/>
 </sig>
 
 <field label="modifications" ID="5" parentID="4">
-   <tuple> <atom label="Avenant$0"/> <atom label="Modification$0"/> </tuple>
+   <tuple> <atom label="Amendment$0"/> <atom label="Modification$0"/> </tuple>
    <types> <type ID="4"/> <type ID="6"/> </types>
 </field>
 
@@ -29,7 +29,7 @@
    <types> <type ID="6"/> <type ID="8"/> </types>
 </field>
 
-<field label="date_application" ID="9" parentID="6">
+<field label="application_date" ID="9" parentID="6">
    <tuple> <atom label="Modification$0"/> <atom label="Date$0"/> </tuple>
    <types> <type ID="6"/> <type ID="10"/> </types>
 </field>

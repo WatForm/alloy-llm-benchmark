@@ -8,8 +8,6 @@ sig Node {
   link: lone Node
 }
 
-pred Acyclic (l: List) {
-  no l.header or some n: l.header.*link | no n.link
+fact Acyclic {
+    all l: List | no l.header or some n: l.header.*link | no n.link
 }
-
-run Acyclic

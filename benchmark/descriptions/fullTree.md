@@ -1,15 +1,13 @@
-This Alloy model is named "FullTree". 
+There is a set called "Node". Each element of "Node" has two relations named "left" and "right", and each of these relates a "Node" to zero or more elements of "Node".
 
-It starts with a single signature "Node", which has two relations, each of which is a set of Nodes. These relations are called "left" and "right".
+For every element of "Node", there is at most one left-related "Node", and at most one "right"-related Node.
 
-In this model, there is a fact constraining all Nodes, stating that for each Node, it should have at most one Node in its "left" set and at most one Node in its "right" set.
+"left" and "right" together form an acyclic relation.
 
-The model defines three predicates - "Acyclic", "makeFull", and "FullTree".
+Each "Node" has at most one incoming "left"-or-"right" relation from other "Node"s.
 
-The "Acyclic" predicate specifies three conditions for all Nodes. The first condition is that a Node cannot be in the transitive closure of its "left" set or its "right" set, which would mean that no Node can be in a cycle. The second condition is that each Node can have at most one parent Node, in either its "left" or "right" set. The third condition states there can be no overlaps between a Node's "left" set and its "right" set - a Node cannot be both a left child and a right child of the same Node.
+Every "Node"'s "left" set is disjoint from its "right" set.
 
-The "makeFull" predicate enforces the rule that for all Nodes, the number of Nodes in the transitive closure of its "left" set (i.e., all Nodes reachable by following "left" links) must equal the number of Nodes in the transitive closure of its "right" set (i.e., all Nodes reachable by following "right" links).
+The "left" and "right" relations together form a forest of perfect binary trees.
 
-The "FullTree" predicate is a combination of the "Acyclic" and "makeFull" predicates. It checks the conditions specified by both of these predicates.
-
-Lastly, the model runs the "FullTree" predicate. The scope or expected results of this command are not specified.
+For every "Node", the number of "Node"s reachable from it by zero or more "left" steps is equal to the number of "Node"s reachable from it by zero or more "right" steps. 

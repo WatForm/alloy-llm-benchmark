@@ -1,9 +1,14 @@
-The Alloy model consists of three signatures, or sets of entities: 'Field', 'Game', and 'Date'. There is also a global singleton, 'FieldComplex', related to the set of all games. 
+There are disjoint sets named "Field", "Game", and "Date".
 
-Each entity of type 'Game' is associated with a single field ('where') and a single date ('when'). The 'FieldComplex' is responsible for scheduling games and has a set of games ('schedule'). 
+Each element of "Game" has exactly one "where" value, and that value is an element of "Field". Each element of "Game" also has exactly one "when" value, and that value is an element of "Date".
 
-There are three facts in this model. 'NotOnSchedule' states that any game not present in the 'FieldComplex' schedule does not have an associated field or date. 'OnSchedule' states that any game that is on the 'FieldComplex' schedule will have exactly one associated field and one date. 'SameField' states that if two games have the same field, they must have different dates. These facts effectively limit how games, fields, and dates can be associated. 
+There is exactly one element named "FieldComplex". "FieldComplex" has a relation named "schedule" that matches "FieldComplex"es with "Games", and any number of games may be in the relation with the same "FieldComplex".
 
-In addition to these, the model specifies two predicates. The 'ScheduledGame' predicate checks that there is at least one game with a date and a field in the schedule of the 'FieldComplex'. Conversely, the 'UnscheduledGame' predicate checks for the existence of at least one game that is not on the schedule. 
+There is some "Game" that is in the "schedule" of "FieldComplex" or has no "where" value and no "when" value.
 
-Lastly, the model specifies a command intended to explore the state space of the model. The command requires that both the 'ScheduledGame' and 'UnscheduledGame' predicates are satisfied and the model is run in a scope of five, meaning it is examining five entities of each signature.
+There is some element of "Game" that is not in the "schedule" of "FieldComplex" or it has exactly one "where" value and exactly one "when" value.
+
+For any two distinct elements of "Game", if they have the same "where" value, then they have different "when" values.
+
+There exists at least one element of "Game" that is not in the "schedule of "FieldComplex".
+

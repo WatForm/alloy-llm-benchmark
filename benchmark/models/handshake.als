@@ -19,12 +19,7 @@ fact Spouses {
         }
     }
 
-pred Puzzle {
+fact Puzzle {
     all p,q: Person - Jocelyn | p!=q => #p.shaken != #q.shaken
     Hilary.spouse = Jocelyn
     }
-
-run Puzzle for exactly 10 Person, 5 int expect 1
-run Puzzle for exactly 12 Person, 5 int expect 1
-run Puzzle for exactly 14 Person, 5 int expect 1
-run Puzzle for exactly 16 Person, 6 int expect 1

@@ -1,13 +1,17 @@
-This model represents a university or college system that handles Students, Professors, Classes, and Assignments.
+There are disjoint sets called "Person", "Class", and "Assignment".
 
-There are three main types of entities represented: 'Person', 'Class', and 'Assignment'. 'Person' is further divided into two non-overlapping sub-categories: 'Student' and 'Professor'.
+"Person" is partitioned into the subsets "Student" and "Professor", and every "Person" is either a "Student" or a "Professor".
 
-Each individual 'Class' within the system is taught by exactly one 'Professor', a relationship shown by 'instructor_of'. Additionally, any number of 'Student' may serve as assistants for a particular 'Class', represented by 'assistant_for'.
+Each "Class" has an "assistant_for" relation to a set of "Student" elements. 
+A class may have any number of students in "assistant_for", including none. 
+Each "Class" has an "instructor_of" relation to exactly one "Professor".
 
-An 'Assignment' is promulgated by a single 'Class', shown by 'associated_with' and can be assigned to any number of 'Students', denoted by 'assigned_to'.
+Each "Assignment" has an "associated_with" relation to exactly one "Class". 
+Each "Assignment" has an "assigned_to" relation to one or more "Student" elements.
 
-A grading policy, 'PolicyAllowsGrading', is specified where a 'Person' can only grade an 'Assignment' if they are either the assistant for the 'Class' associated with the 'Assignment' or if they are the 'Professor' who is the instructor of the 'Class'.
+A person can grade an assignment if the person is
+(1) an "assistant_for" the class "associated_with" with the assignment; 
+or 
+(2) the professor who is the "instructor_of" the class "associated_with" with the assignment.
 
-An assertion, 'NoOneCanGradeTheirOwnAssignment' is implemented. It states that for all 'Person', and for all 'Assignment', if the 'PolicyAllowsGrading' permits a person to grade an assignment, then that person cannot be a student assigned to that assignment.
-
-The model will check this assertion, 'NoOneCanGradeTheirOwnAssignment', to verify that no person can grade their own assignment.
+For every "Person" and every "Assignment", if the person can grade an assignment then  that person is not a student "assigned_to" that assignment.

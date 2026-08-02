@@ -1,19 +1,10 @@
-The model describes a network of nodes, with each node having a certain color and a set of neighbors.
+There is a set "Color" with exactly two distinct elements in it: "Red" and "Blue". 
 
-Signatures:
-- Four signatures exist in the model: Color, Red, Blue and Node.
-- Color is an abstract signature. Subsets of it are Red and Blue. 
-- Node is a signature with fields "neighbors" and "color". 
-- "neighbors" is a set of Node, implying that a Node can have zero or more neighbors.
-- "color" is one Color, meaning each Node is assigned and only assigned one Color.
+There is a set called "Node". 
+Each "Node" has "neighbors", which is a set of "Node"s.  
+Every "Node" has exactly one "color", which is a "Color".
 
-Relations:
-- The "'neighbors' relation" is symmetric. It indicates that if Node A is neighbor with Node B, then Node B is also neighbor of Node A.
-- The "'neighbors' relation" is also antireflexive. It states that each node cannot be its own neighbor.
+The relation "neighbors" is symmetric.  
+No "Node" is in its own "neighbors" set.
 
-Facts and Constraints:
-- The model imposes a rule that the nodes form a connected graph. For any pair of nodes, there is a connection between them either directly or indirectly through a series of neighboring nodes.
-- Another rule dictates that the graph of nodes is acyclic. That means if one node is a neighbor of another, all the original neighbors of the latter, except for the former, cannot reach the former through neighboring nodes.
-
-Commands:
-- A command is present, requesting to generate instances of this model for 3 Nodes.
+The graph formed by "neighbors" is connected and acyclic.

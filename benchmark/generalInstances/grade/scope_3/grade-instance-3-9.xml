@@ -1,6 +1,6 @@
 <alloy builddate="2025-03-10T15:06:21.150Z">
 
-<instance bitwidth="4" maxseq="3" mintrace="-1" maxtrace="-1" command="Run run$2 for 3 but exactly 3 Person, exactly 3 Class, exactly 3 Assignment" filename="" tracelength="1" looplength="1">
+<instance bitwidth="4" maxseq="3" mintrace="-1" maxtrace="-1" command="Run run$1 for 3 but 4 int, exactly 3 Person, exactly 3 Class, exactly 3 Assignment" filename="" tracelength="1" looplength="1">
 
 <sig label="seq/Int" ID="0" parentID="1" builtin="yes">
 </sig>
@@ -31,8 +31,6 @@
 
 <field label="assistant_for" ID="8" parentID="7">
    <tuple> <atom label="Class$0"/> <atom label="Student$0"/> </tuple>
-   <tuple> <atom label="Class$1"/> <atom label="Student$0"/> </tuple>
-   <tuple> <atom label="Class$2"/> <atom label="Student$0"/> </tuple>
    <types> <type ID="7"/> <type ID="4"/> </types>
 </field>
 
@@ -51,7 +49,7 @@
 
 <field label="associated_with" ID="11" parentID="10">
    <tuple> <atom label="Assignment$0"/> <atom label="Class$2"/> </tuple>
-   <tuple> <atom label="Assignment$1"/> <atom label="Class$1"/> </tuple>
+   <tuple> <atom label="Assignment$1"/> <atom label="Class$2"/> </tuple>
    <tuple> <atom label="Assignment$2"/> <atom label="Class$1"/> </tuple>
    <types> <type ID="10"/> <type ID="7"/> </types>
 </field>

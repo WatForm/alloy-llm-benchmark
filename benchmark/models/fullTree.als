@@ -9,7 +9,7 @@ fact {
   all n : Node| lone n.left && lone n.right
 }
 
-pred Acyclic {
+fact Acyclic {
   all n : Node {
     n !in n.^(left + right) 
     lone n.~(left + right) 
@@ -17,13 +17,6 @@ pred Acyclic {
   }
 }
 
-pred makeFull {
+fact makeFull {
   all n : Node | #(n.*left) = #(n.*right)
 }
-
-pred FullTree {
-  Acyclic[]
-  makeFull[]
-}
-
-run FullTree

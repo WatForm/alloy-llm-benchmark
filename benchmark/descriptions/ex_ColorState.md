@@ -1,11 +1,11 @@
-This Alloy model defines three primary concepts: Color, Light, and Junction. It also establishes relationships and constraints through LightState and the 'mostlyRed' predicate.
+There is a set called "Color". Every element of "Color" is exactly one of "Red", "Yellow", or "Green". "Red", "Yellow", and "Green" are each single distinct elements of Color.
 
-Color is an abstract idea that can take one of three fixed types: Red, Yellow, or Green. Each is unique and they cannot overlap. Light and Junction are two other independent entities, neither of which is defined further.
+There is a set called "Light".
 
-The model establishes a relationship between lights and colors through the LightState set. Each light state relates one distinct Light to a single Color. This pairing cannot be skipped or duplicated; every light must have exactly one color in a state.
+There is a set called "LightState". 
+Every "LightState" and a "Light" map to exactly one "Color" in a relation called "color".
 
-Junctions group Lights together. Each junction can have any number of lights, including none. But it cannot associate one light with more than one junction. 
+There is a set called "Junction". Each element of "Junction" has a relation called "lights" to a set of "Light" elements.
 
-The model introduces a function named 'redLights'. It interacts with a LightState and identifies all lights that are associated with the color Red.
+For every "LightState" and every "Junction", at most one of the "Junction"'s "lights" has a "color" other than "Red".
 
-Lastly, 'mostlyRed' is a predicate that takes a LightState and a Junction as inputs. It checks whether all lights in the junction, but possibly one, are associated with the color Red in the given state.

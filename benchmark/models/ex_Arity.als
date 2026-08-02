@@ -5,5 +5,3 @@ sig C {}
 fact{
 	all a:A | a.r in B -> one C
 	}
-
-run {} for 3

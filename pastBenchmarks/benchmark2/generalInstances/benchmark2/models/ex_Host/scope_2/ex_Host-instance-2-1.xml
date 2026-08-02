@@ -1,0 +1,41 @@
+<alloy builddate="2025-03-10T15:06:21.150Z">
+
+<instance bitwidth="4" maxseq="2" mintrace="-1" maxtrace="-1" command="Run run$2 for 2 but exactly 2 Host, exactly 2 Link" filename="" tracelength="1" looplength="1">
+
+<sig label="seq/Int" ID="0" parentID="1" builtin="yes">
+</sig>
+
+<sig label="Int" ID="1" parentID="2" builtin="yes">
+</sig>
+
+<sig label="String" ID="3" parentID="2" builtin="yes">
+</sig>
+
+<sig label="this/Host" ID="4" parentID="2">
+   <atom label="Host$0"/>
+   <atom label="Host$1"/>
+</sig>
+
+<sig label="this/Link" ID="5" parentID="2">
+   <atom label="Link$0"/>
+   <atom label="Link$1"/>
+</sig>
+
+<field label="from" ID="6" parentID="5">
+   <tuple> <atom label="Link$0"/> <atom label="Host$1"/> </tuple>
+   <tuple> <atom label="Link$1"/> <atom label="Host$0"/> </tuple>
+   <types> <type ID="5"/> <type ID="4"/> </types>
+</field>
+
+<field label="to" ID="7" parentID="5">
+   <tuple> <atom label="Link$0"/> <atom label="Host$0"/> </tuple>
+   <tuple> <atom label="Link$1"/> <atom label="Host$1"/> </tuple>
+   <types> <type ID="5"/> <type ID="4"/> </types>
+</field>
+
+<sig label="univ" ID="2" builtin="yes">
+</sig>
+
+</instance>
+
+</alloy>

@@ -1,6 +1,6 @@
 <alloy builddate="2025-03-10T15:06:21.150Z">
 
-<instance bitwidth="4" maxseq="2" mintrace="-1" maxtrace="-1" command="Run run$2 for 2 but exactly 2 Condition, exactly 2 Sensor, exactly 2 Qualification, exactly 2 Expert, exactly 2 State" filename="" tracelength="1" looplength="1">
+<instance bitwidth="4" maxseq="2" mintrace="-1" maxtrace="-1" command="Run run$1 for 2 but 4 int, exactly 2 Condition, exactly 2 Sensor, exactly 2 Qualification, exactly 2 Expert, exactly 2 State" filename="" tracelength="1" looplength="1">
 
 <sig label="seq/Int" ID="0" parentID="1" builtin="yes">
 </sig>
@@ -55,20 +55,20 @@
 </sig>
 
 <field label="called_experts" ID="12" parentID="11">
-   <tuple> <atom label="State$0"/> <atom label="Expert$1"/> </tuple>
+   <tuple> <atom label="State$0"/> <atom label="Expert$0"/> </tuple>
    <tuple> <atom label="State$1"/> <atom label="Expert$0"/> </tuple>
    <types> <type ID="11"/> <type ID="9"/> </types>
 </field>
 
 <field label="onsite_experts" ID="13" parentID="11">
-   <tuple> <atom label="State$0"/> <atom label="Expert$0"/> </tuple>
+   <tuple> <atom label="State$0"/> <atom label="Expert$1"/> </tuple>
    <tuple> <atom label="State$1"/> <atom label="Expert$1"/> </tuple>
    <types> <type ID="11"/> <type ID="9"/> </types>
 </field>
 
 <field label="current_alarms" ID="14" parentID="11">
    <tuple> <atom label="State$0"/> <atom label="Condition$0"/> </tuple>
-   <tuple> <atom label="State$1"/> <atom label="Condition$1"/> </tuple>
+   <tuple> <atom label="State$1"/> <atom label="Condition$0"/> </tuple>
    <types> <type ID="11"/> <type ID="4"/> </types>
 </field>
 

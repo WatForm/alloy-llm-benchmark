@@ -1,25 +1,34 @@
-The Alloy model represents a simulation of a mark and sweep garbage collection.
+There is a set of atoms called "Node".
 
-There are two signatures in the model. The first one is "Node", which represents a node in the heap. The second signature is "HeapState". It has four fields: "left" and "right", both are relations from Node to at most one Node, "marked" which is a set of Nodes, and "freeList" which is a relation to at most one Node.
+There is a set of atoms called "HeapState". Each "HeapState" is connected to at most one "Node" in a relation called "left". Each "HeapState" is connected to at most one "Node" in a relation called "right".
+Each "HeapState" is connected to set of "Nodes" in the relation "marked".
 
-The model has various predicates and functions. 
 
-The "clearMarks" predicate takes two HeapState as input, let's call them "hs" and "hs'". It guarantees that "hs'" does not have any marked Node and, both the left and right relations remain unchanged.
+Each "HeapState" matches to at most one "Node" by the relation "freeList".
 
-The function "reachable" takes a HeapState and a Node as input, and it returns a set of Nodes which are the given Node and all other Nodes that can be reached from it through the left and the right relations of HeapState.
+There are two subsets of "HeapState", named "h" and "hsn".
 
-The "mark" predicate takes a HeapState(hs), a Node(from), and another HeapState(hs'). It ensures that in the new state hs', the marked set is equivalent to all the nodes reachable from the Node which was passed in. Furthermore, it ensures that the left and right relations of hs remain unchanged in hs'.
+There is exactly one distinguished element named "root".
 
-The "setFreeList" predicate represents a code that sets the freeList. It ensures that in the new state hs', the set of Nodes reachable from the freeList Node through the left relation belongs in the set of Nodes that are not marked. 
+A condition named clearMarks relates two elements of "HeapState"s, called the before-state and after-state.  This condition 
+ensures there are no nodes in the "marked" set of the second "HeapState" and that "left" and "right" fields of the two "HeapState"s are the same.
 
-The "GC" predicate stands for the garbage collection process. It guarantees that the clearMarks, mark and setFreeList predicates are executed sequentially on the heap state for a given root node. 
+A derived set named reachable is determined from a "HeapState" and a starting "Node". It is the set containing the starting node together with every "Node" reachable from that starting node by following zero or more steps, where each step may use either the "left" relation or the "right" relation of that "HeapState".
 
-Following are three assertions in the model, Soundness1, Soundness2 and Completeness.
+A condition named mark relates a before-state, a starting "Node" called "from", and an after-state, with all of the following requirements:
+- the marked set of the after-state is exactly the derived reachable set from "from" in the before-state;
+- the after-state has the same "left" relation as the before-state;
+- the after-state has the same "right" relation as the before-state.
 
-"Soundness1" says that for all heapStates h and h' and for all root Nodes for which the garbage collection predicate "GC" holds true, any Node that is live (or, reachable from the root in h) has its left and right relations unchanged in h'.
+A condition named setFreeList relates a before-state and an after-state, with all of the following requirements:
+- every node reachable from the after-state’s "freeList" by following zero or more "left" steps is an element of "Node" that is not in the marked set of the before-state;
+- for every "Node" not in the marked set of the before-state:
+  - that node has no outgoing "right" element in the after-state;
+  - its "left" successor of the node in the after-state, if any, is reachable from the after-state’s "freeList" by following zero or more "left" steps;
+  - the node itself is reachable from the after-state’s "freeList" by following zero or more "left" steps;
+- for every "Node" that is in the marked set of the before-state:
+  - its "left" successor in the after-state is exactly the same as in the before-state;
+  - its "right" successor in the after-state is exactly the same as in the before-state;
+- the marked set of the after-state is exactly the same as the marked set of the before-state.
 
-"Soundness2" says that for all heapStates h and h' and for all root Nodes for which the garbage collection predicate "GC" holds true, no Node which is reachable from the root in h' is also reachable from a freeList in h'.
-
-"Completeness" says that for all heapStates h and h' and for all root Nodes for which the garbage collection predicate "GC" holds true, all Nodes not reachable from the root in h' are part of the set reachable from a freeList in h'.
-
-For all the three assertions checks are performed up to a scope of 3 and expects a result of 0 as there are no expected counterexamples.
+For "h" and "hsn"  and "root", there must be two "HeapState"s such that "h" and the first "HeapState" satisfy the clearMarks condition and the first "HeapState" and "root" and the second "HeapState" satisfy the mark condition and the second "HeapState" and "hsn" satisfy the setFreeList condition.

@@ -1,35 +1,31 @@
--- niveaux de franchise
-
 open util/ternary
 
-sig NiveauFranchise
-{
-  produit: Produit,
-  garanties: Garantie -> TypeRisque -> ValeurFranchise
+sig DeductibleLevel {
+  product: Product,
+  coverages: Coverage -> RiskType -> DeductibleValue
 }
 
-pred NiveauFranchise.est_valide
-{
-  select12[this.garanties] = (this.produit.garanties <: types_risque)
-  all G: this.produit.garanties_hors_options, TR: TypeRisque | one this.garanties[G, TR]
+pred DeductibleLevel.is_valid {
+  select12[this.coverages] = (this.product.coverages <: risk_types)
+  all C: this.product.base_coverages, RT: RiskType | one this.coverages[C, RT]
 }
 
-sig Produit
-{
-  garanties_hors_options: set Garantie,
-  garanties_optionnelles: set Garantie,
-  types_risque: set TypeRisque
+sig Product {
+  base_coverages: set Coverage,
+  optional_coverages: set Coverage,
+  risk_types: set RiskType
 }
 
-fun garanties : Produit->Garantie { garanties_hors_options + garanties_optionnelles }
+fun coverages : Product -> Coverage { base_coverages + optional_coverages }
 
-sig Garantie
-{
-  types_risque: set TypeRisque
+sig Coverage {
+  risk_types: set RiskType
 }
 
-sig TypeRisque {}
+sig RiskType {}
 
-sig ValeurFranchise {}
+sig DeductibleValue {}
 
-run est_valide for 3 but exactly 1 Produit, exactly 1 NiveauFranchise, exactly 1 Garantie
+fact AllDeductibleLevelsAreValid {
+  all d: DeductibleLevel | d.is_valid
+}

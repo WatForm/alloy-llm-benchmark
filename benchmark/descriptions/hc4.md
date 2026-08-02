@@ -1,13 +1,14 @@
-This model represents a system of nodes or "Vertices". There are two types of vertices: "Joint" and "End". All "Vertices" are either a "Joint" or an "End". Each vertex may have a left and right connection to other vertices.
+There is a set called "Vertex". Each "Vertex" has at most one "left" value and at most one "right" value.
 
-There are several constraints in this system:
+There are two non-overlapping subsets of "Vertex", named "Joint" and "End". Every vertex is a Joint or an End.
 
-- "End" vertices may only have one connection, either to the left or the right. If the connection is to the left, then this "End" vertex is also the left-connected vertex of the right-connected vertex of the "End", and vice versa.
+For every "End", either:
+- its "left" value is absent, and the "End" is equal to the "left" value of its "right" value ; or
+- its "right" value is absent, and the "End" is equal to the "right" value of its "left" value.
 
-- "Joint" vertices must have two connections, one to the left and one to the right. Furthermore, the "Joint" vertex is the left-connected vertex of the right-connected vertex of the joint and the right-connected vertex of the left-connected vertex of the joint. The left-connected and right-connected vertices for a joint cannot be the same.
+For every "Joint":
+- following "left" and then "right" returns to that same element, and
+- following "right" and then "left" returns to that same element, and
+- its "left" value and its "right" value are different.
 
-- All vertices, except for the current vertex, can be reached by following a series of left or right connections from the current vertex.
-
-The model includes a helper function, "neighbors", which returns the set of vertices directly connected to a given vertex.
-
-Lastly, the model includes a predicate called "show", which specifies a condition that the total number of vertices is greater than zero. An Alloy command is provided to execute the "show" predicate with a scope of 5 vertices.
+For every element of "Vertex", the other elements of "Vertex" are exactly those reachable from it either by a nonempty path of only repeated "left" steps or by a nonempty path of only repeated "right" steps; an element is not reachable from itself. 

@@ -1,0 +1,1 @@
+The model consists of three sets named A, B, and C. Within the set A, each element holds a relation named 'r' to elements in sets B and C. This relation is such that, for a given element in set A, each element in set B is related to exactly one element in C. The model requires a command to demonstrate scenarios where these conditions hold, explicitly limited to a scope of three.

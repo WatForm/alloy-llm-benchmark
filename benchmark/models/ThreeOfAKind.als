@@ -1,7 +1,8 @@
 sig Card {suit: Suit}
 sig Suit {}
-pred ThreeOfAKind (hand: set Card) {
-	#hand.suit = 1 and #hand = 3
-	}
 
-run ThreeOfAKind for 6
+sig hand in Card {}
+
+fact ThreeOfAKind {
+    #hand = 3 and #hand.suit = 1 
+}

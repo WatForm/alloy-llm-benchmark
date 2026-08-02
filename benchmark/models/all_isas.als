@@ -1,5 +1,3 @@
--- all_isas relation from isa relation
-
 open util/relation
 open util/graph[C]
 
@@ -27,6 +25,3 @@ fun all_isas[Es: set E] : set C
 	Es.isas.*genls
 }
 
-run
-{
-} for 0 but exactly 1 E, 5 C

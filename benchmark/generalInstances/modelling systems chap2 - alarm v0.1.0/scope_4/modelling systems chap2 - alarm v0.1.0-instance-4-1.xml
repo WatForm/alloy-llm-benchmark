@@ -1,6 +1,6 @@
 <alloy builddate="2025-03-10T15:06:21.150Z">
 
-<instance bitwidth="4" maxseq="4" mintrace="-1" maxtrace="-1" command="Run run$2 for 4 but exactly 4 Condition, exactly 4 Sensor, exactly 4 Qualification, exactly 4 Expert, exactly 4 State" filename="" tracelength="1" looplength="1">
+<instance bitwidth="4" maxseq="4" mintrace="-1" maxtrace="-1" command="Run run$1 for 4 but 4 int, exactly 4 Condition, exactly 4 Sensor, exactly 4 Qualification, exactly 4 Expert, exactly 4 State" filename="" tracelength="1" looplength="1">
 
 <sig label="seq/Int" ID="0" parentID="1" builtin="yes">
 </sig>
@@ -79,36 +79,31 @@
 </sig>
 
 <field label="called_experts" ID="12" parentID="11">
-   <tuple> <atom label="State$0"/> <atom label="Expert$2"/> </tuple>
-   <tuple> <atom label="State$1"/> <atom label="Expert$1"/> </tuple>
    <tuple> <atom label="State$1"/> <atom label="Expert$3"/> </tuple>
-   <tuple> <atom label="State$2"/> <atom label="Expert$0"/> </tuple>
-   <tuple> <atom label="State$2"/> <atom label="Expert$2"/> </tuple>
-   <tuple> <atom label="State$3"/> <atom label="Expert$0"/> </tuple>
+   <tuple> <atom label="State$2"/> <atom label="Expert$1"/> </tuple>
    <tuple> <atom label="State$3"/> <atom label="Expert$1"/> </tuple>
-   <tuple> <atom label="State$3"/> <atom label="Expert$3"/> </tuple>
+   <tuple> <atom label="State$3"/> <atom label="Expert$2"/> </tuple>
    <types> <type ID="11"/> <type ID="9"/> </types>
 </field>
 
 <field label="onsite_experts" ID="13" parentID="11">
+   <tuple> <atom label="State$0"/> <atom label="Expert$0"/> </tuple>
    <tuple> <atom label="State$0"/> <atom label="Expert$1"/> </tuple>
    <tuple> <atom label="State$0"/> <atom label="Expert$3"/> </tuple>
-   <tuple> <atom label="State$1"/> <atom label="Expert$0"/> </tuple>
    <tuple> <atom label="State$1"/> <atom label="Expert$2"/> </tuple>
-   <tuple> <atom label="State$2"/> <atom label="Expert$1"/> </tuple>
-   <tuple> <atom label="State$2"/> <atom label="Expert$3"/> </tuple>
-   <tuple> <atom label="State$3"/> <atom label="Expert$0"/> </tuple>
+   <tuple> <atom label="State$2"/> <atom label="Expert$0"/> </tuple>
    <types> <type ID="11"/> <type ID="9"/> </types>
 </field>
 
 <field label="current_alarms" ID="14" parentID="11">
    <tuple> <atom label="State$0"/> <atom label="Condition$0"/> </tuple>
-   <tuple> <atom label="State$0"/> <atom label="Condition$2"/> </tuple>
+   <tuple> <atom label="State$0"/> <atom label="Condition$3"/> </tuple>
    <tuple> <atom label="State$1"/> <atom label="Condition$1"/> </tuple>
-   <tuple> <atom label="State$1"/> <atom label="Condition$3"/> </tuple>
-   <tuple> <atom label="State$2"/> <atom label="Condition$0"/> </tuple>
-   <tuple> <atom label="State$2"/> <atom label="Condition$2"/> </tuple>
+   <tuple> <atom label="State$1"/> <atom label="Condition$2"/> </tuple>
+   <tuple> <atom label="State$2"/> <atom label="Condition$1"/> </tuple>
+   <tuple> <atom label="State$2"/> <atom label="Condition$3"/> </tuple>
    <tuple> <atom label="State$3"/> <atom label="Condition$1"/> </tuple>
+   <tuple> <atom label="State$3"/> <atom label="Condition$2"/> </tuple>
    <tuple> <atom label="State$3"/> <atom label="Condition$3"/> </tuple>
    <types> <type ID="11"/> <type ID="4"/> </types>
 </field>

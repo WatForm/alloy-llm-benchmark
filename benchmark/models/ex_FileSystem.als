@@ -7,9 +7,3 @@ fact{
 	Object in Root.*contents
 	all o: Object - Root | one o.~contents
 	}
-
-assert RootIsRoot{
-	no d: Directory | d.contents = Root
-	}
-
-run {} for 5

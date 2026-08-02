@@ -1,0 +1,65 @@
+<alloy builddate="2025-03-10T15:06:21.150Z">
+
+<instance bitwidth="4" maxseq="1" mintrace="-1" maxtrace="-1" command="Run run$2 for 1 but exactly 1 NiveauFranchise, exactly 1 Produit, exactly 1 Garantie, exactly 1 TypeRisque, exactly 1 ValeurFranchise" filename="" tracelength="1" looplength="1">
+
+<sig label="seq/Int" ID="0" parentID="1" builtin="yes">
+</sig>
+
+<sig label="Int" ID="1" parentID="2" builtin="yes">
+</sig>
+
+<sig label="String" ID="3" parentID="2" builtin="yes">
+</sig>
+
+<sig label="this/NiveauFranchise" ID="4" parentID="2">
+   <atom label="NiveauFranchise$0"/>
+</sig>
+
+<field label="produit" ID="5" parentID="4">
+   <tuple> <atom label="NiveauFranchise$0"/> <atom label="Produit$0"/> </tuple>
+   <types> <type ID="4"/> <type ID="6"/> </types>
+</field>
+
+<field label="garanties" ID="7" parentID="4">
+   <types> <type ID="4"/> <type ID="8"/> <type ID="9"/> <type ID="10"/> </types>
+</field>
+
+<sig label="this/Produit" ID="6" parentID="2">
+   <atom label="Produit$0"/>
+</sig>
+
+<field label="garanties_hors_options" ID="11" parentID="6">
+   <tuple> <atom label="Produit$0"/> <atom label="Garantie$0"/> </tuple>
+   <types> <type ID="6"/> <type ID="8"/> </types>
+</field>
+
+<field label="garanties_optionnelles" ID="12" parentID="6">
+   <types> <type ID="6"/> <type ID="8"/> </types>
+</field>
+
+<field label="types_risque" ID="13" parentID="6">
+   <types> <type ID="6"/> <type ID="9"/> </types>
+</field>
+
+<sig label="this/Garantie" ID="8" parentID="2">
+   <atom label="Garantie$0"/>
+</sig>
+
+<field label="types_risque" ID="14" parentID="8">
+   <types> <type ID="8"/> <type ID="9"/> </types>
+</field>
+
+<sig label="this/TypeRisque" ID="9" parentID="2">
+   <atom label="TypeRisque$0"/>
+</sig>
+
+<sig label="this/ValeurFranchise" ID="10" parentID="2">
+   <atom label="ValeurFranchise$0"/>
+</sig>
+
+<sig label="univ" ID="2" builtin="yes">
+</sig>
+
+</instance>
+
+</alloy>

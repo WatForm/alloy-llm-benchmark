@@ -1,16 +1,18 @@
-In this model, we have several abstract elements:
+There are four disjoint groups of entities: "Fruit", "Color", "Quality", and "Size".
 
-- "Fruit" is an abstract entity and can represent any type of fruit.
-- "Color" is an abstract property that can describe the color of a fruit. There are only two instances of color defined: RED and ORANGE.
-- "Quality" is an abstract property that can describe the quality of a fruit. There are five instances of quality defined: Ripe, Juicy, Moldy, Brown, Organic.
-- "Size" is an abstract property that can describe the size of a fruit. There are three instances of size defined: Large, Medium, Small.
+"Fruit" consists exactly of one "apple" element and one "orange" element, which are distinct from each other. 
+"Color" consists exactly of one "RED" element and one "ORANGE" element, which are distinct from each other
 
-Next, we have a singular item "FruitBowl" which contains a set of fruits.
+"Quality" consists exactly of one "Ripe" element, one "Juicy" element, one "Moldy" element, one "Brown" element, and one "Organic" element, which are all distinct from each other.
 
-Then, there are two specific types of fruit defined:
-- "Apple" is a subtype of fruit which has properties of color, quality, and size. It can only be the color RED and can only have one quality and one size.
-- "Orange" is a subtype of fruit which has properties of color, quality, and size. It can only be the color ORANGE, and similarly to the apple, it can only have one quality and one size.
+"Size" consists exactly of one "Large" element, one "Medium" element, and one "Small" element, which are all distinct from each other.
 
-These instances are restricted by the contained fruit set, which contains both the apple and the orange that belong to the fruit bowl.
+There is exactly one "FruitBowl".  A "FruitBowl" "contains" zero or more elements of "Fruit".
 
-Lastly, there's a predicate called "show". This does not specify any conditions or limitations, and when running the "show" command, it doesn't specify any scope or expected results.
+The "apple" has exactly one "color", and that "color" is "RED".  
+It has exactly one "quality", chosen from "Quality".  and it has exactly one "size", chosen from "Size".
+
+The "orange". "orange" has exactly one "color", and that "color" is "ORANGE".  
+It has exactly one "quality", chosen from "Quality" and has exactly one "size", chosen from "Size".
+
+The "FruitBowl" "contains" exactly an "apple" and an "orange". 

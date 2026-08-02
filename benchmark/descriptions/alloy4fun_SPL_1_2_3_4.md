@@ -1,28 +1,36 @@
-This Alloy model describes an assortment of features for a system known as Alloy4Fun.
+There are four disjoint kinds of elements: "StoredModel", "Link", "Command", and "Instance".
 
-Within this system, there are several elements, or "signatures", that interact with each other:
+The "derivationOf" a "StoredModel" is one or no "StoredModel".
+Each "StoredModel" is associated with one or no "public" "Link".
+Each "StoredModel" is associated with one or no "secret" "Link".
+Each "StoredModel" is associated with one or no "Command", called its "command".
 
-- 'StoredModel': this represents a saved model within the system. It may predict a single other 'StoredModel' as its derivation, and it may be linked to a 'Link' or 'Secret'. Furthermore, it might have executed a 'Command'.
-- 'Secret' is a subset of 'StoredModel' that represents confidential models.
-- 'Link' represents a hyperlink or connection between elements.
-- 'Command' refers to an executable action, likely performed on a 'StoredModel'.
-- 'Instance' represents an instance of a command. It is related to one 'Command', it contains a set of 'StoredModel', and it holds a 'Link'.
+"Secret" is a subset of "StoredModel".
 
-Important relations and constraints among these signatures include:
+Each "Instance" is associated with exactly one "instanceOf" value, which is a "Command".
+Each "Instance" is associated with a set of "StoredModel"s, called its "model".
+Each "Instance" is associated with exactly one "Link", called its "link".
 
-- Every 'Link' must relate to one entity in 'StoredModel'.
-- Only 'Secret' models can have a 'secret' link. 
-- If a 'Secret' model has a 'secret' link, it must also have a 'public' link.
-- If a 'Secret' model has a 'public' link, it must originate from a model with a 'secret' link.
-- For each 'StoredModel', its 'public' and 'secret' links, if they exist, must be separate and distinct.
-- A model's derivations form a tree, with no 'StoredModel' being a derivation of itself.
-- 'StoredModel' without a 'public' link can have at most one derivation.
-- If a 'Secret' model derivation tree starts, it remains as such; it cannot be converted into a non-Secret tree.
-- If a 'Secret' model only has a 'public' link and no 'secret' link, it cannot have any derivations with 'secret' links.
-- Every 'Command' is unique to one 'StoredModel', and there cannot be commands without associated models.
-- If a 'StoredModel' doesn't have a public link, it must have a command.
-- Each command can have at most one instance.
+Every "Link" has exactly one owner, where an owner is an element related to that "Link" through at least one of the "public", "secret", or "link" relations.
 
-The predicates 'GoodSpec' and 'BadSpec' specify constraints about the relationships between the public and secret links of StoredModels. 
+Every "StoredModel" that has a "secret" "Link" is a "Secret".
 
-The model also includes commands, or checks, such as 'NoCommands', 'PublicAndSecretLinksDisjoint', and 'OneDerivation'. These commands are used to verify specific aspects of the model: 'NoCommands' checks if there are any commands present; 'PublicAndSecretLinksDisjoint' validates that the sets of public and secret links do not overlap; 'OneDerivation' ensures models without a public link have at most one derivation. Each of these checks are made for a certain scope (e.g., for 20 or 30).
+Every "Secret" that has a "secret" "Link" must have a "public" "Link".
+
+Every "Secret" that has a "public" "Link" must reach a "secret" "Link" or must be reach a "secret" "Link" via one or more "derivationOf" steps.
+
+No "StoredModel" is reachable from itself by following "derivationOf" one or more times.
+
+Every "StoredModel" that has no "public" "Link" is the "derivationOf" at most one "StoredModel".
+
+Every "StoredModel" that can reach a "Secret" by following one or more "derivationOf" steps is also a "Secret".
+
+If a "Secret" has a "public" value and no "secret" value, then there is no "StoredModel" that can reach it by following "derivationOf" zero or more times that has a "secret" value.
+
+Every "Command" is the "command" of exactly one "StoredModel".
+
+Every "StoredModel" has no "public" value if and only if it has some "command".
+
+For every "Instance", its "model" set is exactly the set of "StoredModel"s whose "command" value is the "instanceOf" value of the "Instance".
+
+Every "Command" has at most one "Instance" that is the "instanceOf" of that "Command".

@@ -1,11 +1,15 @@
-The model includes an abstract signature called "Object". It has derived signatures from "Object", these are "Directory" and "File". "Directory" has a relation set called "contents" that contains multiple objects. Another signature derived from "Directory" is "Root" which has exactly one instance.
+There is a set called "Object".
 
-The relations and constraints within the model are:
+The elements of a set called "Directory" are all contained within "Object". Each element of "Directory" is related by "contents" to a set of elements of "Object".
 
-- Firstly, there's a constraint ensuring that no "Directory" can contain itself either directly or indirectly through its "contents".  
-- There's a constraint that every "Object" must be somewhere in the "contents" of "Root", either directly or indirectly.
-- The model also constraint says that for all "Objects" other than "Root", they must be held in the "contents" field of exactly one other "Object".
+There is exactly one element called "Root".
 
-Finally, there an assertion named "RootIsRoot". This doesn't affect the structure of the model, but it checks a certain condition: that no "Directory" has "Root" as its "contents". This means the "Root" doesn't belong to the contents of any "Directory".
+There is a set called "File" is a subset of "Object".
 
-The command at the end of the model, "run {} for 5", doesn't specify a predicate to check. Instead, it asks Alloy to find an instance of the model with up to 5 atoms, where atoms are individual instances of signatures.
+Every element of "Object" is either in "Directory" or in "File". No element can be in both "Directory" and "File".
+
+No directory contains itself, which means no element of "Directory" is reachable from itself by following one or more steps of "contents".
+
+Every element of "Object" is reachable from "Root" by following zero or more steps of "contents". 
+
+Every element of "Object" other than "Root" is in the "contents" relation of exactly one element.

@@ -1,6 +1,6 @@
 <alloy builddate="2025-03-10T15:06:21.150Z">
 
-<instance bitwidth="4" maxseq="5" mintrace="-1" maxtrace="-1" command="Run run$2 for 5 but exactly 5 Condition, exactly 5 Sensor, exactly 5 Qualification, exactly 5 Expert, exactly 5 State" filename="" tracelength="1" looplength="1">
+<instance bitwidth="4" maxseq="5" mintrace="-1" maxtrace="-1" command="Run run$1 for 5 but 4 int, exactly 5 Condition, exactly 5 Sensor, exactly 5 Qualification, exactly 5 Expert, exactly 5 State" filename="" tracelength="1" looplength="1">
 
 <sig label="seq/Int" ID="0" parentID="1" builtin="yes">
 </sig>
@@ -55,15 +55,14 @@
 
 <field label="conditions" ID="8" parentID="7">
    <tuple> <atom label="Qualification$0"/> <atom label="Condition$4"/> </tuple>
-   <tuple> <atom label="Qualification$1"/> <atom label="Condition$2"/> </tuple>
    <tuple> <atom label="Qualification$1"/> <atom label="Condition$3"/> </tuple>
-   <tuple> <atom label="Qualification$2"/> <atom label="Condition$1"/> </tuple>
-   <tuple> <atom label="Qualification$2"/> <atom label="Condition$3"/> </tuple>
+   <tuple> <atom label="Qualification$2"/> <atom label="Condition$2"/> </tuple>
+   <tuple> <atom label="Qualification$2"/> <atom label="Condition$4"/> </tuple>
+   <tuple> <atom label="Qualification$3"/> <atom label="Condition$0"/> </tuple>
    <tuple> <atom label="Qualification$3"/> <atom label="Condition$1"/> </tuple>
    <tuple> <atom label="Qualification$3"/> <atom label="Condition$4"/> </tuple>
-   <tuple> <atom label="Qualification$4"/> <atom label="Condition$0"/> </tuple>
-   <tuple> <atom label="Qualification$4"/> <atom label="Condition$2"/> </tuple>
-   <tuple> <atom label="Qualification$4"/> <atom label="Condition$4"/> </tuple>
+   <tuple> <atom label="Qualification$4"/> <atom label="Condition$1"/> </tuple>
+   <tuple> <atom label="Qualification$4"/> <atom label="Condition$3"/> </tuple>
    <types> <type ID="7"/> <type ID="4"/> </types>
 </field>
 
@@ -81,9 +80,10 @@
    <tuple> <atom label="Expert$1"/> <atom label="Qualification$2"/> </tuple>
    <tuple> <atom label="Expert$2"/> <atom label="Qualification$2"/> </tuple>
    <tuple> <atom label="Expert$3"/> <atom label="Qualification$1"/> </tuple>
+   <tuple> <atom label="Expert$3"/> <atom label="Qualification$4"/> </tuple>
    <tuple> <atom label="Expert$4"/> <atom label="Qualification$0"/> </tuple>
    <tuple> <atom label="Expert$4"/> <atom label="Qualification$2"/> </tuple>
-   <tuple> <atom label="Expert$4"/> <atom label="Qualification$4"/> </tuple>
+   <tuple> <atom label="Expert$4"/> <atom label="Qualification$3"/> </tuple>
    <types> <type ID="9"/> <type ID="7"/> </types>
 </field>
 
@@ -98,41 +98,34 @@
 <field label="called_experts" ID="12" parentID="11">
    <tuple> <atom label="State$0"/> <atom label="Expert$3"/> </tuple>
    <tuple> <atom label="State$1"/> <atom label="Expert$3"/> </tuple>
-   <tuple> <atom label="State$2"/> <atom label="Expert$2"/> </tuple>
-   <tuple> <atom label="State$3"/> <atom label="Expert$2"/> </tuple>
+   <tuple> <atom label="State$2"/> <atom label="Expert$3"/> </tuple>
    <tuple> <atom label="State$3"/> <atom label="Expert$3"/> </tuple>
-   <tuple> <atom label="State$4"/> <atom label="Expert$0"/> </tuple>
-   <tuple> <atom label="State$4"/> <atom label="Expert$1"/> </tuple>
-   <tuple> <atom label="State$4"/> <atom label="Expert$4"/> </tuple>
+   <tuple> <atom label="State$4"/> <atom label="Expert$3"/> </tuple>
    <types> <type ID="11"/> <type ID="9"/> </types>
 </field>
 
 <field label="onsite_experts" ID="13" parentID="11">
-   <tuple> <atom label="State$0"/> <atom label="Expert$0"/> </tuple>
    <tuple> <atom label="State$0"/> <atom label="Expert$2"/> </tuple>
-   <tuple> <atom label="State$0"/> <atom label="Expert$4"/> </tuple>
    <tuple> <atom label="State$1"/> <atom label="Expert$1"/> </tuple>
-   <tuple> <atom label="State$1"/> <atom label="Expert$3"/> </tuple>
-   <tuple> <atom label="State$2"/> <atom label="Expert$0"/> </tuple>
-   <tuple> <atom label="State$3"/> <atom label="Expert$1"/> </tuple>
+   <tuple> <atom label="State$1"/> <atom label="Expert$2"/> </tuple>
+   <tuple> <atom label="State$1"/> <atom label="Expert$4"/> </tuple>
    <tuple> <atom label="State$3"/> <atom label="Expert$2"/> </tuple>
-   <tuple> <atom label="State$3"/> <atom label="Expert$3"/> </tuple>
-   <tuple> <atom label="State$4"/> <atom label="Expert$0"/> </tuple>
+   <tuple> <atom label="State$3"/> <atom label="Expert$4"/> </tuple>
+   <tuple> <atom label="State$4"/> <atom label="Expert$1"/> </tuple>
    <types> <type ID="11"/> <type ID="9"/> </types>
 </field>
 
 <field label="current_alarms" ID="14" parentID="11">
+   <tuple> <atom label="State$0"/> <atom label="Condition$2"/> </tuple>
    <tuple> <atom label="State$0"/> <atom label="Condition$3"/> </tuple>
    <tuple> <atom label="State$1"/> <atom label="Condition$2"/> </tuple>
-   <tuple> <atom label="State$1"/> <atom label="Condition$4"/> </tuple>
-   <tuple> <atom label="State$2"/> <atom label="Condition$0"/> </tuple>
-   <tuple> <atom label="State$2"/> <atom label="Condition$2"/> </tuple>
+   <tuple> <atom label="State$1"/> <atom label="Condition$3"/> </tuple>
+   <tuple> <atom label="State$2"/> <atom label="Condition$1"/> </tuple>
    <tuple> <atom label="State$2"/> <atom label="Condition$3"/> </tuple>
    <tuple> <atom label="State$3"/> <atom label="Condition$1"/> </tuple>
-   <tuple> <atom label="State$3"/> <atom label="Condition$4"/> </tuple>
-   <tuple> <atom label="State$4"/> <atom label="Condition$0"/> </tuple>
+   <tuple> <atom label="State$3"/> <atom label="Condition$3"/> </tuple>
+   <tuple> <atom label="State$4"/> <atom label="Condition$1"/> </tuple>
    <tuple> <atom label="State$4"/> <atom label="Condition$2"/> </tuple>
-   <tuple> <atom label="State$4"/> <atom label="Condition$3"/> </tuple>
    <types> <type ID="11"/> <type ID="4"/> </types>
 </field>
 

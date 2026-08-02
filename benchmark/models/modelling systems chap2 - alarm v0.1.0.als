@@ -39,10 +39,6 @@ pred called_experts_check[ S: State ]
 	no E: called_experts[S] | can_solve_all_alarms[ onsite_experts[S] + (called_experts[S] - E), current_alarms[S] ]
 }
 
-run
-{ -- cas de tests
-	onsite_experts[State] + called_experts[State] = Expert
-	some current_alarms[State]
-	-- invariants à valider
-	called_experts_check[State]
-} for 2 but 1 State, 0 Sensor
+fact CalledExpertscheck {
+    all s: State | called_experts_check[s]
+}

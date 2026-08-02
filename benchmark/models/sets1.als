@@ -6,11 +6,8 @@ sig Set {
 
 sig Element {}
 
-assert Closed {
-	all s0, s1: Set |
-		some s2: Set |
-			s2.elements = s0.elements + s1.elements
-	}
-
-// This check should produce a counterexample
-check Closed
+fact NotClosed {
+	some s0, s1: Set |
+		all s2: Set |
+			s2.elements != s0.elements + s1.elements
+}

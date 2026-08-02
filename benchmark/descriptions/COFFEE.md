@@ -1,25 +1,78 @@
-This is a model in the Alloy language that depicts the interaction between 'Cup' and 'Coffee', described as 'ThermalThings', and the properties they possess.
+There are disjoint sets called "Thing", "Property", "QuallitativeState", and "Process".
 
-Signatures:
-The model has several signatures, with 'Thing' as the abstract parent signature. Other distinctive signatures include 'Property', 'Process', 'QuallitativeState', 'Thing' and their respective children signatures.
+Every "Thing" is related to exactly one "Thing" in a relation called 
+"touches". Every "Thing" is related to zero or more "Property" elements through a relation called "hasProperty".
 
-'Thing': It is connected to another 'Thing' via the 'touches' relation, and it has some properties described by 'hasProperty'.
+Every "Property" has an "influences" relation connecting it to zero or more "Property" elements. Every "Property" is related to exactly one "QuallitativeState" called its "state".
 
-'Property': It can influence other 'Properties' via 'influences' relation and also has a quallitative state via 'state' relation.
+"QuallitativeState" consists of exactly the distinct elements "INCREASING", "DECREASING", and "NOCHANGE".
 
-'QuallitativeState': It has three extended signatures 'INCREASING', 'DECREASING', and 'NOCHANGE'. None of them have relationships with other signatures, but they are used in the model to establish relationships.
+All "Thing"s are "ThermalThing"s.  There is exactly one "Substance" and exactly one "Cup", and each of them is a distinct "ThermalThing". There are no other "ThermalThing"s. There is exactly one "Coffee", which is the only "Substance".
 
-There are explicit instances of 'ThermalThing', 'Substance', 'Cup', 'Coffee', 'HEAT', 'ThermalProperty', 'TEMPERATURE', 'HEAT_OF_COFFEE', 'HEAT_OF_CUP', 'TEMPERATURE_OF_COFFEE', 'TEMPERATURE_OF_CUP' and 'HeatFlow'. There are relationships among these instances, which are governed by the rules detailed below in 'facts'.
+The set "ThermalProperty" is equal to the set "Property".
 
-Facts:
-- There is no 'Thing' that touches itself.
-- If a 'Thing' touches another 'Thing', the latter also touches the former.
-- The properties of 'Coffee' are 'TEMPERATURE_OF_COFFEE' and 'HEAT_OF_COFFEE'. Similarly, the properties of 'Cup' are 'TEMPERATURE_OF_CUP' and 'HEAT_OF_CUP'.
-- 'HEAT_OF_COFFEE' influences 'TEMPERATURE_OF_COFFEE' and 'HEAT_OF_CUP' influences 'TEMPERATURE_OF_CUP'.
-- If a 'Thermal Thing' is neither a 'Cup' nor a 'Coffee', it does not have the 'greaterThan' relation, nor is it a part of 'HeatFlow'.
-- If a 'ThermalThing' touches either the 'Cup' or the 'Coffee', it will have a 'greaterThan' relation pointing from 'HEAT_OF_COFFEE' to 'HEAT_OF_CUP' or vice versa but not both at the same time.
-- If the 'ThermalThing' touching the 'Cup' or the 'Coffee' does not have the 'greaterThan' relation, 'increases' and 'decreases' do not point from 'HeatFlow' to 'HEAT_OF_CUP' or 'HEAT_OF_COFFEE'.
-- There are rules which dictate the 'state', 'increases' and 'decreases' relation if a 'ThermalThing' touching the 'Cup' or the 'Coffee' have the 'greaterThan' relation from 'HEAT_OF_CUP' to 'HEAT_OF_COFFEE' or vice versa.
+The disjoint sets "HEAT" and "TEMPERATURE" are subsets of "ThermalProperty".
 
-Predicates and commands:
-The model has one named predicate - 'show' which does not have any operations/commands defined under it, so it has no effect. This predicate can be used to display the results of the declarations and facts in the model. A command 'run show' is present at the end to run this predicate.
+There are exactly one "TEMPERATURE_OF_COFFEE" and exactly one "TEMPERATURE_OF_CUP", and each of them is distinct element of the set "TEMPERATURE".  There are no other elements of "TEMPERATURE".
+
+There are exactly one "HEAT_OF_COFFEE" and exactly one "HEAT_OF_CUP", and each of them is a "HEAT". There are no other elements of "HEAT".
+
+Every "Process" is associated with exactly one "increases" "HEAT" and with exactly one "decreases" "HEAT".
+
+There is exactly one "HeatFlow", and it is a "Process".  There are no other elements in "HeatFlow".
+There are no "Process"es that aren't in "HeatFlow".
+
+Every "HEAT" has a "greaterThan" relation to at most one "HEAT".
+
+The "greaterThan" relation never relates any "HEAT" to itself.
+The "greaterThan" relation is not equal to its converse.
+
+The "touches" relation never relates any "Thing" to itself.
+The "touches" relation is symmetric.
+
+"Coffee" "hasProperty" "TEMPERATURE_OF_COFFEE" and also "HEAT_OF_COFFEE".  "Cup" has the same properties.  Nothing else has properties.
+
+"HEAT_OF_COFFEE" influences "TEMPERATURE_OF_COFFEE", and "HEAT_OF_CUP" influences "TEMPERATURE_OF_CUP".  There are no other influences.
+
+// NAD: this seems to be impossible b/c there must be a "HeatFlow" element 
+If a "ThermalThing" "touches" neither "Cup" nor "Coffee", then there is no "greaterThan" relationship at all and there is no "HeatFlow".
+
+A "ThermalThing" "touches" "Cup" or "Coffee" if and only if one of these three conditions holds:  
+(1) "HEAT_OF_COFFEE" is "greaterThan" "HEAT_OF_CUP", 
+or 
+(2) "HEAT_OF_CUP" is "greaterThan" "HEAT_OF_COFFEE", 
+or
+(3) neither "HEAT_OF_CUP" nor "HEAT_OF_COFFEE" is "greaterThan" the other.
+
+If a "ThermalThing" 
+"touches" either "Cup" or "Coffee"
+and 
+neither "HEAT_OF_CUP" nor "HEAT_OF_COFFEE" is "greaterThan" the other 
+then 
+the "HeatFlow" does not "increases" the "HEAT_OF_CUP", 
+the "HeatFlow" does not "increases" the "HEAT_OF_COFFEE",  
+the "HeatFlow" does not "decreases" "HEAT_OF_COFFEE", and
+the "HeatFlow" does not "decreases" "HEAT_OF_CUP".
+
+Additionally, if a "ThermalThing" 
+"touches" either "Cup" or "Coffee" 
+when 
+"HEAT_OF_CUP" is "greaterThan" "HEAT_OF_COFFEE" 
+then
+the "state" of "HEAT_OF_COFFEE" must be "INCREASING",
+the "state" of "TEMPERATURE_OF_COFFEE" must be "INCREASING",
+the "state" of "HEAT_OF_CUP" must be "DECREASING",
+and "state" of "TEMPERATURE_OF_CUP" must be "DECREASING", 
+only "HeatFlow" "increases" "HEAT_OF_COFFEE", and 
+only "HeatFlow" "decreases" "HEAT_OF_CUP".
+
+However, if a "ThermalThing" 
+"touches" either "Cup" or "Coffee" 
+when "HEAT_OF_COFFEE" is "greaterThan" "HEAT_OF_CUP" 
+then
+the "state" of "HEAT_OF_COFFEE" must be "DECREASING",
+the "state" of "TEMPERATURE_OF_COFFEE" must be "DECREASING",
+the "state" of "HEAT_OF_CUP" must be "INCREASING",
+and "state" of "TEMPERATURE_OF_CUP" must be "INCREASING",
+only "HeatFlow" "increases" "HEAT_OF_CUP", and 
+only "HeatFlow" decreases "HEAT_OF_COFFEE".

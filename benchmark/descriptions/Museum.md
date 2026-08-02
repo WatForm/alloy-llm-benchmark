@@ -1,38 +1,24 @@
-This Alloy model describes a museum scenario with pictures, clients, and museum itself as primary entities. 
+There are three disjoint sets called "Picture", "Client", and "Museum".
 
-The primary entities in the model are Pictures, Clients, and Museum. 
+There is at least one "Picture".
 
--  'Picture' is a set that represents all the pictures in the museum. 
+There is at least one "Client". Each "Client" is associated with a "loaned" set of "Picture"s.
+Each "Client" is associated with a "desires" set of "Picture"s.
 
-- 'Client' is also a set, representing all the clients of the museum. Each 'Client' has two relations: 
-   1. 'loaned' - a set of 'Picture' that the client currently has loaned from the museum. 
-   2. 'desires' - a set of 'Picture' that the client wishes to loan from the museum.
+There is exactly one "Museum". Each "Museum" has a "permanent" set  of "Picture"s.  
+Each "Museum" has an "onDisplay" set  of "Picture"s.  
 
-- 'Museum' is a singleton set denoting the museum itself, with two relations: 
-   1. 'permanent' - a set of 'Picture' that belongs to the museum's permanent collection
-   2. 'onDisplay' - a set of 'Picture' that are currently on display in the museum. 
+Every "Picture" is either in "onDisplay" in the Museum" or "loaned" to a "Client".
 
-The model sets several constraints related to these entities:
+If a picture is "permanent" in a "Museum", then it is in "onDisplay" in that "Museum".
 
-- Every 'Picture' must either be on display in the 'Museum' or currently loaned to a 'Client'. 
+No "Picture" is both in "onDisplay" on a "Museum" and "loaned" to any "Client".
 
-- Every 'Picture' in the permanent collection is also on display at the museum. 
+A "Client"'s "desires" cannot equal the "permanent" set of the "Museum".
 
-- No 'Picture' can be both loaned to a 'Client' and on display at the 'Museum' simultaneously.
+For every "Client", no "Picture" is both in that client's "desires" and in that client's "loaned" set.
 
-- No 'Client' can desire any 'Picture' that is within the 'Museum's permanent collection.
+Every "Picture" that appears in the "desires" set of any "Client" is in the "loaned" set of at least one "Client".
 
-- No 'Client' can desire a 'Picture' he or she has already loaned. 
+For every two distinct "Client"s, no "Picture" is in both of their "loaned" sets.
 
-- All 'Pictures' a 'Client' desires are on loan currently. 
-
-- No two different 'Clients' can have the same 'Picture' loaned.
-
-The model includes a 'run' predicate that checks for specific conditions, with a given scope of exactly 3 'Client' and exactly 8 'Picture'. It checks for the following states: 
-- There is some Picture in the permanent collection.
-- Some Pictures are on display, excluding those in the permanent collection.
-- Some Pictures are desired by Clients.
-- Some Pictures are loaned out.
-- Some Pictures loaned out to Clients are not desired by the same Clients.
-- Some Pictures are both desired by and loaned out to Clients. 
-- There's intersection between the Pictures loaned and Pictures desired.

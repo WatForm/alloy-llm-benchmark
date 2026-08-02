@@ -1,6 +1,6 @@
 <alloy builddate="2025-03-10T15:06:21.150Z">
 
-<instance bitwidth="4" maxseq="2" mintrace="-1" maxtrace="-1" command="Run run$2 for 2 but exactly 2 Color, exactly 2 Light, exactly 2 LightState, exactly 2 Junction" filename="" tracelength="1" looplength="1">
+<instance bitwidth="4" maxseq="2" mintrace="-1" maxtrace="-1" command="Run run$1 for 2 but 4 int, exactly 2 Color, exactly 2 Light, exactly 2 LightState, exactly 2 Junction" filename="" tracelength="1" looplength="1">
 
 <sig label="seq/Int" ID="0" parentID="1" builtin="yes">
 </sig>
@@ -39,8 +39,8 @@
 <field label="color" ID="10" parentID="9">
    <tuple> <atom label="LightState$0"/> <atom label="Light$0"/> <atom label="Yellow$0"/> </tuple>
    <tuple> <atom label="LightState$0"/> <atom label="Light$1"/> <atom label="Green$0"/> </tuple>
-   <tuple> <atom label="LightState$1"/> <atom label="Light$0"/> <atom label="Yellow$0"/> </tuple>
-   <tuple> <atom label="LightState$1"/> <atom label="Light$1"/> <atom label="Red$0"/> </tuple>
+   <tuple> <atom label="LightState$1"/> <atom label="Light$0"/> <atom label="Red$0"/> </tuple>
+   <tuple> <atom label="LightState$1"/> <atom label="Light$1"/> <atom label="Yellow$0"/> </tuple>
    <types> <type ID="9"/> <type ID="8"/> <type ID="5"/> </types>
 </field>
 
@@ -51,7 +51,7 @@
 
 <field label="lights" ID="12" parentID="11">
    <tuple> <atom label="Junction$0"/> <atom label="Light$1"/> </tuple>
-   <tuple> <atom label="Junction$1"/> <atom label="Light$0"/> </tuple>
+   <tuple> <atom label="Junction$1"/> <atom label="Light$1"/> </tuple>
    <types> <type ID="11"/> <type ID="8"/> </types>
 </field>
 
