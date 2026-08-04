@@ -1,0 +1,1535 @@
+Alloy Benchmark Scoring Report
+================================================================================
+SemDiff direction note: ModuleDiff <left> <right> SemDiff reports equivalent when right => left.
+CompoSAT timeout per scope: 900s
+General instance generation timeout per scope: 900s
+Model scoring parallelism: 4 worker(s)
+
+Model: Avenant
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/Avenant.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/Avenant.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/Avenant.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 1/1
+      scope_1: 1/1
+    General instances from original model checked on output model: 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 1/1
+      scope_1: 1/1
+    General instances from output model checked on original model: 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+  TOTAL: 25/25
+
+Model: COFFEE
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/COFFEE.attempt3.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/COFFEE.als
+  Syntax attempts score: 0/3 (first valid attempt: None)
+  Final attempt syntax valid: no
+  Final attempt syntax detail: Exception in thread "main" java.lang.RuntimeException: Ordering not supported.
+	at org.alloytools.alloy.diff.ModuleMerger.mergeSigs(ModuleMerger.java:124)
+	at org.alloytools.alloy.diff.ModuleDiff.diff(ModuleDiff.java:210)
+	at org.alloytools.alloy.diff.ModuleDiff.diff(ModuleDiff.java:180)
+	at org.alloytools.alloy.diff.ModuleDiff.main(ModuleDiff.java:71)
+  Attempt history:
+    attempt_1: INVALID (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/COFFEE.attempt1.als)
+      detail: Exception in thread "main" java.lang.RuntimeException: Alloy failed to parse module.
+	at org.alloytools.alloy.diff.ModuleDiff.diff(ModuleDiff.java:177)
+	at org.alloytools.alloy.diff.ModuleDiff.main(ModuleDiff.java:71)
+Caused by: Type error in /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/COFFEE.attempt1.als at line 47 column 23:
+= can be used only between 2 expressions of the same arity, or between 2 integer expressions.
+Left type = {this/Property}
+Right type = {this/Coffee->this/TEMPERATURE_OF_COFFEE, this/Coffee->this/HEAT_OF_COFFEE, this/Cup->this/TEMPERATURE_OF_CUP, this/Cup->this/HEAT_OF_CUP}
+	at edu.mit.csail.sdg.ast.ExprBinary.error(ExprBinary.java:103)
+	at edu.mit.csail.sdg.ast.ExprBinary$Op.make(ExprBinary.java:406)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:499)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:244)
+	at edu.mit.csail.sdg.ast.ExprBinary.accept(ExprBinary.java:734)
+	at edu.mit.csail.sdg.ast.VisitReturn.visitThis(VisitReturn.java:34)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:450)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:244)
+	at edu.mit.csail.sdg.ast.ExprList.accept(ExprList.java:307)
+	at edu.mit.csail.sdg.ast.VisitReturn.visitThis(VisitReturn.java:34)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:635)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:244)
+	at edu.mit.csail.sdg.ast.ExprUnary.accept(ExprUnary.java:486)
+	at edu.mit.csail.sdg.ast.VisitReturn.visitThis(VisitReturn.java:34)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:635)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:244)
+	at edu.mit.csail.sdg.ast.ExprUnary.accept(ExprUnary.java:486)
+	at edu.mit.csail.sdg.ast.VisitReturn.visitThis(VisitReturn.java:34)
+	at edu.mit.csail.sdg.parser.CompModule$Context.check(CompModule.java:385)
+	at edu.mit.csail.sdg.parser.CompModule.resolveFacts(CompModule.java:1760)
+	at edu.mit.csail.sdg.parser.CompModule.resolveAll(CompModule.java:2148)
+	at edu.mit.csail.sdg.parser.CompUtil.parseEverything_fromFile(CompUtil.java:360)
+	at org.alloytools.alloy.diff.ModuleDiff.diff(ModuleDiff.java:174)
+	... 1 more
+    attempt_2: INVALID (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/COFFEE.attempt2.als)
+      detail: Exception in thread "main" java.lang.RuntimeException: Ordering not supported.
+	at org.alloytools.alloy.diff.ModuleMerger.mergeSigs(ModuleMerger.java:124)
+	at org.alloytools.alloy.diff.ModuleDiff.diff(ModuleDiff.java:210)
+	at org.alloytools.alloy.diff.ModuleDiff.diff(ModuleDiff.java:180)
+	at org.alloytools.alloy.diff.ModuleDiff.main(ModuleDiff.java:71)
+    attempt_3: INVALID (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/COFFEE.attempt3.als)
+      detail: Exception in thread "main" java.lang.RuntimeException: Ordering not supported.
+	at org.alloytools.alloy.diff.ModuleMerger.mergeSigs(ModuleMerger.java:124)
+	at org.alloytools.alloy.diff.ModuleDiff.diff(ModuleDiff.java:210)
+	at org.alloytools.alloy.diff.ModuleDiff.diff(ModuleDiff.java:180)
+	at org.alloytools.alloy.diff.ModuleDiff.main(ModuleDiff.java:71)
+  Direction: original => output
+    Ringert (SemDiff implication): 0/1
+      scope_1: 0/1
+    CompoSAT instances from original model checked on output model: 0/2
+      scope_1: 0/2
+    General instances from original model checked on output model: 0/2
+      scope_1: 0/2
+  Direction: output => original
+    Ringert (SemDiff implication): 0/1
+      scope_1: 0/1
+    CompoSAT instances from output model checked on original model: 0/2
+      scope_1: 0/2
+    General instances from output model checked on original model: 0/0
+      scope_1: 0/0
+    Note: scope_1: InstanceGenerator exited with code 1 (You cannot set a scope on the enum "this/QuallitativeState")
+    Note: scope_1: InstanceGenerator exhausted after 0 candidate(s); kept 0 unique new instance(s).
+  TOTAL: 0/11
+
+Model: FieldComplex-static
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/FieldComplex-static.attempt2.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/FieldComplex-static.als
+  Syntax attempts score: 2/3 (first valid attempt: 2)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: INVALID (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/FieldComplex-static.attempt1.als)
+      detail: Exception in thread "main" java.lang.RuntimeException: Alloy failed to parse module.
+	at org.alloytools.alloy.diff.ModuleDiff.diff(ModuleDiff.java:177)
+	at org.alloytools.alloy.diff.ModuleDiff.main(ModuleDiff.java:71)
+Caused by: Syntax error in /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/FieldComplex-static.attempt1.als at line 7 column 5:
+"Game" is already the name of a sig/parameter in this module.
+	at edu.mit.csail.sdg.parser.CompModule.dup(CompModule.java:952)
+	at edu.mit.csail.sdg.parser.CompModule.addSig(CompModule.java:1433)
+	at edu.mit.csail.sdg.parser.CUP$CompParser$actions.CUP$CompParser$do_action(CompParser.java:6444)
+	at edu.mit.csail.sdg.parser.CompParser.do_action(CompParser.java:2026)
+	at edu.mit.csail.sdg.parser.CompParser.parse(CompParser.java:2070)
+	at edu.mit.csail.sdg.parser.CompParser.alloy_parseStream(CompParser.java:2261)
+	at edu.mit.csail.sdg.parser.CompUtil.parse(CompUtil.java:451)
+	at edu.mit.csail.sdg.parser.CompUtil.parseRecursively(CompUtil.java:214)
+	at edu.mit.csail.sdg.parser.CompUtil.parseEverything_fromFile(CompUtil.java:358)
+	at org.alloytools.alloy.diff.ModuleDiff.diff(ModuleDiff.java:174)
+	... 1 more
+    attempt_2: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/FieldComplex-static.attempt2.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 2/2
+      scope_2: 2/2
+    General instances from original model checked on output model: 40/40
+      scope_2: 10/10
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 2/2
+      scope_1: 0/0
+      scope_2: 2/2
+    General instances from output model checked on original model: 36/36
+      scope_1: 0/0
+      scope_2: 6/6
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+    Note: scope_1: InstanceGenerator exhausted after 0 candidate(s); kept 0 unique new instance(s).
+    Note: scope_2: InstanceGenerator exhausted after 6 candidate(s); kept 6 unique new instance(s).
+  TOTAL: 92/93
+
+Model: FileSystem-software_abstractions
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/FileSystem-software_abstractions.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/FileSystem-software_abstractions.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/FileSystem-software_abstractions.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 3/3
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 0/0
+      scope_5: 0/0
+    General instances from original model checked on output model: 31/31
+      scope_1: 1/1
+      scope_2: 3/3
+      scope_3: 10/10
+      scope_4: 8/8
+      scope_5: 9/9
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 4/4
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 0/0
+      scope_5: 1/1
+    Note: scope_2: discarded 1 duplicate CompoSAT instance(s).
+    Note: scope_3: discarded 1 duplicate CompoSAT instance(s).
+    Note: scope_4: discarded 1 duplicate CompoSAT instance(s).
+    General instances from output model checked on original model: 31/31
+      scope_1: 1/1
+      scope_2: 3/3
+      scope_3: 10/10
+      scope_4: 8/8
+      scope_5: 9/9
+  TOTAL: 82/82
+
+Model: Museum
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/Museum.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/Museum.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/Museum.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 3/3
+      scope_1: 1/1
+      scope_2: 2/2
+    General instances from original model checked on output model: 36/36
+      scope_1: 1/1
+      scope_2: 5/5
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 3/3
+      scope_1: 1/1
+      scope_2: 2/2
+    Note: scope_2: discarded 1 duplicate CompoSAT instance(s).
+    General instances from output model checked on original model: 36/36
+      scope_1: 1/1
+      scope_2: 5/5
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  TOTAL: 91/91
+
+Model: Puzzle
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/Puzzle.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/Puzzle.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/Puzzle.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 1/1
+      scope_1: 1/1
+    CompoSAT instances from original model checked on output model: 1/1
+      scope_1: 1/1
+    General instances from original model checked on output model: 1/1
+      scope_1: 1/1
+  Direction: output => original
+    Ringert (SemDiff implication): 1/1
+      scope_1: 1/1
+    CompoSAT instances from output model checked on original model: 1/1
+      scope_1: 1/1
+    General instances from output model checked on original model: 1/1
+      scope_1: 1/1
+  TOTAL: 9/9
+
+Model: ThreeOfAKind
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/ThreeOfAKind.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/ThreeOfAKind.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/ThreeOfAKind.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 2/2
+      scope_3: 1/1
+      scope_4: 1/1
+    General instances from original model checked on output model: 8/8
+      scope_3: 1/1
+      scope_4: 2/2
+      scope_5: 5/5
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 2/2
+      scope_1: 0/0
+      scope_2: 0/0
+      scope_3: 1/1
+      scope_4: 1/1
+    Note: scope_4: discarded 1 duplicate CompoSAT instance(s).
+    General instances from output model checked on original model: 8/8
+      scope_1: 0/0
+      scope_2: 0/0
+      scope_3: 1/1
+      scope_4: 2/2
+      scope_5: 5/5
+    Note: scope_1: InstanceGenerator exhausted after 0 candidate(s); kept 0 unique new instance(s).
+    Note: scope_2: InstanceGenerator exhausted after 0 candidate(s); kept 0 unique new instance(s).
+  TOTAL: 33/33
+
+Model: addr
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/addr.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/addr.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/addr.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 8/8
+      scope_1: 4/4
+      scope_2: 2/2
+      scope_3: 2/2
+    General instances from original model checked on output model: 43/43
+      scope_1: 3/3
+      scope_2: 10/10
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 7/7
+      scope_1: 4/4
+      scope_2: 2/2
+      scope_3: 1/1
+    Note: scope_2: discarded 1 duplicate CompoSAT instance(s).
+    Note: scope_3: discarded 1 duplicate CompoSAT instance(s).
+    General instances from output model checked on original model: 43/43
+      scope_1: 3/3
+      scope_2: 10/10
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  TOTAL: 114/114
+
+Model: addressBook2d
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/addressBook2d.attempt3.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/addressBook2d.als
+  Syntax attempts score: 0/3 (first valid attempt: None)
+  Final attempt syntax valid: no
+  Final attempt syntax detail: Exception in thread "main" java.lang.RuntimeException: Alloy failed to parse module.
+	at org.alloytools.alloy.diff.ModuleDiff.diff(ModuleDiff.java:177)
+	at org.alloytools.alloy.diff.ModuleDiff.main(ModuleDiff.java:71)
+Caused by: Syntax error in /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/addressBook2d.attempt3.als at line 9 column 5:
+"Book" is already the name of a sig/parameter in this module.
+	at edu.mit.csail.sdg.parser.CompModule.dup(CompModule.java:952)
+	at edu.mit.csail.sdg.parser.CompModule.addSig(CompModule.java:1433)
+	at edu.mit.csail.sdg.parser.CUP$CompParser$actions.CUP$CompParser$do_action(CompParser.java:6444)
+	at edu.mit.csail.sdg.parser.CompParser.do_action(CompParser.java:2026)
+	at edu.mit.csail.sdg.parser.CompParser.parse(CompParser.java:2070)
+	at edu.mit.csail.sdg.parser.CompParser.alloy_parseStream(CompParser.java:2261)
+	at edu.mit.csail.sdg.parser.CompUtil.parse(CompUtil.java:451)
+	at edu.mit.csail.sdg.parser.CompUtil.parseRecursively(CompUtil.java:214)
+	at edu.mit.csail.sdg.parser.CompUtil.parseEverything_fromFile(CompUtil.java:358)
+	at org.alloytools.alloy.diff.ModuleDiff.diff(ModuleDiff.java:174)
+	... 1 more
+  Attempt history:
+    attempt_1: INVALID (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/addressBook2d.attempt1.als)
+      detail: Exception in thread "main" java.lang.RuntimeException: Alloy failed to parse module.
+	at org.alloytools.alloy.diff.ModuleDiff.diff(ModuleDiff.java:177)
+	at org.alloytools.alloy.diff.ModuleDiff.main(ModuleDiff.java:71)
+Caused by: Syntax error in /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/addressBook2d.attempt1.als at line 11 column 5:
+There are 3 possible tokens that can appear here:
+,  { | 
+	at edu.mit.csail.sdg.parser.CompParser.syntax_error(CompParser.java:2219)
+	at edu.mit.csail.sdg.parser.CompParser.parse(CompParser.java:2080)
+	at edu.mit.csail.sdg.parser.CompParser.alloy_parseStream(CompParser.java:2261)
+	at edu.mit.csail.sdg.parser.CompUtil.parse(CompUtil.java:451)
+	at edu.mit.csail.sdg.parser.CompUtil.parseRecursively(CompUtil.java:214)
+	at edu.mit.csail.sdg.parser.CompUtil.parseEverything_fromFile(CompUtil.java:358)
+	at org.alloytools.alloy.diff.ModuleDiff.diff(ModuleDiff.java:174)
+	... 1 more
+    attempt_2: INVALID (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/addressBook2d.attempt2.als)
+      detail: Exception in thread "main" java.lang.RuntimeException: Alloy failed to parse module.
+	at org.alloytools.alloy.diff.ModuleDiff.diff(ModuleDiff.java:177)
+	at org.alloytools.alloy.diff.ModuleDiff.main(ModuleDiff.java:71)
+Caused by: Syntax error in /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/addressBook2d.attempt2.als at line 9 column 5:
+"Book" is already the name of a sig/parameter in this module.
+	at edu.mit.csail.sdg.parser.CompModule.dup(CompModule.java:952)
+	at edu.mit.csail.sdg.parser.CompModule.addSig(CompModule.java:1433)
+	at edu.mit.csail.sdg.parser.CUP$CompParser$actions.CUP$CompParser$do_action(CompParser.java:6444)
+	at edu.mit.csail.sdg.parser.CompParser.do_action(CompParser.java:2026)
+	at edu.mit.csail.sdg.parser.CompParser.parse(CompParser.java:2070)
+	at edu.mit.csail.sdg.parser.CompParser.alloy_parseStream(CompParser.java:2261)
+	at edu.mit.csail.sdg.parser.CompUtil.parse(CompUtil.java:451)
+	at edu.mit.csail.sdg.parser.CompUtil.parseRecursively(CompUtil.java:214)
+	at edu.mit.csail.sdg.parser.CompUtil.parseEverything_fromFile(CompUtil.java:358)
+	at org.alloytools.alloy.diff.ModuleDiff.diff(ModuleDiff.java:174)
+	... 1 more
+    attempt_3: INVALID (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/addressBook2d.attempt3.als)
+      detail: Exception in thread "main" java.lang.RuntimeException: Alloy failed to parse module.
+	at org.alloytools.alloy.diff.ModuleDiff.diff(ModuleDiff.java:177)
+	at org.alloytools.alloy.diff.ModuleDiff.main(ModuleDiff.java:71)
+Caused by: Syntax error in /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/addressBook2d.attempt3.als at line 9 column 5:
+"Book" is already the name of a sig/parameter in this module.
+	at edu.mit.csail.sdg.parser.CompModule.dup(CompModule.java:952)
+	at edu.mit.csail.sdg.parser.CompModule.addSig(CompModule.java:1433)
+	at edu.mit.csail.sdg.parser.CUP$CompParser$actions.CUP$CompParser$do_action(CompParser.java:6444)
+	at edu.mit.csail.sdg.parser.CompParser.do_action(CompParser.java:2026)
+	at edu.mit.csail.sdg.parser.CompParser.parse(CompParser.java:2070)
+	at edu.mit.csail.sdg.parser.CompParser.alloy_parseStream(CompParser.java:2261)
+	at edu.mit.csail.sdg.parser.CompUtil.parse(CompUtil.java:451)
+	at edu.mit.csail.sdg.parser.CompUtil.parseRecursively(CompUtil.java:214)
+	at edu.mit.csail.sdg.parser.CompUtil.parseEverything_fromFile(CompUtil.java:358)
+	at org.alloytools.alloy.diff.ModuleDiff.diff(ModuleDiff.java:174)
+	... 1 more
+  Direction: original => output
+    Ringert (SemDiff implication): 0/5
+      scope_1: 0/1
+      scope_2: 0/1
+      scope_3: 0/1
+      scope_4: 0/1
+      scope_5: 0/1
+    CompoSAT instances from original model checked on output model: 0/6
+      scope_1: 0/4
+      scope_2: 0/1
+      scope_3: 0/1
+    General instances from original model checked on output model: 0/43
+      scope_1: 0/3
+      scope_2: 0/10
+      scope_3: 0/10
+      scope_4: 0/10
+      scope_5: 0/10
+  Direction: output => original
+    Ringert (SemDiff implication): 0/5
+      scope_1: 0/1
+      scope_2: 0/1
+      scope_3: 0/1
+      scope_4: 0/1
+      scope_5: 0/1
+    CompoSAT instances from output model checked on original model: 0/0
+      scope_1: 0/0
+      scope_2: 0/0
+      scope_3: 0/0
+    General instances from output model checked on original model: 0/0
+      scope_1: 0/0
+      scope_2: 0/0
+      scope_3: 0/0
+      scope_4: 0/0
+      scope_5: 0/0
+    Note: scope_1: InstanceGenerator exited with code 1 ("Book" is already the name of a sig/parameter in this module.)
+    Note: scope_1: InstanceGenerator exhausted after 0 candidate(s); kept 0 unique new instance(s).
+    Note: scope_2: InstanceGenerator exited with code 1 ("Book" is already the name of a sig/parameter in this module.)
+    Note: scope_2: InstanceGenerator exhausted after 0 candidate(s); kept 0 unique new instance(s).
+    Note: scope_3: InstanceGenerator exited with code 1 ("Book" is already the name of a sig/parameter in this module.)
+    Note: scope_3: InstanceGenerator exhausted after 0 candidate(s); kept 0 unique new instance(s).
+    Note: scope_4: InstanceGenerator exited with code 1 ("Book" is already the name of a sig/parameter in this module.)
+    Note: scope_4: InstanceGenerator exhausted after 0 candidate(s); kept 0 unique new instance(s).
+    Note: scope_5: InstanceGenerator exited with code 1 ("Book" is already the name of a sig/parameter in this module.)
+    Note: scope_5: InstanceGenerator exhausted after 0 candidate(s); kept 0 unique new instance(s).
+  TOTAL: 0/62
+
+Model: all_isas
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/all_isas.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/all_isas.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/all_isas.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 2/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 0/1
+      scope_4: 0/1
+      scope_5: 0/1
+    CompoSAT instances from original model checked on output model: 5/7
+      scope_1: 2/2
+      scope_2: 1/1
+      scope_3: 1/2
+      scope_4: 1/2
+    General instances from original model checked on output model: 7/34
+      scope_1: 1/1
+      scope_2: 3/3
+      scope_3: 3/10
+      scope_4: 0/10
+      scope_5: 0/10
+  Direction: output => original
+    Ringert (SemDiff implication): 2/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 0/1
+      scope_4: 0/1
+      scope_5: 0/1
+    CompoSAT instances from output model checked on original model: 6/8
+      scope_1: 2/2
+      scope_2: 1/1
+      scope_3: 2/3
+      scope_4: 1/2
+    Note: scope_2: discarded 1 duplicate CompoSAT instance(s).
+    General instances from output model checked on original model: 9/34
+      scope_1: 1/1
+      scope_2: 3/3
+      scope_3: 4/10
+      scope_4: 1/10
+      scope_5: 0/10
+  TOTAL: 34/96
+
+Model: alloy4fun_SPL_1_2_3_4
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/alloy4fun_SPL_1_2_3_4.attempt2.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/alloy4fun_SPL_1_2_3_4.als
+  Syntax attempts score: 2/3 (first valid attempt: 2)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: INVALID (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/alloy4fun_SPL_1_2_3_4.attempt1.als)
+      detail: Exception in thread "main" java.lang.RuntimeException: Alloy failed to parse module.
+	at org.alloytools.alloy.diff.ModuleDiff.diff(ModuleDiff.java:177)
+	at org.alloytools.alloy.diff.ModuleDiff.main(ModuleDiff.java:71)
+Caused by: Syntax error in /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/alloy4fun_SPL_1_2_3_4.attempt1.als at line 31 column 58:
+There are 28 possible tokens that can appear here:
+# ( * @ Int NAME NUMBER STRING String ^ all disj fun iden int let lone no none one pred seq some sum this univ { ~ 
+	at edu.mit.csail.sdg.parser.CompParser.syntax_error(CompParser.java:2219)
+	at edu.mit.csail.sdg.parser.CompParser.parse(CompParser.java:2080)
+	at edu.mit.csail.sdg.parser.CompParser.alloy_parseStream(CompParser.java:2261)
+	at edu.mit.csail.sdg.parser.CompUtil.parse(CompUtil.java:451)
+	at edu.mit.csail.sdg.parser.CompUtil.parseRecursively(CompUtil.java:214)
+	at edu.mit.csail.sdg.parser.CompUtil.parseEverything_fromFile(CompUtil.java:358)
+	at org.alloytools.alloy.diff.ModuleDiff.diff(ModuleDiff.java:174)
+	... 1 more
+    attempt_2: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/alloy4fun_SPL_1_2_3_4.attempt2.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 18/18
+      scope_1: 5/5
+      scope_2: 6/6
+      scope_3: 7/7
+    General instances from original model checked on output model: 42/42
+      scope_1: 2/2
+      scope_2: 10/10
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  Direction: output => original
+    Ringert (SemDiff implication): 2/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 0/1
+      scope_4: 0/1
+      scope_5: 0/1
+    CompoSAT instances from output model checked on original model: 19/19
+      scope_1: 5/5
+      scope_2: 6/6
+      scope_3: 8/8
+    Note: scope_2: discarded 2 duplicate CompoSAT instance(s).
+    General instances from output model checked on original model: 27/42
+      scope_1: 2/2
+      scope_2: 10/10
+      scope_3: 10/10
+      scope_4: 3/10
+      scope_5: 2/10
+  TOTAL: 115/134
+
+Model: ctree
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/ctree.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/ctree.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/ctree.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 6/6
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+      scope_6: 1/1
+    CompoSAT instances from original model checked on output model: 8/8
+      scope_1: 2/2
+      scope_2: 2/2
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+      scope_6: 1/1
+    General instances from original model checked on output model: 5/5
+      scope_1: 2/2
+      scope_2: 3/3
+  Direction: output => original
+    Ringert (SemDiff implication): 6/6
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+      scope_6: 1/1
+    CompoSAT instances from output model checked on original model: 8/8
+      scope_1: 2/2
+      scope_2: 1/1
+      scope_3: 2/2
+      scope_4: 1/1
+      scope_5: 1/1
+      scope_6: 1/1
+    Note: scope_2: discarded 1 duplicate CompoSAT instance(s).
+    Note: scope_4: discarded 1 duplicate CompoSAT instance(s).
+    General instances from output model checked on original model: 5/5
+      scope_1: 2/2
+      scope_2: 3/3
+  TOTAL: 41/41
+
+Model: ex_Arity
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/ex_Arity.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/ex_Arity.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/ex_Arity.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 4/4
+      scope_1: 4/4
+    General instances from original model checked on output model: 37/37
+      scope_1: 1/1
+      scope_2: 6/6
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  Direction: output => original
+    Ringert (SemDiff implication): 0/5
+      scope_1: 0/1
+      scope_2: 0/1
+      scope_3: 0/1
+      scope_4: 0/1
+      scope_5: 0/1
+    CompoSAT instances from output model checked on original model: 3/3
+      scope_1: 3/3
+    General instances from output model checked on original model: 1/37
+      scope_1: 0/1
+      scope_2: 1/6
+      scope_3: 0/10
+      scope_4: 0/10
+      scope_5: 0/10
+  TOTAL: 53/94
+
+Model: ex_ColorState
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/ex_ColorState.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/ex_ColorState.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/ex_ColorState.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 0/3
+      scope_1: 0/1
+      scope_2: 0/1
+      scope_3: 0/1
+    CompoSAT instances from original model checked on output model: 0/8
+      scope_1: 0/5
+      scope_2: 0/3
+    General instances from original model checked on output model: 0/26
+      scope_1: 0/6
+      scope_2: 0/10
+      scope_3: 0/10
+  Direction: output => original
+    Ringert (SemDiff implication): 0/3
+      scope_1: 0/1
+      scope_2: 0/1
+      scope_3: 0/1
+    CompoSAT instances from output model checked on original model: 0/7
+      scope_1: 0/3
+      scope_2: 0/4
+    Note: scope_2: discarded 1 duplicate CompoSAT instance(s).
+    General instances from output model checked on original model: 0/26
+      scope_1: 0/6
+      scope_2: 0/10
+      scope_3: 0/10
+  TOTAL: 3/76
+
+Model: ex_FileSystem
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/ex_FileSystem.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/ex_FileSystem.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/ex_FileSystem.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 3/3
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 0/0
+      scope_5: 0/0
+    General instances from original model checked on output model: 28/28
+      scope_1: 1/1
+      scope_2: 2/2
+      scope_3: 5/5
+      scope_4: 10/10
+      scope_5: 10/10
+  Direction: output => original
+    Ringert (SemDiff implication): 0/5
+      scope_1: 0/1
+      scope_2: 0/1
+      scope_3: 0/1
+      scope_4: 0/1
+      scope_5: 0/1
+    CompoSAT instances from output model checked on original model: 3/4
+      scope_1: 1/2
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 0/0
+      scope_5: 0/0
+    Note: scope_2: discarded 1 duplicate CompoSAT instance(s).
+    Note: scope_3: discarded 1 duplicate CompoSAT instance(s).
+    Note: scope_4: discarded 1 duplicate CompoSAT instance(s).
+    Note: scope_5: discarded 1 duplicate CompoSAT instance(s).
+    General instances from output model checked on original model: 27/28
+      scope_1: 0/1
+      scope_2: 2/2
+      scope_3: 5/5
+      scope_4: 10/10
+      scope_5: 10/10
+    Note: scope_3: InstanceGenerator exhausted after 5 candidate(s); kept 5 unique new instance(s).
+  TOTAL: 69/76
+
+Model: ex_Host
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/ex_Host.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/ex_Host.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/ex_Host.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 8/8
+      scope_1: 2/2
+      scope_2: 2/2
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 2/2
+    General instances from original model checked on output model: 34/34
+      scope_1: 1/1
+      scope_2: 3/3
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 8/8
+      scope_1: 2/2
+      scope_2: 2/2
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 2/2
+    Note: scope_2: discarded 1 duplicate CompoSAT instance(s).
+    Note: scope_3: discarded 2 duplicate CompoSAT instance(s).
+    Note: scope_4: discarded 2 duplicate CompoSAT instance(s).
+    Note: scope_5: discarded 1 duplicate CompoSAT instance(s).
+    General instances from output model checked on original model: 34/34
+      scope_1: 1/1
+      scope_2: 3/3
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  TOTAL: 97/97
+
+Model: file_system
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/file_system.attempt3.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/file_system.als
+  Syntax attempts score: 1/3 (first valid attempt: 3)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: INVALID (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/file_system.attempt1.als)
+      detail: Exception in thread "main" java.lang.RuntimeException: Alloy failed to parse module.
+	at org.alloytools.alloy.diff.ModuleDiff.diff(ModuleDiff.java:177)
+	at org.alloytools.alloy.diff.ModuleDiff.main(ModuleDiff.java:71)
+Caused by: Syntax error in /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/file_system.attempt1.als at line 12 column 13:
+The name "parent" cannot be found.
+	at edu.mit.csail.sdg.parser.CompModule.hint(CompModule.java:911)
+	at edu.mit.csail.sdg.parser.CompModule$Context.resolve(CompModule.java:379)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:610)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:244)
+	at edu.mit.csail.sdg.ast.ExprVar.accept(ExprVar.java:88)
+	at edu.mit.csail.sdg.ast.VisitReturn.visitThis(VisitReturn.java:34)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:467)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:244)
+	at edu.mit.csail.sdg.ast.ExprBadJoin.accept(ExprBadJoin.java:113)
+	at edu.mit.csail.sdg.ast.VisitReturn.visitThis(VisitReturn.java:34)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:635)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:244)
+	at edu.mit.csail.sdg.ast.ExprUnary.accept(ExprUnary.java:486)
+	at edu.mit.csail.sdg.ast.VisitReturn.visitThis(VisitReturn.java:34)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:450)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:244)
+	at edu.mit.csail.sdg.ast.ExprList.accept(ExprList.java:307)
+	at edu.mit.csail.sdg.ast.VisitReturn.visitThis(VisitReturn.java:34)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:635)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:244)
+	at edu.mit.csail.sdg.ast.ExprUnary.accept(ExprUnary.java:486)
+	at edu.mit.csail.sdg.ast.VisitReturn.visitThis(VisitReturn.java:34)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:635)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:244)
+	at edu.mit.csail.sdg.ast.ExprUnary.accept(ExprUnary.java:486)
+	at edu.mit.csail.sdg.ast.VisitReturn.visitThis(VisitReturn.java:34)
+	at edu.mit.csail.sdg.parser.CompModule$Context.check(CompModule.java:385)
+	at edu.mit.csail.sdg.parser.CompModule.resolveFacts(CompModule.java:1760)
+	at edu.mit.csail.sdg.parser.CompModule.resolveAll(CompModule.java:2148)
+	at edu.mit.csail.sdg.parser.CompUtil.parseEverything_fromFile(CompUtil.java:360)
+	at org.alloytools.alloy.diff.ModuleDiff.diff(ModuleDiff.java:174)
+	... 1 more
+    attempt_2: INVALID (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/file_system.attempt2.als)
+      detail: Exception in thread "main" java.lang.RuntimeException: Alloy failed to parse module.
+	at org.alloytools.alloy.diff.ModuleDiff.diff(ModuleDiff.java:177)
+	at org.alloytools.alloy.diff.ModuleDiff.main(ModuleDiff.java:71)
+Caused by: Syntax error in /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/file_system.attempt2.als at line 11 column 5:
+"Dir" is already the name of a sig/parameter in this module.
+	at edu.mit.csail.sdg.parser.CompModule.dup(CompModule.java:952)
+	at edu.mit.csail.sdg.parser.CompModule.addSig(CompModule.java:1433)
+	at edu.mit.csail.sdg.parser.CUP$CompParser$actions.CUP$CompParser$do_action(CompParser.java:6444)
+	at edu.mit.csail.sdg.parser.CompParser.do_action(CompParser.java:2026)
+	at edu.mit.csail.sdg.parser.CompParser.parse(CompParser.java:2070)
+	at edu.mit.csail.sdg.parser.CompParser.alloy_parseStream(CompParser.java:2261)
+	at edu.mit.csail.sdg.parser.CompUtil.parse(CompUtil.java:451)
+	at edu.mit.csail.sdg.parser.CompUtil.parseRecursively(CompUtil.java:214)
+	at edu.mit.csail.sdg.parser.CompUtil.parseEverything_fromFile(CompUtil.java:358)
+	at org.alloytools.alloy.diff.ModuleDiff.diff(ModuleDiff.java:174)
+	... 1 more
+    attempt_3: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/file_system.attempt3.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 8/8
+      scope_1: 1/1
+      scope_2: 3/3
+      scope_3: 3/3
+      scope_4: 1/1
+    General instances from original model checked on output model: 31/31
+      scope_2: 1/1
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 8/8
+      scope_1: 1/1
+      scope_2: 3/3
+      scope_3: 3/3
+      scope_4: 1/1
+    Note: scope_2: discarded 1 duplicate CompoSAT instance(s).
+    Note: scope_3: discarded 1 duplicate CompoSAT instance(s).
+    Note: scope_4: discarded 1 duplicate CompoSAT instance(s).
+    General instances from output model checked on original model: 31/31
+      scope_1: 0/0
+      scope_2: 1/1
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+    Note: scope_1: InstanceGenerator exhausted after 0 candidate(s); kept 0 unique new instance(s).
+    Note: scope_3: discarded 22 duplicate general instance(s).
+  TOTAL: 89/91
+
+Model: fruitbowl
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/fruitbowl.attempt2.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/fruitbowl.als
+  Syntax attempts score: 2/3 (first valid attempt: 2)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: INVALID (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/fruitbowl.attempt1.als)
+      detail: Exception in thread "main" java.lang.RuntimeException: Alloy failed to parse module.
+	at org.alloytools.alloy.diff.ModuleDiff.diff(ModuleDiff.java:177)
+	at org.alloytools.alloy.diff.ModuleDiff.main(ModuleDiff.java:71)
+Caused by: Syntax error in /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/fruitbowl.attempt1.als at line 17 column 5:
+"Fruit" is already the name of a sig/parameter in this module.
+	at edu.mit.csail.sdg.parser.CompModule.dup(CompModule.java:952)
+	at edu.mit.csail.sdg.parser.CompModule.addSig(CompModule.java:1433)
+	at edu.mit.csail.sdg.parser.CUP$CompParser$actions.CUP$CompParser$do_action(CompParser.java:6444)
+	at edu.mit.csail.sdg.parser.CompParser.do_action(CompParser.java:2026)
+	at edu.mit.csail.sdg.parser.CompParser.parse(CompParser.java:2070)
+	at edu.mit.csail.sdg.parser.CompParser.alloy_parseStream(CompParser.java:2261)
+	at edu.mit.csail.sdg.parser.CompUtil.parse(CompUtil.java:451)
+	at edu.mit.csail.sdg.parser.CompUtil.parseRecursively(CompUtil.java:214)
+	at edu.mit.csail.sdg.parser.CompUtil.parseEverything_fromFile(CompUtil.java:358)
+	at org.alloytools.alloy.diff.ModuleDiff.diff(ModuleDiff.java:174)
+	... 1 more
+    attempt_2: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/fruitbowl.attempt2.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 2/2
+      scope_1: 1/1
+      scope_2: 1/1
+    CompoSAT instances from original model checked on output model: 1/1
+      scope_1: 1/1
+    General instances from original model checked on output model: 20/20
+      scope_1: 10/10
+      scope_2: 10/10
+  Direction: output => original
+    Ringert (SemDiff implication): 2/2
+      scope_1: 1/1
+      scope_2: 1/1
+    CompoSAT instances from output model checked on original model: 1/1
+      scope_1: 1/1
+    General instances from output model checked on original model: 20/20
+      scope_1: 10/10
+      scope_2: 10/10
+    Note: scope_2: discarded 10 duplicate general instance(s).
+  TOTAL: 48/49
+
+Model: fullTree
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/fullTree.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/fullTree.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/fullTree.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 2/2
+      scope_1: 1/1
+      scope_3: 1/1
+    General instances from original model checked on output model: 8/8
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 2/2
+      scope_4: 2/2
+      scope_5: 2/2
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 2/2
+      scope_1: 1/1
+      scope_2: 0/0
+      scope_3: 1/1
+    Note: scope_2: discarded 1 duplicate CompoSAT instance(s).
+    Note: scope_3: discarded 1 duplicate CompoSAT instance(s).
+    General instances from output model checked on original model: 8/8
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 2/2
+      scope_4: 2/2
+      scope_5: 2/2
+  TOTAL: 33/33
+
+Model: grade
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/grade.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/grade.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/grade.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 5/5
+      scope_1: 2/2
+      scope_2: 2/2
+      scope_3: 1/1
+    General instances from original model checked on output model: 33/33
+      scope_2: 3/3
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 5/5
+      scope_1: 2/2
+      scope_2: 2/2
+      scope_3: 1/1
+    General instances from output model checked on original model: 33/33
+      scope_1: 0/0
+      scope_2: 3/3
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+    Note: scope_1: InstanceGenerator exhausted after 0 candidate(s); kept 0 unique new instance(s).
+    Note: scope_3: discarded 4 duplicate general instance(s).
+  TOTAL: 89/89
+
+Model: handshake
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/handshake.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/handshake.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/handshake.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 6/6
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+      scope_6: 1/1
+    CompoSAT instances from original model checked on output model: 3/3
+      scope_1: 1/1
+      scope_4: 1/1
+      scope_6: 1/1
+    General instances from original model checked on output model: 2/2
+      scope_1: 1/1
+      scope_4: 1/1
+  Direction: output => original
+    Ringert (SemDiff implication): 6/6
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+      scope_6: 1/1
+    CompoSAT instances from output model checked on original model: 3/3
+      scope_1: 1/1
+      scope_2: 0/0
+      scope_3: 0/0
+      scope_4: 1/1
+      scope_5: 0/0
+      scope_6: 1/1
+    Note: scope_2: discarded 1 duplicate CompoSAT instance(s).
+    Note: scope_3: discarded 1 duplicate CompoSAT instance(s).
+    Note: scope_4: discarded 1 duplicate CompoSAT instance(s).
+    Note: scope_5: discarded 1 duplicate CompoSAT instance(s).
+    Note: scope_6: discarded 1 duplicate CompoSAT instance(s).
+    General instances from output model checked on original model: 2/2
+      scope_1: 1/1
+      scope_2: 0/0
+      scope_3: 0/0
+      scope_4: 1/1
+    Note: scope_2: discarded 1 duplicate general instance(s).
+    Note: scope_2: InstanceGenerator exhausted after 1 candidate(s); kept 0 unique new instance(s).
+    Note: scope_3: InstanceGenerator exhausted after 0 candidate(s); kept 0 unique new instance(s).
+  TOTAL: 25/25
+
+Model: hc4
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/hc4.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/hc4.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/hc4.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 7/7
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+      scope_6: 1/1
+      scope_7: 1/1
+    CompoSAT instances from original model checked on output model: 6/6
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+      scope_7: 1/1
+    General instances from original model checked on output model: 28/28
+      scope_2: 2/2
+      scope_3: 6/6
+      scope_4: 10/10
+      scope_5: 10/10
+  Direction: output => original
+    Ringert (SemDiff implication): 7/7
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+      scope_6: 1/1
+      scope_7: 1/1
+    CompoSAT instances from output model checked on original model: 7/7
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 2/2
+      scope_5: 1/1
+      scope_6: 1/1
+    TIMEOUT: CompoSAT hit the 900s limit at scope_7.
+    Note: scope_2: discarded 1 duplicate CompoSAT instance(s).
+    Note: scope_3: discarded 1 duplicate CompoSAT instance(s).
+    Note: scope_5: discarded 1 duplicate CompoSAT instance(s).
+    Note: scope_7: CompoSAT timed out after 900s; remaining scopes skipped.
+    General instances from output model checked on original model: 5/5
+      scope_1: 0/0
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 2/2
+    Note: scope_1: InstanceGenerator exhausted after 0 candidate(s); kept 0 unique new instance(s).
+    Note: scope_2: InstanceGenerator exhausted after 1 candidate(s); kept 1 unique new instance(s).
+    Note: scope_3: InstanceGenerator exhausted after 1 candidate(s); kept 1 unique new instance(s).
+    Note: scope_4: InstanceGenerator exhausted after 1 candidate(s); kept 1 unique new instance(s).
+    Note: scope_5: InstanceGenerator exhausted after 2 candidate(s); kept 2 unique new instance(s).
+  TOTAL: 63/63
+
+Model: marksweepgc
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/marksweepgc.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/marksweepgc.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/marksweepgc.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 0/18
+      scope_1: 0/0
+      scope_2: 0/18
+    General instances from original model checked on output model: 0/40
+      scope_1: 0/0
+      scope_2: 0/10
+      scope_3: 0/10
+      scope_4: 0/10
+      scope_5: 0/10
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 17/17
+      scope_1: 0/0
+      scope_2: 17/17
+    General instances from output model checked on original model: 0/0
+      scope_1: 0/0
+      scope_2: 0/0
+      scope_3: 0/0
+      scope_4: 0/0
+      scope_5: 0/0
+    Note: scope_1: InstanceGenerator exited with code 1 (])
+    Note: scope_1: InstanceGenerator exhausted after 0 candidate(s); kept 0 unique new instance(s).
+    Note: scope_2: InstanceGenerator exited with code 1 (])
+    Note: scope_2: InstanceGenerator exhausted after 0 candidate(s); kept 0 unique new instance(s).
+    Note: scope_3: InstanceGenerator exited with code 1 (])
+    Note: scope_3: InstanceGenerator exhausted after 0 candidate(s); kept 0 unique new instance(s).
+    Note: scope_4: InstanceGenerator exited with code 1 (])
+    Note: scope_4: InstanceGenerator exhausted after 0 candidate(s); kept 0 unique new instance(s).
+    Note: scope_5: InstanceGenerator exited with code 1 (])
+    Note: scope_5: InstanceGenerator exhausted after 0 candidate(s); kept 0 unique new instance(s).
+  TOTAL: 30/88
+
+Model: modelling systems chap2 - alarm v0.1.0
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/modelling systems chap2 - alarm v0.1.0.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/modelling systems chap2 - alarm v0.1.0.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/modelling systems chap2 - alarm v0.1.0.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 4/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 0/1
+    CompoSAT instances from original model checked on output model: 9/9
+      scope_1: 6/6
+      scope_2: 3/3
+    General instances from original model checked on output model: 48/48
+      scope_1: 8/8
+      scope_2: 10/10
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  Direction: output => original
+    Ringert (SemDiff implication): 4/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 0/1
+    CompoSAT instances from output model checked on original model: 10/10
+      scope_1: 6/6
+      scope_2: 4/4
+    General instances from output model checked on original model: 48/48
+      scope_1: 8/8
+      scope_2: 10/10
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  TOTAL: 126/128
+
+Model: niveaux_franchises
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/niveaux_franchises.attempt2.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/niveaux_franchises.als
+  Syntax attempts score: 2/3 (first valid attempt: 2)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: INVALID (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/niveaux_franchises.attempt1.als)
+      detail: Exception in thread "main" java.lang.RuntimeException: Alloy failed to parse module.
+	at org.alloytools.alloy.diff.ModuleDiff.diff(ModuleDiff.java:177)
+	at org.alloytools.alloy.diff.ModuleDiff.main(ModuleDiff.java:71)
+Caused by: Type error in /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/niveaux_franchises.attempt1.als at line 23 column 42:
+= can be used only between 2 expressions of the same arity, or between 2 integer expressions.
+Left type = {this/Coverage->this/RiskType}
+Right type = {none}
+	at edu.mit.csail.sdg.ast.ExprBinary.error(ExprBinary.java:103)
+	at edu.mit.csail.sdg.ast.ExprBinary$Op.make(ExprBinary.java:406)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:499)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:244)
+	at edu.mit.csail.sdg.ast.ExprBinary.accept(ExprBinary.java:734)
+	at edu.mit.csail.sdg.ast.VisitReturn.visitThis(VisitReturn.java:34)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:450)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:244)
+	at edu.mit.csail.sdg.ast.ExprList.accept(ExprList.java:307)
+	at edu.mit.csail.sdg.ast.VisitReturn.visitThis(VisitReturn.java:34)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:509)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:244)
+	at edu.mit.csail.sdg.ast.ExprLet.accept(ExprLet.java:147)
+	at edu.mit.csail.sdg.ast.VisitReturn.visitThis(VisitReturn.java:34)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:596)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:244)
+	at edu.mit.csail.sdg.ast.ExprQt.accept(ExprQt.java:355)
+	at edu.mit.csail.sdg.ast.VisitReturn.visitThis(VisitReturn.java:34)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:635)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:244)
+	at edu.mit.csail.sdg.ast.ExprUnary.accept(ExprUnary.java:486)
+	at edu.mit.csail.sdg.ast.VisitReturn.visitThis(VisitReturn.java:34)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:635)
+	at edu.mit.csail.sdg.parser.CompModule$Context.visit(CompModule.java:244)
+	at edu.mit.csail.sdg.ast.ExprUnary.accept(ExprUnary.java:486)
+	at edu.mit.csail.sdg.ast.VisitReturn.visitThis(VisitReturn.java:34)
+	at edu.mit.csail.sdg.parser.CompModule$Context.check(CompModule.java:385)
+	at edu.mit.csail.sdg.parser.CompModule.resolveFacts(CompModule.java:1760)
+	at edu.mit.csail.sdg.parser.CompModule.resolveAll(CompModule.java:2148)
+	at edu.mit.csail.sdg.parser.CompUtil.parseEverything_fromFile(CompUtil.java:360)
+	at org.alloytools.alloy.diff.ModuleDiff.diff(ModuleDiff.java:174)
+	... 1 more
+    attempt_2: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/niveaux_franchises.attempt2.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 8/8
+      scope_1: 8/8
+    General instances from original model checked on output model: 50/50
+      scope_1: 10/10
+      scope_2: 10/10
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 11/11
+      scope_1: 11/11
+    General instances from output model checked on original model: 50/50
+      scope_1: 10/10
+      scope_2: 10/10
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  TOTAL: 131/132
+
+Model: no_transitivity_redundancy
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/no_transitivity_redundancy.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/no_transitivity_redundancy.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/no_transitivity_redundancy.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    General instances from original model checked on output model: 30/30
+      scope_1: 1/1
+      scope_2: 2/2
+      scope_3: 7/7
+      scope_4: 10/10
+      scope_5: 10/10
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    Note: scope_2: discarded 1 duplicate CompoSAT instance(s).
+    Note: scope_3: discarded 1 duplicate CompoSAT instance(s).
+    Note: scope_4: discarded 1 duplicate CompoSAT instance(s).
+    Note: scope_5: discarded 1 duplicate CompoSAT instance(s).
+    General instances from output model checked on original model: 30/30
+      scope_1: 1/1
+      scope_2: 2/2
+      scope_3: 7/7
+      scope_4: 10/10
+      scope_5: 10/10
+  TOTAL: 83/83
+
+Model: phones_c
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/phones_c.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/phones_c.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/phones_c.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 5/5
+      scope_1: 3/3
+      scope_2: 1/1
+      scope_3: 1/1
+    General instances from original model checked on output model: 45/45
+      scope_1: 5/5
+      scope_2: 10/10
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 7/7
+      scope_1: 2/2
+      scope_2: 2/2
+      scope_3: 3/3
+    Note: scope_2: discarded 1 duplicate CompoSAT instance(s).
+    General instances from output model checked on original model: 45/45
+      scope_1: 5/5
+      scope_2: 10/10
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  TOTAL: 115/115
+
+Model: sets1
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/sets1.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/sets1.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/sets1.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 9/9
+      scope_2: 1/1
+      scope_3: 3/3
+      scope_4: 5/5
+    General instances from original model checked on output model: 31/31
+      scope_2: 1/1
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 8/8
+      scope_1: 0/0
+      scope_2: 1/1
+      scope_3: 2/2
+      scope_4: 5/5
+    Note: scope_3: discarded 1 duplicate CompoSAT instance(s).
+    Note: scope_4: discarded 2 duplicate CompoSAT instance(s).
+    General instances from output model checked on original model: 31/31
+      scope_1: 0/0
+      scope_2: 1/1
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+    Note: scope_1: InstanceGenerator exhausted after 0 candidate(s); kept 0 unique new instance(s).
+  TOTAL: 92/92
+
+Model: singlyLinkedList
+  Generated: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/singlyLinkedList.attempt1.als
+  Reference: /Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/models/singlyLinkedList.als
+  Syntax attempts score: 3/3 (first valid attempt: 1)
+  Final attempt syntax valid: yes
+  Attempt history:
+    attempt_1: OK (/Users/nsmartinx/Projects/alloy-benchmark/alloy-llm-benchmark/benchmark/gpt-5-6-luna-2/singlyLinkedList.attempt1.als)
+  Direction: original => output
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from original model checked on output model: 7/7
+      scope_1: 4/4
+      scope_2: 2/2
+      scope_3: 1/1
+    General instances from original model checked on output model: 43/43
+      scope_1: 3/3
+      scope_2: 10/10
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  Direction: output => original
+    Ringert (SemDiff implication): 5/5
+      scope_1: 1/1
+      scope_2: 1/1
+      scope_3: 1/1
+      scope_4: 1/1
+      scope_5: 1/1
+    CompoSAT instances from output model checked on original model: 7/7
+      scope_1: 4/4
+      scope_2: 2/2
+      scope_3: 1/1
+    Note: scope_2: discarded 2 duplicate CompoSAT instance(s).
+    General instances from output model checked on original model: 43/43
+      scope_1: 3/3
+      scope_2: 10/10
+      scope_3: 10/10
+      scope_4: 10/10
+      scope_5: 10/10
+  TOTAL: 113/113
+
+================================================================================
+OVERALL TOTAL: 1895/2235
