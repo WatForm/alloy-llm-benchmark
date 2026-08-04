@@ -1,0 +1,53 @@
+sig Node {}
+
+sig HeapState {
+    left: lone Node,
+    right: lone Node,
+    marked: set Node,
+    freeList: lone Node
+}
+
+one sig root {}
+
+some sig h, hsn {}
+
+pred clearMarks(before: HeapState, after: HeapState) {
+    after.marked = none &&
+    before.left = after.left &&
+    before.right = after.right
+}
+
+pred reachable(hs: HeapState, start: Node, r: set Node) {
+    start in r or
+    some n: Node | 
+        (n in r && 
+        (n.left in r or n.right in r)) &&
+        reachable(hs, n, r)
+}
+
+pred mark(before: HeapState, from: Node, after: HeapState) {
+    after.marked = reachable(before, from, {from}) &&
+    after.left = before.left &&
+    after.right = before.right
+}
+
+pred setFreeList(before: HeapState, after: HeapState) {
+    all n: Node | 
+        (n !in before.marked implies 
+            (n.right = none &&  
+            some l: Node | 
+                after.freeList in reachable(after, l, {after.freeList}) &&
+            n in reachable(after, after.freeList, {after.freeList})) &&
+        (n in before.marked implies 
+            (n.left = before.left && 
+             n.right = before.right)))
+             
+    after.marked = before.marked
+}
+
+fact {
+    some hs1, hs2: HeapState |
+        clearMarks(h, hs1) &&
+        mark(hs1, root, hs2) &&
+        setFreeList(hs2, hsn)
+}

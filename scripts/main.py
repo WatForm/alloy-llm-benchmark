@@ -13,6 +13,7 @@ import sys
 import tempfile
 from pathlib import Path
 
+from llm import MODEL_CONFIGS
 from syntax_utils import check_syntax, require_java_for_version
 
 
@@ -33,6 +34,12 @@ def parse_args() -> argparse.Namespace:
 	parser.add_argument(
 		"outputs_dir",
 		help="Folder where model responses will be written",
+	)
+	parser.add_argument(
+		"--model",
+		required=True,
+		choices=sorted(MODEL_CONFIGS),
+		help="Configured benchmark model alias from scripts/llm.py.",
 	)
 	return parser.parse_args()
 
@@ -85,6 +92,7 @@ def process_description(
 	repo_root: Path,
 	diff_jar: Path,
 	java17_bin: Path,
+	model: str,
 ) -> tuple[str, int, bool]:
 	name = desc_file.stem
 	output_file = outputs_dir / f"{name}.als"
@@ -124,17 +132,17 @@ def process_description(
 
 			print(
 				f"[{idx}/{total}] Calling model for {output_file.name} "
-				f"(attempt {attempt}/{MAX_GENERATION_ATTEMPTS})"
+				f"(attempt {attempt}/{MAX_GENERATION_ATTEMPTS}, model={model})"
 			)
-			run_command(
-				[
-					sys.executable,
-					str(scripts_dir / "openAI.py"),
-					str(prompt_file),
-					str(attempt_output_file),
-				],
-				cwd=repo_root,
-			)
+			model_command = [
+				sys.executable,
+				str(scripts_dir / "llm.py"),
+				str(prompt_file),
+				str(attempt_output_file),
+				"--model",
+				model,
+			]
+			run_command(model_command, cwd=repo_root)
 
 			attempt_text = attempt_output_file.read_text(encoding="utf-8", errors="replace")
 			score, syntax_msg = check_syntax(attempt_output_file, diff_jar, java17_bin)
@@ -209,6 +217,11 @@ def main() -> int:
 		f"Running with up to {workers} parallel request(s), "
 		f"and up to {MAX_GENERATION_ATTEMPTS} generation attempt(s) per file"
 	)
+	model_config = MODEL_CONFIGS[args.model]
+	print(
+		f"Using model={args.model} "
+		f"({model_config['provider']}: {model_config['api_model']})"
+	)
 
 	failures: list[str] = []
 	with ThreadPoolExecutor(max_workers=workers) as executor:
@@ -225,6 +238,7 @@ def main() -> int:
 				repo_root,
 				diff_jar,
 				java17_bin,
+				args.model,
 			): desc_file.name
 			for idx, desc_file in enumerate(description_files, start=1)
 		}

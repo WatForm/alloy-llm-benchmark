@@ -15,15 +15,29 @@ pip install --upgrade pip
 pip install openai
 ```
 
+The `openai` package is only needed when running with the OpenAI provider.
+Anthropic and Gemini calls use their HTTPS APIs directly.
+
 ### API key setup
 
-This repository expects your OpenAI key in:
+For benchmark runs, put the API key in the file for the provider used by the
+selected model:
 
 ```text
-./secret/key
+./secret/openai_key     # OpenAI
+./secret/anthropic_key  # Claude through Anthropic
+./secret/gemini_key     # Gemini
 ```
 
-Create the file and paste only the raw key value into it.
+Create only the file for the provider you are using and paste only the raw key
+value into it. For example, for Claude:
+
+```text
+./secret/anthropic_key
+```
+
+This provider configuration is for running this benchmark generation workflow; it
+does not change the separate benchmark-creation repository.
 
 ## 2) Java requirements (for generation and scoring)
 
@@ -82,7 +96,14 @@ prompts/english-alloy-suffix.txt
 Run:
 
 ```bash
-python3 scripts/main.py benchmark/descriptions benchmark/outputs
+python3 scripts/main.py benchmark/descriptions benchmark/outputs --model gpt-5-6-xhigh
+```
+
+To use Claude through Anthropic or Gemini:
+
+```bash
+python3 scripts/main.py benchmark/descriptions benchmark/outputs --model claude-sonnet-4
+python3 scripts/main.py benchmark/descriptions benchmark/outputs --model gemini-2-5-pro
 ```
 
 What this does:
@@ -138,12 +159,39 @@ The scoring report is written to:
 benchmark/outputs/scores.txt
 ```
 
-## 6) Model configuration
+To compute the separate weighted final score from an existing report:
 
-The OpenAI model is currently set in:
-
-```text
-scripts/openAI.py
+```bash
+python3 scripts/final_score.py benchmark/outputs/scores.txt benchmark/outputs/final_score.txt
 ```
 
-Look for the `model=` argument in `client.chat.completions.create(...)`.
+The output file contains only the final score out of 100, rounded to one decimal
+place. The original `scores.txt` report is not modified.
+
+## 6) Model configuration
+
+Generation takes one configured model alias:
+
+```bash
+python3 scripts/main.py benchmark/descriptions benchmark/outputs --model gpt-5-6-xhigh
+```
+
+Aliases are defined in `MODEL_CONFIGS` at the top of:
+
+```text
+scripts/llm.py
+```
+
+Each alias maps to its provider, API model name, and provider-specific options.
+For example:
+
+```python
+"gpt-5-6-xhigh": {
+	"provider": "openai",
+	"api_model": "gpt-5.6-sol",
+	"reasoning_effort": "xhigh",
+}
+```
+
+To add a model, add another entry to `MODEL_CONFIGS`. The command line then uses
+only that alias; the provider and request settings are selected automatically.
