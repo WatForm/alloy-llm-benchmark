@@ -6,7 +6,7 @@ Each "HeapState" is connected to set of "Nodes" in the relation "marked".
 
 Each "HeapState" matches to at most one "Node" by the relation "freeList".
 
-There are two subsets of "HeapState", named "h" and "hsn".
+There are two subsets of "HeapState", named "h" and "hsn". Each contains exactly one "HeapState".
 
 There is exactly one distinguished element named "root".
 
