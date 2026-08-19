@@ -5,17 +5,14 @@
 // javac -cp ../bin/org.alloytools.alloy.dist-6.2.0.jar InstanceGenerator.java
 // java -cp .:../bin/org.alloytools.alloy.dist-6.2.0.jar InstanceGenerator model.als scopeNum numInstances
 
-// generates numInstances .xml instances of model.als for an EXACT scope of scopeNum for every top-level sig
+// generates numInstances .xml instances of model.als using scopeNum as a global upper bound
 // if the model is unsat at that scope then no instance file is written 
 // writes the files in the same directory as model.als
 // overwrites any existing xml files of the same name
 
 import java.io.File;
 
-import java.util.List;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.stream.Collectors;
 import java.io.PrintWriter;
 
 
@@ -25,7 +22,6 @@ import java.nio.charset.StandardCharsets;
 
 
 import edu.mit.csail.sdg.alloy4.A4Reporter;
-import edu.mit.csail.sdg.ast.Sig;
 import edu.mit.csail.sdg.parser.CompModule;
 import edu.mit.csail.sdg.parser.CompUtil;
 
@@ -41,20 +37,11 @@ import kodkod.ast.Relation;
 
 public class InstanceGenerator {
 
-    //private static final String RUN_CMD_FORMAT = "run {} for exactly %d";
     private static final String INSTANCE_NAME_FORMAT = "%s-instance-%d-%d.xml";
 
-    private static String getCmd(List<String> topLevelSigs, Integer scope) {
+    private static String getCmd(Integer scope) {
         String sc = String.valueOf(scope);
-        if (topLevelSigs.isEmpty()) {
-            return "\nrun {}";
-        } else {
-            return "\nrun {} for "+ sc + " but " +
-                    topLevelSigs.stream()
-                        .map(s -> "exactly "+sc+" " + s)
-                        .collect(Collectors.joining(", ")) +", 4 int\n\n";
-        }
-
+        return "\nrun {} for "+ sc + " but 4 int\n\n";
     }
 
     public static void main(String[] args) throws Exception {
@@ -100,23 +87,9 @@ public class InstanceGenerator {
             System.exit(1);
         }
 
-        List<String> topLevelSigs = new ArrayList<String>();
-        
         A4Reporter rep = new A4Reporter();
-        
-        try {
-            CompModule modelWorld = CompUtil.parseEverything_fromString(rep, modelString);
-            for (Sig sig : modelWorld.getAllReachableSigs()) {
-                if (sig.isTopLevel() && !sig.builtin && sig.isOne == null && sig.isLone == null) {
-                    topLevelSigs.add(sig.label.replace("this/",""));
-                }
-            }
-        } catch (Exception e) {
-            System.out.println("FAIL: Alloy jar failed to parse model with message\n" + e.getMessage());
-            System.exit(1);
-        } 
 
-        String cmd = getCmd(topLevelSigs,scope);
+        String cmd = getCmd(scope);
         String modelPlusCmd = modelString + cmd;
         CompModule modelPlusCmdWorld = null;
         try {
@@ -163,6 +136,4 @@ public class InstanceGenerator {
 }
     
     
-
-
 

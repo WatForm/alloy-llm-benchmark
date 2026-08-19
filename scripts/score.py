@@ -378,7 +378,15 @@ def score_output_instances_against_reference(
     java8_bin: Path,
     java17_bin: Path,
     composat_tmpdir: Path,
+    generation_scope_floor: int = 1,
 ) -> dict:
+    def scope_row(scope: int, score: int, maximum: int) -> dict:
+        row = {"scope": scope, "score": score, "max": maximum}
+        effective_scope = max(scope, generation_scope_floor)
+        if effective_scope != scope:
+            row["effective_scope"] = effective_scope
+        return row
+
     def failure_max(scope: int) -> int:
         # A generation failure must remain score-bearing. Reference coverage is
         # the stable per-scope budget available before generated instances exist.
@@ -386,7 +394,7 @@ def score_output_instances_against_reference(
 
     def failure_rows(start_scope: int = 1) -> list[dict]:
         return [
-            {"scope": scope, "score": 0, "max": failure_max(scope)}
+            scope_row(scope, 0, failure_max(scope))
             for scope in range(start_scope, max_scope + 1)
         ]
 
@@ -441,10 +449,22 @@ def score_output_instances_against_reference(
         )
 
         for scope in range(1, max_scope + 1):
-            progress(f"[{model_name}] output=>original: CompoSAT scope_{scope}/{max_scope} starting")
+            generation_scope = max(scope, generation_scope_floor)
+            effective_note = (
+                f" (effective scope_{generation_scope} after normalization)"
+                if generation_scope != scope
+                else ""
+            )
+            progress(
+                f"[{model_name}] output=>original: CompoSAT scope_{scope}/{max_scope} starting"
+                f"{effective_note}"
+            )
 
             scope_model = temp_path / f"{model_name}_scope_{scope}.als"
-            scope_model.write_text(base_model_text + f"run {{}} for {scope} but 4 int\n", encoding="utf-8")
+            scope_model.write_text(
+                base_model_text + f"run {{}} for {generation_scope} but 4 int\n",
+                encoding="utf-8",
+            )
 
             scope_out = temp_path / "instances" / f"scope_{scope}"
             scope_out.mkdir(parents=True, exist_ok=True)
@@ -488,7 +508,7 @@ def score_output_instances_against_reference(
                 notes.append(err_note)
                 progress(f"[{model_name}] output=>original: {err_note}")
                 scope_failure_max = failure_max(scope)
-                by_scope.append({"scope": scope, "score": 0, "max": scope_failure_max})
+                by_scope.append(scope_row(scope, 0, scope_failure_max))
                 total_max += scope_failure_max
                 continue
 
@@ -499,7 +519,7 @@ def score_output_instances_against_reference(
                 notes.append(exit_note)
                 progress(f"[{model_name}] output=>original: {exit_note}")
                 scope_failure_max = failure_max(scope)
-                by_scope.append({"scope": scope, "score": 0, "max": scope_failure_max})
+                by_scope.append(scope_row(scope, 0, scope_failure_max))
                 total_max += scope_failure_max
                 shutil.rmtree(scope_out, ignore_errors=True)
                 continue
@@ -540,7 +560,7 @@ def score_output_instances_against_reference(
 
             total_score += scope_valid
             total_max += scope_max
-            by_scope.append({"scope": scope, "score": scope_valid, "max": scope_max})
+            by_scope.append(scope_row(scope, scope_valid, scope_max))
             progress(
                 f"[{model_name}] output=>original: scope_{scope} complete with {scope_valid}/{scope_max} valid"
             )
@@ -565,7 +585,15 @@ def score_output_general_instances_against_reference(
     scripts_dir: Path,
     alloy_jar_620: Path,
     java17_bin: Path,
+    generation_scope_floor: int = 1,
 ) -> dict:
+    def scope_row(scope: int, score: int, maximum: int) -> dict:
+        row = {"scope": scope, "score": score, "max": maximum}
+        effective_scope = max(scope, generation_scope_floor)
+        if effective_scope != scope:
+            row["effective_scope"] = effective_scope
+        return row
+
     def failure_max(scope: int) -> int:
         return max(
             1,
@@ -574,7 +602,7 @@ def score_output_general_instances_against_reference(
 
     def failure_rows(start_scope: int = 1) -> list[dict]:
         return [
-            {"scope": scope, "score": 0, "max": failure_max(scope)}
+            scope_row(scope, 0, failure_max(scope))
             for scope in range(start_scope, max_scope + 1)
         ]
 
@@ -634,13 +662,19 @@ def score_output_general_instances_against_reference(
         )
 
         for scope in range(1, max_scope + 1):
+            generation_scope = max(scope, generation_scope_floor)
             requested_instances = max(
                 1,
                 reference_general_counts_by_scope.get(scope, DEFAULT_GENERAL_OUTPUT_INSTANCE_COUNT),
             )
+            effective_note = (
+                f", effective scope_{generation_scope} after normalization"
+                if generation_scope != scope
+                else ""
+            )
             progress(
                 f"[{model_name}] output=>original (general): scope_{scope}/{max_scope} starting "
-                f"(requesting up to {requested_instances})"
+                f"(requesting up to {requested_instances}{effective_note})"
             )
 
             selected_xml_files: list[Path] = []
@@ -658,7 +692,7 @@ def score_output_general_instances_against_reference(
                     f"{candidate_limit} candidates ({multiplier}x)"
                 )
 
-                for stale in temp_path.glob(f"{model_name}-instance-{scope}-*.xml"):
+                for stale in temp_path.glob(f"{model_name}-instance-{generation_scope}-*.xml"):
                     stale.unlink(missing_ok=True)
 
                 cmd = [
@@ -667,7 +701,7 @@ def score_output_general_instances_against_reference(
                     f"{scripts_dir}{os.pathsep}{alloy_jar_620}",
                     "InstanceGenerator",
                     str(temp_model),
-                    str(scope),
+                    str(generation_scope),
                     str(candidate_limit),
                 ]
 
@@ -683,7 +717,7 @@ def score_output_general_instances_against_reference(
                     )
                     notes.append(timeout_note)
                     progress(f"[{model_name}] output=>original (general): {timeout_note}")
-                    for stale in temp_path.glob(f"{model_name}-instance-{scope}-*.xml"):
+                    for stale in temp_path.glob(f"{model_name}-instance-{generation_scope}-*.xml"):
                         stale.unlink(missing_ok=True)
                     generation_failed = True
                     break
@@ -703,7 +737,7 @@ def score_output_general_instances_against_reference(
                     generation_failed = True
                     break
 
-                xml_files = sorted(temp_path.glob(f"{model_name}-instance-{scope}-*.xml"))
+                xml_files = sorted(temp_path.glob(f"{model_name}-instance-{generation_scope}-*.xml"))
                 selected_xml_files, selected_hashes, duplicate_count = select_unique_generated_instances(
                     xml_files,
                     seen_instance_hashes,
@@ -736,7 +770,7 @@ def score_output_general_instances_against_reference(
                     total_max += sum(row["max"] for row in remaining_rows)
                     break
                 scope_failure_max = failure_max(scope)
-                by_scope.append({"scope": scope, "score": 0, "max": scope_failure_max})
+                by_scope.append(scope_row(scope, 0, scope_failure_max))
                 total_max += scope_failure_max
                 continue
 
@@ -769,12 +803,12 @@ def score_output_general_instances_against_reference(
 
             total_score += scope_valid
             total_max += scope_max
-            by_scope.append({"scope": scope, "score": scope_valid, "max": scope_max})
+            by_scope.append(scope_row(scope, scope_valid, scope_max))
             progress(
                 f"[{model_name}] output=>original (general): scope_{scope} complete with {scope_valid}/{scope_max} valid"
             )
 
-            for stale in temp_path.glob(f"{model_name}-instance-{scope}-*.xml"):
+            for stale in temp_path.glob(f"{model_name}-instance-{generation_scope}-*.xml"):
                 stale.unlink(missing_ok=True)
 
     return {
@@ -856,11 +890,11 @@ def score_one_model(
     normalization_dir_holder: list = []
     normalized_reference: Path | None = None
     normalized_generated: Path | None = None
+    normalized_scope_floor = 1
 
     if final_syntax_valid:
         ringert_reference = reference_model
         ringert_generated = generated_model
-        normalized_scope_floor = 1
         ringert_usable = True
         schema_mismatch = False
         reference_self_vacuous = False
@@ -1010,6 +1044,7 @@ def score_one_model(
             java8_bin=java8_bin,
             java17_bin=java17_bin,
             composat_tmpdir=composat_tmpdir,
+            generation_scope_floor=normalized_scope_floor,
         )
         original_composat_instance_score = original_composat_result["score"]
         original_composat_instance_max = original_composat_result["max"]
@@ -1056,6 +1091,7 @@ def score_one_model(
             scripts_dir=scripts_dir,
             alloy_jar_620=alloy_jar_620,
             java17_bin=java17_bin,
+            generation_scope_floor=normalized_scope_floor,
         )
         original_general_instance_score = original_general_result["score"]
         original_general_instance_max = original_general_result["max"]
@@ -1098,6 +1134,7 @@ def score_one_model(
         java8_bin=java8_bin,
         java17_bin=java17_bin,
         composat_tmpdir=composat_tmpdir,
+        generation_scope_floor=(normalized_scope_floor if normalized_generated is not None else 1),
     )
     progress(
         f"[{model_name}] output=>original (CompoSAT) summary: "
@@ -1115,6 +1152,7 @@ def score_one_model(
         scripts_dir=scripts_dir,
         alloy_jar_620=alloy_jar_620,
         java17_bin=java17_bin,
+        generation_scope_floor=(normalized_scope_floor if normalized_generated is not None else 1),
     )
     progress(
         f"[{model_name}] output=>original (general) summary: "
@@ -1187,6 +1225,12 @@ def score_one_model(
 
 
 def build_report(results: list[dict]) -> str:
+    def instance_effective_note(scope_row: dict) -> str:
+        effective_scope = scope_row.get("effective_scope", scope_row["scope"])
+        if effective_scope == scope_row["scope"]:
+            return ""
+        return f" (generated at scope_{effective_scope} after normalization)"
+
     lines: list[str] = []
     lines.append("Alloy Benchmark Scoring Report")
     lines.append("=" * 80)
@@ -1242,16 +1286,18 @@ def build_report(results: list[dict]) -> str:
             f"{original_to_output['composat_instances']['score']}/{original_to_output['composat_instances']['max']}"
         )
         for scope_row in original_to_output["composat_instances"]["by_scope"]:
+            effective_note = instance_effective_note(scope_row)
             lines.append(
-                f"      scope_{scope_row['scope']}: {scope_row['score']}/{scope_row['max']}"
+                f"      scope_{scope_row['scope']}: {scope_row['score']}/{scope_row['max']}{effective_note}"
             )
         lines.append(
             "    General instances from original model checked on output model: "
             f"{original_to_output['general_instances']['score']}/{original_to_output['general_instances']['max']}"
         )
         for scope_row in original_to_output["general_instances"]["by_scope"]:
+            effective_note = instance_effective_note(scope_row)
             lines.append(
-                f"      scope_{scope_row['scope']}: {scope_row['score']}/{scope_row['max']}"
+                f"      scope_{scope_row['scope']}: {scope_row['score']}/{scope_row['max']}{effective_note}"
             )
 
         lines.append("  Direction: output => original")
@@ -1272,8 +1318,9 @@ def build_report(results: list[dict]) -> str:
             f"{output_to_original['composat_instances']['score']}/{output_to_original['composat_instances']['max']}"
         )
         for scope_row in output_to_original["composat_instances"]["by_scope"]:
+            effective_note = instance_effective_note(scope_row)
             lines.append(
-                f"      scope_{scope_row['scope']}: {scope_row['score']}/{scope_row['max']}"
+                f"      scope_{scope_row['scope']}: {scope_row['score']}/{scope_row['max']}{effective_note}"
             )
         if output_to_original["composat_instances"].get("timed_out"):
             timeout_scopes = output_to_original["composat_instances"].get("timeout_scopes") or []
@@ -1295,8 +1342,9 @@ def build_report(results: list[dict]) -> str:
             f"{output_to_original['general_instances']['score']}/{output_to_original['general_instances']['max']}"
         )
         for scope_row in output_to_original["general_instances"]["by_scope"]:
+            effective_note = instance_effective_note(scope_row)
             lines.append(
-                f"      scope_{scope_row['scope']}: {scope_row['score']}/{scope_row['max']}"
+                f"      scope_{scope_row['scope']}: {scope_row['score']}/{scope_row['max']}{effective_note}"
             )
         if output_to_original["general_instances"].get("timed_out"):
             timeout_scopes = output_to_original["general_instances"].get("timeout_scopes") or []
