@@ -90,7 +90,7 @@ def process_description(
 	suffix_file: Path,
 	scripts_dir: Path,
 	repo_root: Path,
-	diff_jar: Path,
+	alloy_jar_620: Path,
 	java17_bin: Path,
 	model: str,
 ) -> tuple[str, int, bool]:
@@ -145,7 +145,7 @@ def process_description(
 			run_command(model_command, cwd=repo_root)
 
 			attempt_text = attempt_output_file.read_text(encoding="utf-8", errors="replace")
-			score, syntax_msg = check_syntax(attempt_output_file, diff_jar, java17_bin)
+			score, syntax_msg = check_syntax(attempt_output_file, alloy_jar_620, java17_bin)
 			syntax_ok = score == 1
 			attempts.append(
 				{
@@ -182,7 +182,7 @@ def main() -> int:
 	outputs_dir = (repo_root / args.outputs_dir).resolve()
 	prefix_file = (repo_root / PROMPT_PREFIX_PATH).resolve()
 	suffix_file = (repo_root / PROMPT_SUFFIX_PATH).resolve()
-	diff_jar = (repo_root / "scoring" / "alloy-diff.jar").resolve()
+	alloy_jar_620 = (repo_root / "scoring" / "org.alloytools.alloy.dist-6.2.0.jar").resolve()
 
 	if not descriptions_dir.exists() or not descriptions_dir.is_dir():
 		print(f"Error: descriptions directory not found: {descriptions_dir}")
@@ -193,8 +193,8 @@ def main() -> int:
 	if not suffix_file.exists():
 		print(f"Error: suffix file not found: {suffix_file}")
 		return 1
-	if not diff_jar.exists():
-		print(f"Error: alloy-diff.jar not found: {diff_jar}")
+	if not alloy_jar_620.exists():
+		print(f"Error: Alloy 6.2 distribution jar not found: {alloy_jar_620}")
 		return 1
 
 	try:
@@ -236,7 +236,7 @@ def main() -> int:
 				suffix_file,
 				scripts_dir,
 				repo_root,
-				diff_jar,
+				alloy_jar_620,
 				java17_bin,
 				args.model,
 			): desc_file.name

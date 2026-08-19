@@ -7,11 +7,8 @@ Each "Product" has a set of "base_coverages", which consist of elements of "Cove
 
 Each "Coverage" has a set of "risk_types", which consist of elements of "RiskType".
 
-The coverages means exactly the set of "base_coverages" plus "optional_coverages".
-
 There is exactly one "DeductibleValue" for every combination of one of the "DeductibleLevel"'s "product"'s "base_coverages" and any "RiskType".
 
 The set of pairs consisting of a "Coverage" and a "RiskType" that appear in a "DeductibleLevel"'s "coverages" relation is exactly the set of pairs where:
-  - the "Coverage" belongs to the "coverages" of that "DeductibleLevel"'s "product", and
+  - the "Coverage" belongs to either the "base_coverages" or the "optional_coverages" of that "DeductibleLevel"'s "product", and
   - the "RiskType" belongs to the "risk_types" of that "Coverage".
-

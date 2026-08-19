@@ -3,14 +3,18 @@
 
 Motivation
 ----------
-The Ringert / alloy-diff (``ModuleDiff``) comparison crashes with
+The Ringert / alloy-diff (``ModuleDiff``) merger has two known inheritance
+failure modes. It crashes with
 
     java.lang.RuntimeException: Cannot merge PrimSig and SubsetSig with same name: this/<Sig>
 
 whenever one module declares a signature with ``extends`` (a ``PrimSig``) and the
-other declares the same-named signature with ``in`` (a ``SubsetSig``). Normalising
-both modules so that every ``extends`` becomes an equivalent ``in`` makes the two
-modules mergeable again, so Ringert can produce a meaningful result.
+other declares the same-named signature with ``in`` (a ``SubsetSig``). It can
+also make a satisfiable model with nested singleton inheritance (for example,
+``one sig Child extends Parent`` where ``Parent`` is itself ``one``) unsatisfiable
+during a self-comparison. That makes both semantic implications pass vacuously.
+Normalising both modules so that every ``extends`` becomes an equivalent ``in``
+avoids both merger defects, so Ringert can produce a meaningful result.
 
 Transformation
 --------------

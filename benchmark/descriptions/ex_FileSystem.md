@@ -2,7 +2,7 @@ There is a set called "Object".
 
 The elements of a set called "Directory" are all contained within "Object". Each element of "Directory" is related by "contents" to a set of elements of "Object".
 
-There is exactly one element called "Root".
+There is exactly one element called "Root", and it is a "Directory".
 
 There is a set called "File" is a subset of "Object".
 

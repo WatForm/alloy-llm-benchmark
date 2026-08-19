@@ -8,7 +8,7 @@ Each "HeapState" matches to at most one "Node" by the relation "freeList".
 
 There are two subsets of "HeapState", named "h" and "hsn". Each contains exactly one "HeapState".
 
-There is exactly one distinguished element named "root".
+There is exactly one distinguished "Node" named "root".
 
 A condition named clearMarks relates two elements of "HeapState"s, called the before-state and after-state.  This condition 
 ensures there are no nodes in the "marked" set of the second "HeapState" and that "left" and "right" fields of the two "HeapState"s are the same.

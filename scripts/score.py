@@ -105,6 +105,37 @@ def semdiff_implication_holds(
     return equivalent, output
 
 
+def semdiff_common_instance_exists(
+    model: Path,
+    scope: int,
+    diff_jar: Path,
+    java17_bin: Path,
+) -> tuple[bool, str]:
+    """Return whether ModuleDiff can find an instance of a model merged with itself."""
+    cmd = [
+        str(java17_bin),
+        "-cp",
+        str(diff_jar),
+        "org.alloytools.alloy.diff.ModuleDiff",
+        str(model),
+        str(model),
+        "CommonInst",
+        str(scope),
+        "false",
+        SOLVER,
+    ]
+
+    try:
+        result = run_command(cmd)
+    except subprocess.TimeoutExpired:
+        return False, "Timed out"
+    except Exception as exc:
+        return False, str(exc)
+
+    output = ((result.stdout or "") + (result.stderr or "")).strip()
+    return result.returncode == 0 and "Common instances found:" in output, output
+
+
 # ModuleDiff raises this when the two modules declare a same-named signature one
 # way with ``extends`` (a PrimSig) and the other way with ``in`` (a SubsetSig).
 PRIMSIG_SUBSETSIG_MERGE_ERROR = "Cannot merge PrimSig and SubsetSig with same name"
@@ -113,10 +144,9 @@ PRIMSIG_SUBSETSIG_MERGE_ERROR = "Cannot merge PrimSig and SubsetSig with same na
 def normalize_extends_to_in(source_model: Path, dest_model: Path, scripts_dir: Path) -> bool:
     """Rewrite ``extends`` subsignatures as equivalent ``in`` subsets for SemDiff.
 
-    Runs scripts/extends_to_in.py so that a model whose reference/output disagree
-    on ``extends`` vs ``in`` can still be compared by ModuleDiff (which otherwise
-    crashes merging a PrimSig against a same-named SubsetSig). Returns True when
-    the transformed file was written.
+    Runs scripts/extends_to_in.py so ModuleDiff can compare inheritance without
+    its PrimSig/SubsetSig crash or nested-singleton vacuity. Returns True when the
+    transformed file was written.
     """
     cmd = [sys.executable, str(scripts_dir / "extends_to_in.py"), str(source_model), str(dest_model)]
     try:
@@ -252,12 +282,12 @@ def compute_syntax_attempt_score(
     model_name: str,
     attempts: list[tuple[int, Path]],
     final_model: Path,
-    diff_jar: Path,
+    alloy_jar_620: Path,
     java17_bin: Path,
 ) -> dict:
     # Legacy runs may only have model.als; treat that as a single attempt.
     if not attempts:
-        syntax_score, syntax_msg = check_syntax(final_model, diff_jar, java17_bin)
+        syntax_score, syntax_msg = check_syntax(final_model, alloy_jar_620, java17_bin)
         tries_score = 3 if syntax_score == 1 else 0
         return {
             "score": tries_score,
@@ -282,7 +312,7 @@ def compute_syntax_attempt_score(
     final_syntax_message = "Missing final attempt"
 
     for attempt_num, attempt_path in attempts:
-        syntax_score, syntax_msg = check_syntax(attempt_path, diff_jar, java17_bin)
+        syntax_score, syntax_msg = check_syntax(attempt_path, alloy_jar_620, java17_bin)
         syntax_ok = syntax_score == 1
         attempt_rows.append(
             {
@@ -341,6 +371,7 @@ def score_output_instances_against_reference(
     generated_model: Path,
     reference_model: Path,
     max_scope: int,
+    reference_counts_by_scope: dict[int, int],
     scripts_dir: Path,
     alloy_jar_620: Path,
     composat_jar: Path,
@@ -348,6 +379,17 @@ def score_output_instances_against_reference(
     java17_bin: Path,
     composat_tmpdir: Path,
 ) -> dict:
+    def failure_max(scope: int) -> int:
+        # A generation failure must remain score-bearing. Reference coverage is
+        # the stable per-scope budget available before generated instances exist.
+        return max(1, reference_counts_by_scope.get(scope, 0))
+
+    def failure_rows(start_scope: int = 1) -> list[dict]:
+        return [
+            {"scope": scope, "score": 0, "max": failure_max(scope)}
+            for scope in range(start_scope, max_scope + 1)
+        ]
+
     if max_scope <= 0:
         progress(f"[{model_name}] output=>original: no reference scopes found; skipping CompoSAT generation.")
         return {
@@ -363,8 +405,8 @@ def score_output_instances_against_reference(
         progress(f"[{model_name}] output=>original: generated model missing at {generated_model}")
         return {
             "score": 0,
-            "max": 0,
-            "by_scope": [{"scope": scope, "score": 0, "max": 0} for scope in range(1, max_scope + 1)],
+            "max": sum(failure_max(scope) for scope in range(1, max_scope + 1)),
+            "by_scope": failure_rows(),
             "timed_out": False,
             "timeout_scope": None,
             "notes": [f"Generated model is missing: {generated_model}"],
@@ -376,8 +418,8 @@ def score_output_instances_against_reference(
         progress(f"[{model_name}] output=>original: failed reading generated model for CompoSAT: {exc}")
         return {
             "score": 0,
-            "max": 0,
-            "by_scope": [{"scope": scope, "score": 0, "max": 0} for scope in range(1, max_scope + 1)],
+            "max": sum(failure_max(scope) for scope in range(1, max_scope + 1)),
+            "by_scope": failure_rows(),
             "timed_out": False,
             "timeout_scope": None,
             "notes": [f"Could not read generated model for CompoSAT: {exc}"],
@@ -437,12 +479,17 @@ def score_output_instances_against_reference(
                 notes.append(timeout_note)
                 progress(f"[{model_name}] output=>original: {timeout_note}")
                 shutil.rmtree(scope_out, ignore_errors=True)
+                remaining_rows = failure_rows(scope)
+                by_scope.extend(remaining_rows)
+                total_max += sum(row["max"] for row in remaining_rows)
                 break
             except Exception as exc:
                 err_note = f"scope_{scope}: CompoSAT invocation failed: {exc}"
                 notes.append(err_note)
                 progress(f"[{model_name}] output=>original: {err_note}")
-                by_scope.append({"scope": scope, "score": 0, "max": 0})
+                scope_failure_max = failure_max(scope)
+                by_scope.append({"scope": scope, "score": 0, "max": scope_failure_max})
+                total_max += scope_failure_max
                 continue
 
             output = ((result.stdout or "") + (result.stderr or "")).strip()
@@ -451,6 +498,11 @@ def score_output_instances_against_reference(
                 exit_note = f"scope_{scope}: CompoSAT exited with code {result.returncode} ({detail})"
                 notes.append(exit_note)
                 progress(f"[{model_name}] output=>original: {exit_note}")
+                scope_failure_max = failure_max(scope)
+                by_scope.append({"scope": scope, "score": 0, "max": scope_failure_max})
+                total_max += scope_failure_max
+                shutil.rmtree(scope_out, ignore_errors=True)
+                continue
 
             xml_files = sorted(scope_out.glob("**/instance_*.xml"))
             progress(
@@ -514,6 +566,18 @@ def score_output_general_instances_against_reference(
     alloy_jar_620: Path,
     java17_bin: Path,
 ) -> dict:
+    def failure_max(scope: int) -> int:
+        return max(
+            1,
+            reference_general_counts_by_scope.get(scope, DEFAULT_GENERAL_OUTPUT_INSTANCE_COUNT),
+        )
+
+    def failure_rows(start_scope: int = 1) -> list[dict]:
+        return [
+            {"scope": scope, "score": 0, "max": failure_max(scope)}
+            for scope in range(start_scope, max_scope + 1)
+        ]
+
     if max_scope <= 0:
         progress(f"[{model_name}] output=>original (general): no reference scopes found; skipping generation.")
         return {
@@ -530,8 +594,8 @@ def score_output_general_instances_against_reference(
         progress(f"[{model_name}] output=>original (general): generated model missing at {generated_model}")
         return {
             "score": 0,
-            "max": 0,
-            "by_scope": [{"scope": scope, "score": 0, "max": 0} for scope in range(1, max_scope + 1)],
+            "max": sum(failure_max(scope) for scope in range(1, max_scope + 1)),
+            "by_scope": failure_rows(),
             "timed_out": False,
             "timeout_scope": None,
             "timeout_scopes": [],
@@ -557,8 +621,8 @@ def score_output_general_instances_against_reference(
             progress(f"[{model_name}] output=>original (general): failed preparing temp model: {exc}")
             return {
                 "score": 0,
-                "max": 0,
-                "by_scope": [{"scope": scope, "score": 0, "max": 0} for scope in range(1, max_scope + 1)],
+                "max": sum(failure_max(scope) for scope in range(1, max_scope + 1)),
+                "by_scope": failure_rows(),
                 "timed_out": False,
                 "timeout_scope": None,
                 "timeout_scopes": [],
@@ -627,7 +691,6 @@ def score_output_general_instances_against_reference(
                     err_note = f"scope_{scope}: InstanceGenerator invocation failed: {exc}"
                     notes.append(err_note)
                     progress(f"[{model_name}] output=>original (general): {err_note}")
-                    by_scope.append({"scope": scope, "score": 0, "max": 0})
                     generation_failed = True
                     break
 
@@ -637,6 +700,8 @@ def score_output_general_instances_against_reference(
                     exit_note = f"scope_{scope}: InstanceGenerator exited with code {result.returncode} ({detail})"
                     notes.append(exit_note)
                     progress(f"[{model_name}] output=>original (general): {exit_note}")
+                    generation_failed = True
+                    break
 
                 xml_files = sorted(temp_path.glob(f"{model_name}-instance-{scope}-*.xml"))
                 selected_xml_files, selected_hashes, duplicate_count = select_unique_generated_instances(
@@ -666,7 +731,13 @@ def score_output_general_instances_against_reference(
 
             if generation_failed:
                 if timed_out:
+                    remaining_rows = failure_rows(scope)
+                    by_scope.extend(remaining_rows)
+                    total_max += sum(row["max"] for row in remaining_rows)
                     break
+                scope_failure_max = failure_max(scope)
+                by_scope.append({"scope": scope, "score": 0, "max": scope_failure_max})
+                total_max += scope_failure_max
                 continue
 
             seen_instance_hashes.update(selected_hashes)
@@ -739,7 +810,7 @@ def score_one_model(
         model_name,
         output_attempts,
         generated_model,
-        diff_jar,
+        alloy_jar_620,
         java17_bin,
     )
     final_syntax_valid = syntax_attempt_score["final_syntax_ok"]
@@ -775,82 +846,143 @@ def score_one_model(
     ringert_original_to_output_score = 0
     ringert_output_to_original_score = 0
 
-    # If Ringert triggers extends->in normalization, subsequent instance-check
-    # passes must use the normalized model files too (otherwise they still trip
-    # the same PrimSig/SubsetSig mismatch). The reference-side (original=>output)
-    # pass would also need to re-generate its instances from the normalized
-    # reference. `normalization_dir_holder` keeps the TemporaryDirectory alive
-    # past the Ringert block so those later passes can read the files.
+    # Ringert's ModuleMerger has two inheritance defects that the semantics-
+    # preserving extends->in transform avoids: it cannot merge a PrimSig with a
+    # same-named SubsetSig, and it can make a satisfiable self-comparison
+    # vacuously UNSAT. We probe for those cases and normalize only when needed;
+    # normalizing every model can itself make legal sibling fields fail Alloy's
+    # static overlap check. Instance checks use normalized copies only for the
+    # PrimSig/SubsetSig incompatibility.
     normalization_dir_holder: list = []
     normalized_reference: Path | None = None
     normalized_generated: Path | None = None
 
     if final_syntax_valid:
-        # When ModuleDiff crashes trying to merge a PrimSig against a same-named
-        # SubsetSig (an ``extends`` vs ``in`` mismatch between the two models), we
-        # retry the comparison on ``extends``->``in`` normalized copies of both
-        # models. The copies are built lazily on the first crash and reused for
-        # every scope.
-        normalization = {"tried": False, "dir": None, "map": {}}
+        ringert_reference = reference_model
+        ringert_generated = generated_model
+        normalized_scope_floor = 1
+        ringert_usable = True
+        schema_mismatch = False
+        reference_self_vacuous = False
 
-        def ringert_implies(left: Path, right: Path, scope: int) -> bool:
-            if normalization["tried"]:
-                left = normalization["map"].get(left, left)
-                right = normalization["map"].get(right, right)
-                equivalent, _ = semdiff_implication_holds(left, right, scope, diff_jar, java17_bin)
-                return equivalent
+        if ringert_scopes:
+            probe_scope = max(5, ringert_max_scope)
+            reference_has_common_instance, _ = semdiff_common_instance_exists(
+                reference_model,
+                probe_scope,
+                diff_jar,
+                java17_bin,
+            )
+            reference_self_vacuous = not reference_has_common_instance
+            _, schema_probe_output = semdiff_implication_holds(
+                reference_model,
+                generated_model,
+                ringert_scopes[0],
+                diff_jar,
+                java17_bin,
+            )
+            schema_mismatch = PRIMSIG_SUBSETSIG_MERGE_ERROR in schema_probe_output
 
-            equivalent, output = semdiff_implication_holds(left, right, scope, diff_jar, java17_bin)
-            if PRIMSIG_SUBSETSIG_MERGE_ERROR not in output:
-                return equivalent
-
-            # First PrimSig/SubsetSig crash: build normalized copies once.
-            normalization["tried"] = True
-            tmp = tempfile.TemporaryDirectory(prefix=f"extends2in_{model_name}_")
-            normalization["dir"] = tmp
-            tmp_path = Path(tmp.name)
-            mapping: dict[Path, Path] = {}
-            for tag, original in (("reference", reference_model), ("generated", generated_model)):
-                dest = tmp_path / f"{tag}_{original.name}"
-                if normalize_extends_to_in(original, dest, scripts_dir):
-                    mapping[original] = dest
-            normalization["map"] = mapping
-            progress(
-                f"[{model_name}] Ringert: PrimSig/SubsetSig merge error; "
-                f"retrying on extends->in normalized models"
+        if reference_self_vacuous or schema_mismatch:
+            normalization_dir = tempfile.TemporaryDirectory(prefix=f"extends2in_{model_name}_")
+            normalization_path = Path(normalization_dir.name)
+            normalized_reference_path = normalization_path / f"reference_{reference_model.name}"
+            normalized_generated_path = normalization_path / f"generated_{generated_model.name}"
+            reference_normalized_ok = normalize_extends_to_in(
+                reference_model, normalized_reference_path, scripts_dir
+            )
+            generated_normalized_ok = normalize_extends_to_in(
+                generated_model, normalized_generated_path, scripts_dir
             )
 
-            left_n = mapping.get(left, left)
-            right_n = mapping.get(right, right)
-            if left_n is left and right_n is right:
-                # Normalization unavailable; keep the (crash) result.
-                return equivalent
-            equivalent, _ = semdiff_implication_holds(left_n, right_n, scope, diff_jar, java17_bin)
+            if reference_normalized_ok and generated_normalized_ok:
+                ringert_reference = normalized_reference_path
+                ringert_generated = normalized_generated_path
+                normalization_dir_holder.append(normalization_dir)
+                progress(
+                    f"[{model_name}] Ringert: using semantics-preserving extends->in normalization "
+                    f"(self-vacuous={reference_self_vacuous}, schema-mismatch={schema_mismatch})"
+                )
+
+                # The transformed subset hierarchy may need a larger global
+                # bound than the requested scope. Find the first bound at which
+                # the known-satisfiable reference survives its self-comparison.
+                viable_normalized_scope = None
+                for candidate_scope in range(1, max(10, ringert_max_scope) + 1):
+                    has_common_instance, _ = semdiff_common_instance_exists(
+                        ringert_reference,
+                        candidate_scope,
+                        diff_jar,
+                        java17_bin,
+                    )
+                    if has_common_instance:
+                        viable_normalized_scope = candidate_scope
+                        break
+
+                if viable_normalized_scope is None:
+                    ringert_usable = False
+                    progress(
+                        f"[{model_name}] Ringert: normalized reference self-comparison remained "
+                        f"unsatisfiable through scope {max(10, ringert_max_scope)}; "
+                        "Ringert checks will score 0"
+                    )
+                else:
+                    normalized_scope_floor = viable_normalized_scope
+
+                if schema_mismatch:
+                    normalized_reference = ringert_reference
+                    normalized_generated = ringert_generated
+                    progress(
+                        f"[{model_name}] Ringert: normalized models will also be used for instance checks"
+                    )
+            else:
+                normalization_dir.cleanup()
+                ringert_usable = False
+                progress(f"[{model_name}] Ringert: extends->in normalization failed; using original models")
+
+        def ringert_implies(left: Path, right: Path, scope: int) -> bool:
+            if not ringert_usable:
+                return False
+            equivalent, _ = semdiff_implication_holds(left, right, scope, diff_jar, java17_bin)
             return equivalent
 
         for scope in ringert_scopes:
-            progress(f"[{model_name}] Ringert scope_{scope}/{ringert_max_scope}: checking implications")
-            output_implies_original_ok = ringert_implies(reference_model, generated_model, scope)
-            original_implies_output_ok = ringert_implies(generated_model, reference_model, scope)
+            effective_scope = max(scope, normalized_scope_floor)
+            progress(
+                f"[{model_name}] Ringert scope_{scope}/{ringert_max_scope}: checking implications "
+                f"at effective scope {effective_scope}"
+            )
+            output_implies_original_ok = ringert_implies(
+                ringert_reference, ringert_generated, effective_scope
+            )
+            original_implies_output_ok = ringert_implies(
+                ringert_generated, ringert_reference, effective_scope
+            )
 
             ringert_output_to_original_score += int(output_implies_original_ok)
             ringert_original_to_output_score += int(original_implies_output_ok)
 
             ringert_output_to_original_by_scope.append(
-                {"scope": scope, "score": int(output_implies_original_ok), "max": 1}
+                {
+                    "scope": scope,
+                    "effective_scope": effective_scope,
+                    "score": int(output_implies_original_ok),
+                    "max": 1,
+                }
             )
             ringert_original_to_output_by_scope.append(
-                {"scope": scope, "score": int(original_implies_output_ok), "max": 1}
+                {
+                    "scope": scope,
+                    "effective_scope": effective_scope,
+                    "score": int(original_implies_output_ok),
+                    "max": 1,
+                }
             )
             progress(
                 f"[{model_name}] Ringert scope_{scope}: original=>output={int(original_implies_output_ok)}/1, "
                 f"output=>original={int(output_implies_original_ok)}/1"
             )
 
-        if normalization["dir"] is not None:
-            normalization_dir_holder.append(normalization["dir"])
-            normalized_reference = normalization["map"].get(reference_model)
-            normalized_generated = normalization["map"].get(generated_model)
     else:
         progress(f"[{model_name}] final attempt syntax invalid; Ringert and instance checks will score 0 where applicable")
         for scope in ringert_scopes:
@@ -869,6 +1001,9 @@ def score_one_model(
             generated_model=normalized_reference,
             reference_model=normalized_generated,
             max_scope=composat_max_scope,
+            reference_counts_by_scope={
+                scope: len(xml_files) for scope, xml_files in composat_instances_by_scope.items()
+            },
             scripts_dir=scripts_dir,
             alloy_jar_620=alloy_jar_620,
             composat_jar=composat_jar,
@@ -954,6 +1089,9 @@ def score_one_model(
         generated_model=normalized_generated if normalized_generated is not None else generated_model,
         reference_model=normalized_reference if normalized_reference is not None else reference_model,
         max_scope=composat_max_scope,
+        reference_counts_by_scope={
+            scope: len(xml_files) for scope, xml_files in composat_instances_by_scope.items()
+        },
         scripts_dir=scripts_dir,
         alloy_jar_620=alloy_jar_620,
         composat_jar=composat_jar,
@@ -1093,8 +1231,11 @@ def build_report(results: list[dict]) -> str:
             f"{original_to_output['ringert']['score']}/{original_to_output['ringert']['max']}"
         )
         for scope_row in original_to_output["ringert"]["by_scope"]:
+            effective_note = ""
+            if scope_row.get("effective_scope", scope_row["scope"]) != scope_row["scope"]:
+                effective_note = f" (evaluated at scope_{scope_row['effective_scope']} after normalization)"
             lines.append(
-                f"      scope_{scope_row['scope']}: {scope_row['score']}/{scope_row['max']}"
+                f"      scope_{scope_row['scope']}: {scope_row['score']}/{scope_row['max']}{effective_note}"
             )
         lines.append(
             "    CompoSAT instances from original model checked on output model: "
@@ -1119,8 +1260,11 @@ def build_report(results: list[dict]) -> str:
             f"{output_to_original['ringert']['score']}/{output_to_original['ringert']['max']}"
         )
         for scope_row in output_to_original["ringert"]["by_scope"]:
+            effective_note = ""
+            if scope_row.get("effective_scope", scope_row["scope"]) != scope_row["scope"]:
+                effective_note = f" (evaluated at scope_{scope_row['effective_scope']} after normalization)"
             lines.append(
-                f"      scope_{scope_row['scope']}: {scope_row['score']}/{scope_row['max']}"
+                f"      scope_{scope_row['scope']}: {scope_row['score']}/{scope_row['max']}{effective_note}"
             )
 
         lines.append(

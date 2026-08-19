@@ -10,7 +10,6 @@ from pathlib import Path
 
 
 TIMEOUT_SECONDS = 300
-DEFAULT_SOLVER = "sat4j"
 
 
 def run_command(
@@ -80,24 +79,19 @@ def require_java_for_version(
 
 def check_syntax(
     model_file: Path,
-    diff_jar: Path,
+    alloy_jar_620: Path,
     java17_bin: Path,
-    solver: str = DEFAULT_SOLVER,
 ) -> tuple[int, str]:
+    """Parse ``model_file`` with the same Alloy 6.2 runtime used for scoring."""
     if not model_file.exists():
         return 0, f"Missing generated file: {model_file}"
 
     cmd = [
         str(java17_bin),
-        "-cp",
-        str(diff_jar),
-        "org.alloytools.alloy.diff.ModuleDiff",
+        "-jar",
+        str(alloy_jar_620),
+        "commands",
         str(model_file),
-        str(model_file),
-        "SemDiff",
-        "1",
-        "false",
-        solver,
     ]
 
     try:
@@ -108,7 +102,7 @@ def check_syntax(
         return 0, f"Syntax check failed: {exc}"
 
     output = (result.stdout or "") + (result.stderr or "")
-    if result.returncode == 0 and "The two modules are equivalent for the given scope." in output:
+    if result.returncode == 0:
         return 1, "OK"
 
     details = output.strip()
