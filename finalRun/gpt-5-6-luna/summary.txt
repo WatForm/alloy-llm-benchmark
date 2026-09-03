@@ -1,0 +1,9 @@
+Model: gpt-5-6-luna
+API model: gpt-5.6-luna
+
+Run 1: 90.3/100 (raw overall 2101/2353)
+Run 2: 94.9/100 (raw overall 2314/2366)
+Run 3: 93.4/100 (raw overall 2246/2373)
+
+Completed runs: 3/3
+Average final score: 92.9/100

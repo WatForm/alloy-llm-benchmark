@@ -1,0 +1,52 @@
+sig StoredModel {
+  derivationOf: lone StoredModel,
+  public: lone Link,
+  secret: lone Link,
+  command: lone Command
+}
+
+sig Link {}
+
+sig Command {}
+
+sig Instance {
+  instanceOf: one Command,
+  model: set StoredModel,
+  link: one Link
+}
+
+sig Secret in StoredModel {}
+
+fact {
+  all l: Link | one l.~(public + secret + link)
+
+  all sm: StoredModel | some sm.secret implies sm in Secret
+
+  all s: Secret | some s.secret implies some s.public
+
+  all s: Secret |
+    some s.public implies
+      (some s.secret or some s.^derivationOf.secret)
+
+  no (iden & ^derivationOf)
+
+  all sm: StoredModel |
+    no sm.public implies lone sm.~derivationOf
+
+  all sm: StoredModel |
+    some (sm.^derivationOf & Secret) implies sm in Secret
+
+  all s: Secret |
+    some s.public and no s.secret implies
+      no s.*~derivationOf.secret
+
+  all c: Command | one c.~command
+
+  all sm: StoredModel |
+    (no sm.public) iff (some sm.command)
+
+  all i: Instance |
+    i.model = i.instanceOf.~command
+
+  all c: Command | lone c.~instanceOf
+}

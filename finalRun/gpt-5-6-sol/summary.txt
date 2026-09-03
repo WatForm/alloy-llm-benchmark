@@ -1,0 +1,9 @@
+Model: gpt-5-6-sol
+API model: gpt-5.6-sol
+
+Run 1: 96.9/100 (raw overall 2325/2355)
+Run 2: 99.2/100 (raw overall 2325/2363)
+Run 3: 96.9/100 (raw overall 2356/2366)
+
+Completed runs: 3/3
+Average final score: 97.7/100

@@ -1,0 +1,9 @@
+Model: gemini-flash
+API model: gemini-3.8-flash
+
+Run 1: pending
+Run 2: pending
+Run 3: pending
+
+Completed runs: 0/3
+Average final score: pending

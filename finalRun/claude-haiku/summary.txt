@@ -1,0 +1,9 @@
+Model: claude-haiku
+API model: claude-haiku-4-5-20251001
+
+Run 1: 72.8/100 (raw overall 1757/2387)
+Run 2: 67.9/100 (raw overall 1596/2330)
+Run 3: pending
+
+Completed runs: 2/3
+Average final score: pending

@@ -1,0 +1,9 @@
+model,run_1,run_2,run_3,average
+gpt-5-6-sol,96.9,99.2,96.9,97.7
+gpt-5-6-terra,93.6,94.7,99.0,95.7
+gpt-5-6-luna,90.3,94.9,93.4,92.9
+gemini-pro,,,,
+gemini-flash,,,,
+claude-opus-5,97.7,98.6,,
+claude-sonnet,95.6,87.1,,
+claude-haiku,72.8,67.9,,

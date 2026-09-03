@@ -1,0 +1,13 @@
+Final Alloy benchmark campaign
+Updated: 2026-09-03T07:45:09+08:00
+
+Model | Run 1 | Run 2 | Run 3 | Average
+--- | ---: | ---: | ---: | ---:
+gpt-5-6-sol | 96.9 (2325/2355) | 99.2 (2325/2363) | 96.9 (2356/2366) | 97.7
+gpt-5-6-terra | 93.6 (2216/2360) | 94.7 (2186/2317) | 99.0 (2324/2363) | 95.7
+gpt-5-6-luna | 90.3 (2101/2353) | 94.9 (2314/2366) | 93.4 (2246/2373) | 92.9
+gemini-pro | pending | pending | pending | pending
+gemini-flash | pending | pending | pending | pending
+claude-opus-5 | 97.7 (2278/2362) | 98.6 (2314/2364) | pending | pending
+claude-sonnet | 95.6 (2297/2375) | 87.1 (2138/2377) | pending | pending
+claude-haiku | 72.8 (1757/2387) | 67.9 (1596/2330) | pending | pending

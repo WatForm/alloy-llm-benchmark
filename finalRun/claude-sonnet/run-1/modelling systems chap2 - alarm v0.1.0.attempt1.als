@@ -1,0 +1,36 @@
+sig Condition {}
+
+sig Sensor {
+  raise_alarm_on: set Condition
+}
+
+sig Qualification {
+  conditions: some Condition
+}
+
+sig Expert {
+  qualifications: some Qualification
+}
+
+sig State {
+  called_experts: set Expert,
+  onsite_experts: set Expert,
+  current_alarms: set Condition
+}
+
+fact DistinctQualifications {
+  all q1, q2: Qualification | q1 != q2 implies q1.conditions != q2.conditions
+}
+
+fact AllStatesSolveAlarms {
+  all s: State | s.current_alarms in (s.called_experts + s.onsite_experts).qualifications.conditions
+}
+
+fact NoOverlapExperts {
+  all s: State | no (s.called_experts & s.onsite_experts)
+}
+
+fact NoUnnecessaryCalledExperts {
+  all s: State, e: s.called_experts |
+    not (s.current_alarms in ((s.called_experts + s.onsite_experts) - e).qualifications.conditions)
+}
