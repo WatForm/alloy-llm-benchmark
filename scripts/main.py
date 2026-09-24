@@ -212,20 +212,52 @@ def main() -> int:
 
 	total = len(description_files)
 	print(f"Found {total} description files")
-	workers = min(MAX_PARALLEL_REQUESTS, total)
+	model_config = MODEL_CONFIGS[args.model]
+	provider_worker_limit = (
+		1
+		if args.model == "gemini-flash"
+		or model_config["provider"] == "huggingface"
+		else MAX_PARALLEL_REQUESTS
+	)
+	workers = min(provider_worker_limit, total)
 	print(
 		f"Running with up to {workers} parallel request(s), "
 		f"and up to {MAX_GENERATION_ATTEMPTS} generation attempt(s) per file"
 	)
-	model_config = MODEL_CONFIGS[args.model]
 	print(
 		f"Using model={args.model} "
 		f"({model_config['provider']}: {model_config['api_model']})"
 	)
 
 	failures: list[str] = []
-	with ThreadPoolExecutor(max_workers=workers) as executor:
-		future_to_name = {
+	if model_config["provider"] == "huggingface":
+		# Keep metered Hugging Face runs strictly sequential and stop at the
+		# first provider failure (especially a depleted-credit response).
+		for idx, desc_file in enumerate(description_files, start=1):
+			try:
+				finished_name, final_attempt, syntax_ok = process_description(
+					idx,
+					total,
+					desc_file,
+					outputs_dir,
+					prefix_file,
+					suffix_file,
+					scripts_dir,
+					repo_root,
+					alloy_jar_620,
+					java17_bin,
+					args.model,
+				)
+				status = "syntax-valid" if syntax_ok else "syntax-invalid"
+				print(f"Completed: {finished_name}.als (final attempt {final_attempt}, {status})")
+			except Exception as exc:
+				error_msg = f"Failed for {desc_file.name}: {exc}"
+				failures.append(error_msg)
+				print(error_msg)
+				break
+	else:
+		with ThreadPoolExecutor(max_workers=workers) as executor:
+			future_to_name = {
 			executor.submit(
 				process_description,
 				idx,
@@ -243,16 +275,16 @@ def main() -> int:
 			for idx, desc_file in enumerate(description_files, start=1)
 		}
 
-		for future in as_completed(future_to_name):
-			file_name = future_to_name[future]
-			try:
-				finished_name, final_attempt, syntax_ok = future.result()
-				status = "syntax-valid" if syntax_ok else "syntax-invalid"
-				print(f"Completed: {finished_name}.als (final attempt {final_attempt}, {status})")
-			except Exception as exc:
-				error_msg = f"Failed for {file_name}: {exc}"
-				failures.append(error_msg)
-				print(error_msg)
+			for future in as_completed(future_to_name):
+				file_name = future_to_name[future]
+				try:
+					finished_name, final_attempt, syntax_ok = future.result()
+					status = "syntax-valid" if syntax_ok else "syntax-invalid"
+					print(f"Completed: {finished_name}.als (final attempt {final_attempt}, {status})")
+				except Exception as exc:
+					error_msg = f"Failed for {file_name}: {exc}"
+					failures.append(error_msg)
+					print(error_msg)
 
 	if failures:
 		print("\nOne or more files failed:")

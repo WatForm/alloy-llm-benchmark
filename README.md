@@ -195,3 +195,72 @@ For example:
 
 To add a model, add another entry to `MODEL_CONFIGS`. The command line then uses
 only that alias; the provider and request settings are selected automatically.
+
+## 7) Complete three-run final campaign
+
+The final campaign orchestrator runs every alias currently configured in
+`scripts/llm.py` three times. For each run it generates the Alloy models, runs
+the full scorer, computes the weighted score out of 100, and updates campaign
+summaries:
+
+```bash
+venv/bin/python scripts/final_run.py
+```
+
+The default layout is:
+
+```text
+finalRun/
+  manifest.json
+  progress.json
+  orchestrator.log
+  summary.txt
+  summary.csv
+  summary.json
+  <model-alias>/
+    summary.txt
+    run-1/
+      *.als
+      generation.log
+      scoring.log
+      scores.txt
+      final-score.log
+      final_score.txt
+    run-2/
+    run-3/
+```
+
+Jobs run sequentially in round-robin order (`run-1` for every model, then
+`run-2`, then `run-3`) so concurrent Alloy processes cannot create artificial
+timeouts. Quiet subprocesses emit periodic heartbeats. A failed phase is
+retried, incomplete generation retries only missing descriptions, and rerunning
+the same command safely resumes completed work.
+
+Useful checks and recovery commands:
+
+```bash
+# Show the complete 24-job plan without writing files or calling an API.
+venv/bin/python scripts/final_run.py --dry-run
+
+# Verify API keys, Python dependencies, Java installations, and benchmark data.
+venv/bin/python scripts/final_run.py --preflight-only
+
+# Rebuild summaries from reports already on disk.
+venv/bin/python scripts/final_run.py --summarize-only
+
+# Resume only selected jobs after investigating a failure.
+venv/bin/python scripts/final_run.py \
+  --models claude-opus-5 gemini-pro \
+  --run-numbers 2 3
+```
+
+An existing campaign records a digest of the benchmark inputs and model
+configuration. Resume stops if those inputs changed, preventing results from
+different benchmark versions from being mixed accidentally.
+
+For an unattended run, start `scripts/final_run_supervisor.sh` through the
+operating system's service manager (for example, `launchctl` on macOS). The
+supervisor repeatedly resumes an incomplete campaign after process-level
+failures and exits only after `finalRun/COMPLETE` exists. For a long macOS run,
+also keep an idle-sleep assertion active (for example with `caffeinate`) until
+the campaign completes.

@@ -1,9 +1,9 @@
 Model: gemini-flash
 API model: gemini-3.8-flash
 
-Run 1: pending
-Run 2: pending
-Run 3: pending
+Run 1: 92.0/100 (raw overall 2202/2350)
+Run 2: 88.2/100 (raw overall 2068/2340)
+Run 3: 91.8/100 (raw overall 2199/2348)
 
-Completed runs: 0/3
-Average final score: pending
+Completed runs: 3/3
+Average final score: 90.7/100

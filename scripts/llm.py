@@ -19,7 +19,6 @@ from urllib.request import Request, urlopen
 # Add benchmark model aliases here. The command line accepts only these aliases.
 MODEL_CONFIGS = {
     # OpenAI GPT-5.6 supports: none, low, medium, high, xhigh, max.
-    # GPT-4o mini does not expose a reasoning-effort control.
     "gpt-5-6-sol": {
         "provider": "openai",
         "api_model": "gpt-5.6-sol",
@@ -33,15 +32,11 @@ MODEL_CONFIGS = {
     "gpt-5-6-luna": {
         "provider": "openai",
         "api_model": "gpt-5.6-luna",
-        "reasoning_effort": "medium",
-    },
-    "gpt-4o-mini": {
-        "provider": "openai",
-        "api_model": "gpt-4o-mini",
+        "reasoning_effort": "high",
     },
 
     # Gemini 3.1 Pro supports: low, medium, high.
-    # Gemini 3.6 Flash supports: minimal, low, medium, high.
+    # Gemini 3.8 Flash supports: minimal, low, medium, high.
     "gemini-pro": {
         "provider": "gemini",
         "api_model": "gemini-3.1-pro-preview",
@@ -50,8 +45,8 @@ MODEL_CONFIGS = {
     },
     "gemini-flash": {
         "provider": "gemini",
-        "api_model": "gemini-3.6-flash",
-        "thinking_level": "medium",
+        "api_model": "gemini-3.8-flash",
+        "thinking_level": "high",
         "max_output_tokens": 16384,
     },
 
@@ -63,7 +58,7 @@ MODEL_CONFIGS = {
         "provider": "anthropic",
         "api_model": "claude-opus-5",
         "thinking_type": "adaptive",
-        "effort": "max",
+        "effort": "high",
         "max_tokens": 64000,
     },
     "claude-sonnet": {
@@ -84,12 +79,23 @@ MODEL_CONFIGS = {
         "thinking_budget_tokens": 8192,
         "max_tokens": 16384,
     },
+
+    # Strong open-weight coding model served through Hugging Face Inference
+    # Providers. Pin the provider so repeated benchmark calls use the same
+    # backend rather than Hugging Face's automatic provider selection.
+    "hf-glm-5-3": {
+        "provider": "huggingface",
+        "api_model": "zai-org/GLM-5.3:baseten",
+        "reasoning_effort": "high",
+        "max_tokens": 16384,
+    },
 }
 
 PROVIDER_KEY_FILES = {
     "openai": "openai_key",
     "anthropic": "anthropic_key",
     "gemini": "gemini_key",
+    "huggingface": "huggingface_key",
 }
 
 MAX_API_ATTEMPTS = 8
@@ -100,11 +106,29 @@ API_TIMEOUT_SECONDS = 600.0
 
 def extract_retry_seconds(error: Exception) -> float | None:
     match = re.search(
-        r"try again in\s*([0-9]+(?:\.[0-9]+)?)s",
+        r"(?:try again|retry) in\s*([0-9]+(?:\.[0-9]+)?)s",
         str(error),
         re.IGNORECASE,
     )
     return float(match.group(1)) if match else None
+
+
+def is_zero_quota_error(error: Exception) -> bool:
+    """Return true for provider responses that explicitly grant no quota."""
+    message = str(error).lower()
+    return "quota" in message and bool(
+        re.search(r"(?:limit:\s*0|\"limit\"\s*:\s*0)", message)
+    )
+
+
+def is_non_retryable_auth_error(error: Exception) -> bool:
+    """Return true when retrying cannot repair provider credentials."""
+    message = str(error).lower()
+    return (
+        "http 401" in message
+        or "authentication_error" in message
+        or "invalid api key" in message
+    )
 
 
 def call_with_retries(provider: str, call_func) -> str:
@@ -112,6 +136,40 @@ def call_with_retries(provider: str, call_func) -> str:
         try:
             return call_func()
         except Exception as error:
+            if provider == "huggingface" and re.search(
+                r"http (?:400|401|402|403|404|422):",
+                str(error),
+                re.IGNORECASE,
+            ):
+                print(
+                    "huggingface call failed with a non-retryable client or "
+                    "billing response; not retrying.",
+                    file=sys.stderr,
+                    flush=True,
+                )
+                raise
+
+            if is_non_retryable_auth_error(error):
+                print(
+                    f"{provider} call failed authentication; not retrying.",
+                    file=sys.stderr,
+                    flush=True,
+                )
+                raise RuntimeError(
+                    f"{provider} API authentication failed"
+                ) from error
+
+            if is_zero_quota_error(error):
+                print(
+                    f"{provider} call failed with an explicit zero-quota "
+                    "response; not retrying.",
+                    file=sys.stderr,
+                    flush=True,
+                )
+                raise RuntimeError(
+                    f"{provider} API returned an explicit zero-quota response"
+                ) from error
+
             if attempt >= MAX_API_ATTEMPTS:
                 raise
 
@@ -381,6 +439,48 @@ def call_gemini(
     return text
 
 
+def call_huggingface(
+    prompt: str,
+    config: dict,
+    key: str,
+) -> str:
+    payload = {
+        "model": config["api_model"],
+        "messages": [
+            {
+                "role": "user",
+                "content": prompt,
+            }
+        ],
+        "max_tokens": config["max_tokens"],
+    }
+
+    if "reasoning_effort" in config:
+        payload["reasoning_effort"] = config["reasoning_effort"]
+
+    response = post_json(
+        "https://router.huggingface.co/v1/chat/completions",
+        {
+            "Authorization": f"Bearer {key}",
+        },
+        payload,
+    )
+
+    choices = response.get("choices", [])
+    if not choices:
+        raise RuntimeError(
+            f"Hugging Face response did not contain choices: {response}"
+        )
+
+    text = choices[0].get("message", {}).get("content", "")
+    if not isinstance(text, str) or not text.strip():
+        raise RuntimeError(
+            f"Hugging Face response did not contain text: {response}"
+        )
+
+    return text.strip()
+
+
 def call_model(
     prompt: str,
     config: dict,
@@ -396,6 +496,9 @@ def call_model(
 
     if provider == "gemini":
         return call_gemini(prompt, config, key)
+
+    if provider == "huggingface":
+        return call_huggingface(prompt, config, key)
 
     raise ValueError(
         f"unsupported provider in model configuration: "

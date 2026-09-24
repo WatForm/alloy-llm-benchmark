@@ -3,7 +3,7 @@ API model: claude-sonnet-5
 
 Run 1: 95.6/100 (raw overall 2297/2375)
 Run 2: 87.1/100 (raw overall 2138/2377)
-Run 3: pending
+Run 3: 87.8/100 (raw overall 2105/2366)
 
-Completed runs: 2/3
-Average final score: pending
+Completed runs: 3/3
+Average final score: 90.2/100
