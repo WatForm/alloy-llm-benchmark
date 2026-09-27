@@ -1,7 +1,7 @@
 There is a set of atoms called "Node".
 
-There is a set of atoms called "HeapState". Each "HeapState" is connected to at most one "Node" in a relation called "left". Each "HeapState" is connected to at most one "Node" in a relation called "right".
-Each "HeapState" is connected to set of "Nodes" in the relation "marked".
+There is a set of atoms called "HeapState". For each "HeapState", "left" relates each "Node" to at most one "Node", and "right" relates each "Node" to at most one "Node".
+Each "HeapState" is connected to set of "Node"s in the relation "marked".
 
 
 Each "HeapState" matches to at most one "Node" by the relation "freeList".

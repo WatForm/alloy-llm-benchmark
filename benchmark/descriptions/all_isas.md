@@ -4,7 +4,7 @@ Each element of "C" is related by "genls" to zero or more elements of "C".
 
 The inverse of "genls" forms a directed acyclic graph in which every node has at most one parent and there is at most one root.
 
-Each element of "E" is related by "isas" to one or more elements of "C", meaning the element of "E" is a "C".
+Each element of "E" is related by "isas" to one or more elements of "C".
 
 Each element of "E" is also related by "all_isas_attr" to zero or more elements of "C".
 

@@ -14,7 +14,7 @@ Each "Dir" has:
 
 Every "File" is the "contents" of at least one "DirEntry" that belongs to the "entries" of some "Dir".
 
-Every "Dir"'s' "parent" is exactly the unique "Dir" whose "entries" contains a "DirEntry" whose "contents" is that "Dir". 
+Every "Dir"'s "parent" is exactly the unique "Dir" whose "entries" contains a "DirEntry" whose "contents" is that "Dir", if one exists.
 
 There are no duplicate "Name"s within one "Dir"'s "entries".
 
