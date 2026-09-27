@@ -18,6 +18,7 @@ GENERAL_WEIGHT = 0.30
 MODEL_RE = re.compile(r"^Model: (.+)$")
 SYNTAX_RE = re.compile(r"^  Syntax attempts score: (\d+)/(\d+)")
 SCOPE_RE = re.compile(r"^\s+scope_(\d+): (\d+)/(\d+)")
+EFFECTIVE_SCOPE_RE = re.compile(r"\((?:evaluated|generated) at scope_(\d+) after normalization\)")
 
 
 @dataclass
@@ -80,7 +81,9 @@ def parse_scores(path: Path) -> list[ModelScore]:
 
         scope_match = SCOPE_RE.match(line)
         if scope_match and current_component is not None:
-            scope = int(scope_match.group(1))
+            # Pool rows by the scope actually used, so raised scopes count only once.
+            effective_match = EFFECTIVE_SCOPE_RE.search(line)
+            scope = int(effective_match.group(1) if effective_match else scope_match.group(1))
             score = int(scope_match.group(2))
             maximum = int(scope_match.group(3))
             scope_score = current_model.components[current_component].setdefault(scope, ScopeScore())
