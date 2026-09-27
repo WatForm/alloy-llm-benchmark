@@ -1,6 +1,6 @@
 There are four disjoint sets called "Amendment", "Modification", "ModifiedEntity", and "Date".
 
-There is exactly one "Amendment".  It is linked to a set of "Modifications" in a relation called "modifications".
+There is exactly one "Amendment".  It is linked to a set of "Modification" elements in a relation called "modifications".
 
 Every "Modification" is related to at most one "ModifiedEntity" through the relation "modified_entity".  Every modification has at most one "application_date".
 

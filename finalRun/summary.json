@@ -1,0 +1,293 @@
+{
+  "models": {
+    "claude-haiku": {
+      "average_score": 70.2,
+      "completed_runs": 3,
+      "runs": [
+        {
+          "display_score": "72.8",
+          "final_score_file": "claude-haiku/run-1/final_score.txt",
+          "raw_overall": "1757/2387",
+          "run": 1,
+          "score": 72.7809494832,
+          "scores_file": "claude-haiku/run-1/scores.txt",
+          "status": "complete"
+        },
+        {
+          "display_score": "67.9",
+          "final_score_file": "claude-haiku/run-2/final_score.txt",
+          "raw_overall": "1596/2330",
+          "run": 2,
+          "score": 67.8879205852,
+          "scores_file": "claude-haiku/run-2/scores.txt",
+          "status": "complete"
+        },
+        {
+          "display_score": "70.0",
+          "final_score_file": "claude-haiku/run-3/final_score.txt",
+          "raw_overall": "1563/2304",
+          "run": 3,
+          "score": 69.9622278567,
+          "scores_file": "claude-haiku/run-3/scores.txt",
+          "status": "complete"
+        }
+      ]
+    },
+    "claude-opus-5": {
+      "average_score": 98.5,
+      "completed_runs": 3,
+      "runs": [
+        {
+          "display_score": "97.7",
+          "final_score_file": "claude-opus-5/run-1/final_score.txt",
+          "raw_overall": "2278/2362",
+          "run": 1,
+          "score": 97.7397126437,
+          "scores_file": "claude-opus-5/run-1/scores.txt",
+          "status": "complete"
+        },
+        {
+          "display_score": "98.6",
+          "final_score_file": "claude-opus-5/run-2/final_score.txt",
+          "raw_overall": "2314/2364",
+          "run": 2,
+          "score": 98.617816092,
+          "scores_file": "claude-opus-5/run-2/scores.txt",
+          "status": "complete"
+        },
+        {
+          "display_score": "99.1",
+          "final_score_file": "claude-opus-5/run-3/final_score.txt",
+          "raw_overall": "2366/2375",
+          "run": 3,
+          "score": 99.0862068966,
+          "scores_file": "claude-opus-5/run-3/scores.txt",
+          "status": "complete"
+        }
+      ]
+    },
+    "claude-sonnet": {
+      "average_score": 90.2,
+      "completed_runs": 3,
+      "runs": [
+        {
+          "display_score": "95.6",
+          "final_score_file": "claude-sonnet/run-1/final_score.txt",
+          "raw_overall": "2297/2375",
+          "run": 1,
+          "score": 95.6362068966,
+          "scores_file": "claude-sonnet/run-1/scores.txt",
+          "status": "complete"
+        },
+        {
+          "display_score": "87.1",
+          "final_score_file": "claude-sonnet/run-2/final_score.txt",
+          "raw_overall": "2138/2377",
+          "run": 2,
+          "score": 87.0501149425,
+          "scores_file": "claude-sonnet/run-2/scores.txt",
+          "status": "complete"
+        },
+        {
+          "display_score": "87.8",
+          "final_score_file": "claude-sonnet/run-3/final_score.txt",
+          "raw_overall": "2105/2366",
+          "run": 3,
+          "score": 87.8020935961,
+          "scores_file": "claude-sonnet/run-3/scores.txt",
+          "status": "complete"
+        }
+      ]
+    },
+    "gemini-flash": {
+      "average_score": 90.7,
+      "completed_runs": 3,
+      "runs": [
+        {
+          "display_score": "92.0",
+          "final_score_file": "gemini-flash/run-1/final_score.txt",
+          "raw_overall": "2202/2350",
+          "run": 1,
+          "score": 91.9540229885,
+          "scores_file": "gemini-flash/run-1/scores.txt",
+          "status": "complete"
+        },
+        {
+          "display_score": "88.2",
+          "final_score_file": "gemini-flash/run-2/final_score.txt",
+          "raw_overall": "2068/2340",
+          "run": 2,
+          "score": 88.1609195402,
+          "scores_file": "gemini-flash/run-2/scores.txt",
+          "status": "complete"
+        },
+        {
+          "display_score": "91.8",
+          "final_score_file": "gemini-flash/run-3/final_score.txt",
+          "raw_overall": "2199/2348",
+          "run": 3,
+          "score": 91.8390804598,
+          "scores_file": "gemini-flash/run-3/scores.txt",
+          "status": "complete"
+        }
+      ]
+    },
+    "gemini-pro": {
+      "average_score": 98.5,
+      "completed_runs": 3,
+      "runs": [
+        {
+          "display_score": "99.9",
+          "final_score_file": "gemini-pro/run-1/final_score.txt",
+          "raw_overall": "2348/2349",
+          "run": 1,
+          "score": 99.8850574713,
+          "scores_file": "gemini-pro/run-1/scores.txt",
+          "status": "complete"
+        },
+        {
+          "display_score": "96.2",
+          "final_score_file": "gemini-pro/run-2/final_score.txt",
+          "raw_overall": "2303/2348",
+          "run": 2,
+          "score": 96.2448275862,
+          "scores_file": "gemini-pro/run-2/scores.txt",
+          "status": "complete"
+        },
+        {
+          "display_score": "99.2",
+          "final_score_file": "gemini-pro/run-3/final_score.txt",
+          "raw_overall": "2310/2350",
+          "run": 3,
+          "score": 99.2333333333,
+          "scores_file": "gemini-pro/run-3/scores.txt",
+          "status": "complete"
+        }
+      ]
+    },
+    "gpt-5-6-luna": {
+      "average_score": 92.9,
+      "completed_runs": 3,
+      "runs": [
+        {
+          "display_score": "90.3",
+          "final_score_file": "gpt-5-6-luna/run-1/final_score.txt",
+          "raw_overall": "2101/2353",
+          "run": 1,
+          "score": 90.2818390805,
+          "scores_file": "gpt-5-6-luna/run-1/scores.txt",
+          "status": "complete"
+        },
+        {
+          "display_score": "94.9",
+          "final_score_file": "gpt-5-6-luna/run-2/final_score.txt",
+          "raw_overall": "2314/2366",
+          "run": 2,
+          "score": 94.8635057471,
+          "scores_file": "gpt-5-6-luna/run-2/scores.txt",
+          "status": "complete"
+        },
+        {
+          "display_score": "93.4",
+          "final_score_file": "gpt-5-6-luna/run-3/final_score.txt",
+          "raw_overall": "2246/2373",
+          "run": 3,
+          "score": 93.4339901478,
+          "scores_file": "gpt-5-6-luna/run-3/scores.txt",
+          "status": "complete"
+        }
+      ]
+    },
+    "gpt-5-6-sol": {
+      "average_score": 97.7,
+      "completed_runs": 3,
+      "runs": [
+        {
+          "display_score": "96.9",
+          "final_score_file": "gpt-5-6-sol/run-1/final_score.txt",
+          "raw_overall": "2325/2355",
+          "run": 1,
+          "score": 96.8965517241,
+          "scores_file": "gpt-5-6-sol/run-1/scores.txt",
+          "status": "complete"
+        },
+        {
+          "display_score": "99.2",
+          "final_score_file": "gpt-5-6-sol/run-2/final_score.txt",
+          "raw_overall": "2325/2363",
+          "run": 2,
+          "score": 99.2095402299,
+          "scores_file": "gpt-5-6-sol/run-2/scores.txt",
+          "status": "complete"
+        },
+        {
+          "display_score": "96.9",
+          "final_score_file": "gpt-5-6-sol/run-3/final_score.txt",
+          "raw_overall": "2356/2366",
+          "run": 3,
+          "score": 96.8965517241,
+          "scores_file": "gpt-5-6-sol/run-3/scores.txt",
+          "status": "complete"
+        }
+      ]
+    },
+    "gpt-5-6-terra": {
+      "average_score": 95.7,
+      "completed_runs": 3,
+      "runs": [
+        {
+          "display_score": "93.6",
+          "final_score_file": "gpt-5-6-terra/run-1/final_score.txt",
+          "raw_overall": "2216/2360",
+          "run": 1,
+          "score": 93.5632183908,
+          "scores_file": "gpt-5-6-terra/run-1/scores.txt",
+          "status": "complete"
+        },
+        {
+          "display_score": "94.7",
+          "final_score_file": "gpt-5-6-terra/run-2/final_score.txt",
+          "raw_overall": "2186/2317",
+          "run": 2,
+          "score": 94.6820114943,
+          "scores_file": "gpt-5-6-terra/run-2/scores.txt",
+          "status": "complete"
+        },
+        {
+          "display_score": "99.0",
+          "final_score_file": "gpt-5-6-terra/run-3/final_score.txt",
+          "raw_overall": "2324/2363",
+          "run": 3,
+          "score": 98.9889655172,
+          "scores_file": "gpt-5-6-terra/run-3/scores.txt",
+          "status": "complete"
+        }
+      ]
+    },
+    "hf-glm-5-3": {
+      "average_score": null,
+      "completed_runs": 1,
+      "runs": [
+        {
+          "display_score": "77.7",
+          "final_score_file": "hf-glm-5-3/run-1/final_score.txt",
+          "raw_overall": "1908/2375",
+          "run": 1,
+          "score": 77.7100743746,
+          "scores_file": "hf-glm-5-3/run-1/scores.txt",
+          "status": "complete"
+        },
+        {
+          "run": 2,
+          "status": "pending"
+        },
+        {
+          "run": 3,
+          "status": "pending"
+        }
+      ]
+    }
+  },
+  "runs_per_model": 3,
+  "updated_at": "2026-09-27T20:24:48+08:00"
+}

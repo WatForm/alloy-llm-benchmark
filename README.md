@@ -139,7 +139,7 @@ What this does for each model:
 7. runs `InstanceGenerator` on the output model for scopes `1..general_max_scope`, then checks those instances against the original model (`output => original`).
 
 Notes:
-1. CompoSAT runs in scoring have a `900s` timeout per scope.
+1. Generated-side CompoSAT runs in scoring have a `120s` internal search budget per scope (`--time-limit 120`) and a `900s` external timeout. The internal budget lets CompoSAT finish and write an ensemble from candidates found so far; it is checked between operations, so the external limit remains a safety net. A hard timeout still scores as a generation failure.
 2. `InstanceGenerator` runs in scoring also has a `900s` timeout per scope.
 3. Regenerated output-side XML instances are deduplicated across scopes for each model before scoring. Duplicate detection compares XML instance content after stripping run metadata such as `command`, `filename`, and `maxseq`.
 4. For regenerated general instances, scoring asks for the same per-scope count as the reference corpus. It starts with `2*x` candidates, then retries with `3*x`, `4*x`, and so on until it either keeps `x` unique new instances, reaches the `10*x` candidate limit, or `InstanceGenerator` exhausts the scope.

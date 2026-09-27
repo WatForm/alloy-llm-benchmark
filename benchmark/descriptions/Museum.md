@@ -8,7 +8,7 @@ Each "Client" is associated with a "desires" set of "Picture"s.
 There is exactly one "Museum". Each "Museum" has a "permanent" set  of "Picture"s.  
 Each "Museum" has an "onDisplay" set  of "Picture"s.  
 
-Every "Picture" is either in "onDisplay" in the Museum" or "loaned" to a "Client".
+Every "Picture" is either in "onDisplay" in the "Museum" or "loaned" to a "Client".
 
 If a picture is "permanent" in a "Museum", then it is in "onDisplay" in that "Museum".
 

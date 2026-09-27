@@ -213,3 +213,6 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 secret
+
+# Temporary native solver libraries extracted during benchmark scoring
+.alloy-tmp/

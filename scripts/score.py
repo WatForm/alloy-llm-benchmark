@@ -21,6 +21,7 @@ from syntax_utils import check_syntax, require_java_for_version
 
 
 TIMEOUT_SECONDS = 900
+COMPOSAT_INTERNAL_TIME_LIMIT_SECONDS = 120
 COMPOSAT_TIMEOUT_SECONDS = 900
 GENERAL_INSTANCE_TIMEOUT_SECONDS = 900
 DEFAULT_GENERAL_OUTPUT_INSTANCE_COUNT = 10
@@ -483,6 +484,8 @@ def score_output_instances_against_reference(
                 "coverage",
                 "--symmetry",
                 "2000",
+                "--time-limit",
+                str(COMPOSAT_INTERNAL_TIME_LIMIT_SECONDS),
                 "--out",
                 str(scope_out),
             ]
@@ -1235,7 +1238,8 @@ def build_report(results: list[dict]) -> str:
     lines.append("Alloy Benchmark Scoring Report")
     lines.append("=" * 80)
     lines.append("SemDiff direction note: ModuleDiff <left> <right> SemDiff reports equivalent when right => left.")
-    lines.append(f"CompoSAT timeout per scope: {COMPOSAT_TIMEOUT_SECONDS}s")
+    lines.append(f"CompoSAT internal search budget per scope: {COMPOSAT_INTERNAL_TIME_LIMIT_SECONDS}s")
+    lines.append(f"CompoSAT external timeout per scope: {COMPOSAT_TIMEOUT_SECONDS}s")
     lines.append(f"General instance generation timeout per scope: {GENERAL_INSTANCE_TIMEOUT_SECONDS}s")
     lines.append(f"Model scoring parallelism: {MODEL_WORKERS} worker(s)")
     lines.append("")

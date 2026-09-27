@@ -10,5 +10,5 @@ There is some element of "Game" that is not in the "schedule" of "FieldComplex" 
 
 For any two distinct elements of "Game", if they have the same "where" value, then they have different "when" values.
 
-There exists at least one element of "Game" that is not in the "schedule of "FieldComplex".
+There exists at least one element of "Game" that is not in the "schedule" of "FieldComplex".
 

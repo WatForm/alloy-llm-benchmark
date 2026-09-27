@@ -1,78 +1,27 @@
 There are disjoint sets called "Thing", "Property", "QuallitativeState", and "Process".
 
-Every "Thing" is related to exactly one "Thing" in a relation called 
-"touches". Every "Thing" is related to zero or more "Property" elements through a relation called "hasProperty".
+Every "Thing" is related to exactly one "Thing" by "touches" and to zero or more "Property" elements by "hasProperty". Every "Property" relates by "influences" to zero or more "Property" elements and has exactly one "QuallitativeState" as its "state".
 
-Every "Property" has an "influences" relation connecting it to zero or more "Property" elements. Every "Property" is related to exactly one "QuallitativeState" called its "state".
+"QuallitativeState" consists exactly of the distinct elements "INCREASING", "DECREASING", and "NOCHANGE".
 
-"QuallitativeState" consists of exactly the distinct elements "INCREASING", "DECREASING", and "NOCHANGE".
+Every "Thing" is a "ThermalThing". There is exactly one "Substance" and exactly one "Cup"; they are distinct "ThermalThing" elements. There is exactly one "Coffee", which is the only "Substance". The remaining constraints imply that there are no other "ThermalThing" elements.
 
-All "Thing"s are "ThermalThing"s.  There is exactly one "Substance" and exactly one "Cup", and each of them is a distinct "ThermalThing". There are no other "ThermalThing"s. There is exactly one "Coffee", which is the only "Substance".
+Every "Property" is a "ThermalProperty". The sets "HEAT" and "TEMPERATURE" are disjoint subsets of "ThermalProperty". "TEMPERATURE_OF_COFFEE" and "TEMPERATURE_OF_CUP" are distinct, individually named elements of "TEMPERATURE". "HEAT_OF_COFFEE" and "HEAT_OF_CUP" are distinct, individually named elements of "HEAT". These names do not, by themselves, exclude additional elements of either set.
 
-The set "ThermalProperty" is equal to the set "Property".
+Every "Process" has exactly one "HEAT" element through "increases" and exactly one through "decreases". "HeatFlow" is the only "Process".
 
-The disjoint sets "HEAT" and "TEMPERATURE" are subsets of "ThermalProperty".
+Each "HEAT" element relates through "greaterThan" to at most one "HEAT" element. "greaterThan" has no self-links and differs from its converse.
 
-There are exactly one "TEMPERATURE_OF_COFFEE" and exactly one "TEMPERATURE_OF_CUP", and each of them is distinct element of the set "TEMPERATURE".  There are no other elements of "TEMPERATURE".
+"touches" has no self-links and is symmetric.
 
-There are exactly one "HEAT_OF_COFFEE" and exactly one "HEAT_OF_CUP", and each of them is a "HEAT". There are no other elements of "HEAT".
+The complete "hasProperty" relation consists of "Coffee" linked to "TEMPERATURE_OF_COFFEE" and "HEAT_OF_COFFEE", and "Cup" linked to "TEMPERATURE_OF_CUP" and "HEAT_OF_CUP". The complete "influences" relation consists of "HEAT_OF_COFFEE" linked to "TEMPERATURE_OF_COFFEE", and "HEAT_OF_CUP" linked to "TEMPERATURE_OF_CUP".
 
-Every "Process" is associated with exactly one "increases" "HEAT" and with exactly one "decreases" "HEAT".
+If any "ThermalThing" touches neither "Cup" nor "Coffee", then "greaterThan" has no links and "HeatFlow" is absent.
 
-There is exactly one "HeatFlow", and it is a "Process".  There are no other elements in "HeatFlow".
-There are no "Process"es that aren't in "HeatFlow".
+For each "ThermalThing", its "touches" target is "Cup" or "Coffee" if and only if at least one of the following holds: "greaterThan" consists exactly of the link from "HEAT_OF_COFFEE" to "HEAT_OF_CUP"; "greaterThan" consists exactly of the reverse link; or the entire "greaterThan" relation differs from the relation containing both of those links.
 
-Every "HEAT" has a "greaterThan" relation to at most one "HEAT".
+If a "ThermalThing" touches "Cup" or "Coffee" and the entire "greaterThan" relation differs from the relation containing both named links, then the complete "increases" relation differs from the relation linking "HeatFlow" to both named "HEAT" elements, and the complete "decreases" relation also differs from that two-link relation. This does not forbid either individual link.
 
-The "greaterThan" relation never relates any "HEAT" to itself.
-The "greaterThan" relation is not equal to its converse.
+If a "ThermalThing" touches "Cup" or "Coffee" and "greaterThan" consists exactly of the link from "HEAT_OF_CUP" to "HEAT_OF_COFFEE", then the complete "state" relation assigns "INCREASING" to "HEAT_OF_COFFEE" and "TEMPERATURE_OF_COFFEE", and "DECREASING" to "HEAT_OF_CUP" and "TEMPERATURE_OF_CUP". In that case, "increases" consists exactly of "HeatFlow" linked to "HEAT_OF_COFFEE", and "decreases" consists exactly of "HeatFlow" linked to "HEAT_OF_CUP".
 
-The "touches" relation never relates any "Thing" to itself.
-The "touches" relation is symmetric.
-
-"Coffee" "hasProperty" "TEMPERATURE_OF_COFFEE" and also "HEAT_OF_COFFEE".  "Cup" has the same properties.  Nothing else has properties.
-
-"HEAT_OF_COFFEE" influences "TEMPERATURE_OF_COFFEE", and "HEAT_OF_CUP" influences "TEMPERATURE_OF_CUP".  There are no other influences.
-
-// NAD: this seems to be impossible b/c there must be a "HeatFlow" element 
-If a "ThermalThing" "touches" neither "Cup" nor "Coffee", then there is no "greaterThan" relationship at all and there is no "HeatFlow".
-
-A "ThermalThing" "touches" "Cup" or "Coffee" if and only if one of these three conditions holds:  
-(1) "HEAT_OF_COFFEE" is "greaterThan" "HEAT_OF_CUP", 
-or 
-(2) "HEAT_OF_CUP" is "greaterThan" "HEAT_OF_COFFEE", 
-or
-(3) neither "HEAT_OF_CUP" nor "HEAT_OF_COFFEE" is "greaterThan" the other.
-
-If a "ThermalThing" 
-"touches" either "Cup" or "Coffee"
-and 
-neither "HEAT_OF_CUP" nor "HEAT_OF_COFFEE" is "greaterThan" the other 
-then 
-the "HeatFlow" does not "increases" the "HEAT_OF_CUP", 
-the "HeatFlow" does not "increases" the "HEAT_OF_COFFEE",  
-the "HeatFlow" does not "decreases" "HEAT_OF_COFFEE", and
-the "HeatFlow" does not "decreases" "HEAT_OF_CUP".
-
-Additionally, if a "ThermalThing" 
-"touches" either "Cup" or "Coffee" 
-when 
-"HEAT_OF_CUP" is "greaterThan" "HEAT_OF_COFFEE" 
-then
-the "state" of "HEAT_OF_COFFEE" must be "INCREASING",
-the "state" of "TEMPERATURE_OF_COFFEE" must be "INCREASING",
-the "state" of "HEAT_OF_CUP" must be "DECREASING",
-and "state" of "TEMPERATURE_OF_CUP" must be "DECREASING", 
-only "HeatFlow" "increases" "HEAT_OF_COFFEE", and 
-only "HeatFlow" "decreases" "HEAT_OF_CUP".
-
-However, if a "ThermalThing" 
-"touches" either "Cup" or "Coffee" 
-when "HEAT_OF_COFFEE" is "greaterThan" "HEAT_OF_CUP" 
-then
-the "state" of "HEAT_OF_COFFEE" must be "DECREASING",
-the "state" of "TEMPERATURE_OF_COFFEE" must be "DECREASING",
-the "state" of "HEAT_OF_CUP" must be "INCREASING",
-and "state" of "TEMPERATURE_OF_CUP" must be "INCREASING",
-only "HeatFlow" "increases" "HEAT_OF_CUP", and 
-only "HeatFlow" decreases "HEAT_OF_COFFEE".
+If a "ThermalThing" touches "Cup" or "Coffee" and "greaterThan" consists exactly of the link from "HEAT_OF_COFFEE" to "HEAT_OF_CUP", then the complete "state" relation assigns "DECREASING" to "HEAT_OF_COFFEE" and "TEMPERATURE_OF_COFFEE", and "INCREASING" to "HEAT_OF_CUP" and "TEMPERATURE_OF_CUP". In that case, "decreases" consists exactly of "HeatFlow" linked to "HEAT_OF_COFFEE", and "increases" consists exactly of "HeatFlow" linked to "HEAT_OF_CUP".
